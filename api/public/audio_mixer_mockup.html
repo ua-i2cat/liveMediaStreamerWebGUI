@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/bs/assets/ico/favicon.png">
+
+    <title>Audio Mixer</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bs/dist/css/bootstrap.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="bs/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="theme.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">AV Mixer</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <form class="navbar-form navbar-left" action="/app/stop" method="post">
+            <button type="submit" class="btn btn-default btn-sm">Video</button>
+          </form>
+          <form class="navbar-form navbar-left" action="/app/stop" method="post">
+            <button type="submit" class="btn btn-default btn-sm">Audio</button>
+          </form>
+          <form class="navbar-form navbar-left" action="/app/stop" method="post">
+            <button type="submit" class="btn btn-default btn-sm">Statistics</button>
+          </form>
+          <form class="navbar-form navbar-right" action="/app/stop" method="post">
+            <button type="submit" class="btn btn-danger btn-sm">Stop</button>
+          </form>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="gui">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            Stream 1 
+          </h3>
+        </div>
+        <div class="panel-body">
+          <div class="col-sm-1">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <h4>Channel 1</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <div class="btn-group btn-group-sm">
+                  <button type="button" class="btn btn-default">Mute</button>
+                  <button type="button" class="btn btn-default">Solo</button>
+                </div>
+              </div>
+            </div>
+            <div class = "row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                <input type="range" class="vertical" min="0" max="10" step="1" orient="vertical" />
+              </div>
+              <div class="col-sm-6 text-center">
+                <input type="range" class="vertical" min="0" max="10" step="1" orient="vertical" />
+              </div>
+            </div>
+            <div class = "row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                Volume
+              </div>
+              <div class="col-sm-6 text-center">
+                Delay
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                <input class="form-control input-sm" name="c_w" id="c_w" value=100>
+              </div>
+              <div class="col-sm-6 text-center">
+                <input class="form-control input-sm" name="c_w" id="c_w" value=100>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-1">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <h4>Channel 2</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <div class="btn-group btn-group-sm">
+                  <button type="button" class="btn btn-default">Mute</button>
+                  <button type="button" class="btn btn-default">Solo</button>
+                </div>
+              </div>
+            </div>
+            <div class = "row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                <input type="range" class="vertical" min="0" max="10" step="1" orient="vertical" />
+              </div>
+              <div class="col-sm-6 text-center">
+                <input type="range" class="vertical" min="0" max="10" step="1" orient="vertical" />
+              </div>
+            </div>
+            <div class = "row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                Volume
+              </div>
+              <div class="col-sm-6 text-center">
+                Delay
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                <input class="form-control input-sm" name="c_w" id="c_w" value=100>
+              </div>
+              <div class="col-sm-6 text-center">
+                <input class="form-control input-sm" name="c_w" id="c_w" value=100>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-1">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <h4>Channel 3</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <div class="btn-group btn-group-sm">
+                  <button type="button" class="btn btn-default">Mute</button>
+                  <button type="button" class="btn btn-default">Solo</button>
+                </div>
+              </div>
+            </div>
+            <div class = "row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                <input type="range" class="vertical" min="0" max="10" step="1" orient="vertical" />
+              </div>
+              <div class="col-sm-6 text-center">
+                <input type="range" class="vertical" min="0" max="10" step="1" orient="vertical" />
+              </div>
+            </div>
+            <div class = "row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                Volume
+              </div>
+              <div class="col-sm-6 text-center">
+                Delay
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                <input class="form-control input-sm" name="c_w" id="c_w" value=100>
+              </div>
+              <div class="col-sm-6 text-center">
+                <input class="form-control input-sm" name="c_w" id="c_w" value=100>
+              </div>
+            </div>
+          </div>
+           <div class="col-sm-1">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <h4>Channel 4</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <div class="btn-group btn-group-sm">
+                  <button type="button" class="btn btn-default">Mute</button>
+                  <button type="button" class="btn btn-default">Solo</button>
+                </div>
+              </div>
+            </div>
+            <div class = "row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                <input type="range" class="vertical" min="0" max="10" step="1" orient="vertical" />
+              </div>
+              <div class="col-sm-6 text-center">
+                <input type="range" class="vertical" min="0" max="10" step="1" orient="vertical" />
+              </div>
+            </div>
+            <div class = "row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                Volume
+              </div>
+              <div class="col-sm-6 text-center">
+                Delay
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                <input class="form-control input-sm" name="c_w" id="c_w" value=100>
+              </div>
+              <div class="col-sm-6 text-center">
+                <input class="form-control input-sm" name="c_w" id="c_w" value=100>
+              </div>
+            </div>
+          </div>
+           <div class="col-sm-1">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <h4>Channel 5</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <div class="btn-group btn-group-sm">
+                  <button type="button" class="btn btn-default">Mute</button>
+                  <button type="button" class="btn btn-default">Solo</button>
+                </div>
+              </div>
+            </div>
+            <div class = "row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                <input type="range" class="vertical" min="0" max="10" step="1" orient="vertical" />
+              </div>
+              <div class="col-sm-6 text-center">
+                <input type="range" class="vertical" min="0" max="10" step="1" orient="vertical" />
+              </div>
+            </div>
+            <div class = "row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                Volume
+              </div>
+              <div class="col-sm-6 text-center">
+                Delay
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                <input class="form-control input-sm" name="c_w" id="c_w" value=100>
+              </div>
+              <div class="col-sm-6 text-center">
+                <input class="form-control input-sm" name="c_w" id="c_w" value=100>
+              </div>
+            </div>
+          </div>
+           <div class="col-sm-1">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <h4>Channel 6</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <div class="btn-group btn-group-sm">
+                  <button type="button" class="btn btn-default">Mute</button>
+                  <button type="button" class="btn btn-default">Solo</button>
+                </div>
+              </div>
+            </div>
+            <div class = "row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                <input type="range" class="vertical" min="0" max="10" step="1" orient="vertical" />
+              </div>
+              <div class="col-sm-6 text-center">
+                <input type="range" class="vertical" min="0" max="10" step="1" orient="vertical" />
+              </div>
+            </div>
+            <div class = "row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                Volume
+              </div>
+              <div class="col-sm-6 text-center">
+                Delay
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                <input class="form-control input-sm" name="c_w" id="c_w" value=100>
+              </div>
+              <div class="col-sm-6 text-center">
+                <input class="form-control input-sm" name="c_w" id="c_w" value=100>
+              </div>
+            </div>
+          </div>
+           <div class="col-sm-1">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <h4>Channel 7</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <div class="btn-group btn-group-sm">
+                  <button type="button" class="btn btn-default">Mute</button>
+                  <button type="button" class="btn btn-default">Solo</button>
+                </div>
+              </div>
+            </div>
+            <div class = "row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                <input type="range" class="vertical" min="0" max="10" step="1" orient="vertical" />
+              </div>
+              <div class="col-sm-6 text-center">
+                <input type="range" class="vertical" min="0" max="10" step="1" orient="vertical" />
+              </div>
+            </div>
+            <div class = "row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                Volume
+              </div>
+              <div class="col-sm-6 text-center">
+                Delay
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                <input class="form-control input-sm" name="c_w" id="c_w" value=100>
+              </div>
+              <div class="col-sm-6 text-center">
+                <input class="form-control input-sm" name="c_w" id="c_w" value=100>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-1">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <h4>Free channel</h4>
+              </div>
+            </div>
+            <div class = "row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <input type="text" class="form-control input-sm" name="ip" id="ip" placeholder="Port">
+              </div>
+            </div>
+            <div class = "row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <select class="form-control">
+                  <option>Codec</option>
+                  <option>PCM</option>
+                  <option>PCMU</option>
+                  <option>OPUS</option>
+                  <option>AAC</option>
+                  <option>MP3</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <select class="form-control">
+                  <option>S Rate</option>
+                  <option>8000</option>
+                  <option>44100</option>
+                  <option>48000</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <select class="form-control">
+                  <option>bps</option>
+                  <option>8</option>
+                  <option>16</option>
+                  <option>32</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <select class="form-control">
+                  <option>Channels</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </div>
+            </div>
+            <div class = "row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <button type="button" class="btn btn-default">Add</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="row">
+              <div class="col-sm-3">
+                  Codec
+              </div>
+              <div class="col-sm-4 text-center">
+                <select class="form-control">
+                  <option>PCM</option>
+                  <option>PCMU</option>
+                  <option>OPUS</option>
+                  <option>AAC</option>
+                  <option>MP3</option>
+                </select>
+              </div>
+              <div class="col-sm-3">
+                <button type="button" class="btn btn-default">Apply</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-3">
+                  Sample rate
+              </div>
+              <div class="col-sm-4 text-center">
+                <select class="form-control">
+                  <option>8000</option>
+                  <option>44100</option>
+                  <option>48000</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-3">
+                  Bits/sample
+              </div>
+              <div class="col-sm-4 text-center">
+                <select class="form-control">
+                  <option>8</option>
+                  <option>16</option>
+                  <option>32</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-3">
+                  Channels
+              </div>
+              <div class="col-sm-4 text-center">
+                <select class="form-control">
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </div>
+            </div>
+            <div class = "row">&nbsp;</div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                  Destinations
+                </h3>
+              </div>
+              <div class="panel-body">
+                <table class="table table-condensed">
+                  <tr>
+                    <th>IP</th>
+                    <th>Port</th>
+                    <th></th>
+                  </tr>
+                  <tr>
+                    <td>192.168.10.219</td>
+                    <td>5004</td>
+                    <td> 
+                      <form class="form" action="/app/output_stream/crops/{{ crop.id }}/destinations/{{ destination.id }}/remove" method="post">
+                        <button type="submit" class="btn btn-danger btn-xs">
+                          <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>192.168.109.120</td>
+                    <td>8000</td>
+                    <td> 
+                      <form class="form" action="/app/output_stream/crops/{{ crop.id }}/destinations/{{ destination.id }}/remove" method="post">
+                        <button type="submit" class="btn btn-danger btn-xs">
+                          <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                  <tr>
+                    <form class="form" role="form" action="/app/output_stream/crops/{{ crop.id }}/destinations/add" method="post">
+                    <td>
+                      <input type="text" class="form-control input-sm" name="ip" id="ip" placeholder="IP">
+                    </td>
+                    <td>
+                      <input type="number" class="form-control input-sm" name="port" id="port" placeholder="Port">
+                    </td>
+                    <td>
+                      <button type="submit" class="btn btn-primary btn-sm pull-right">Add</button>
+                    </td>
+                    </form>
+                  </tr>
+                </table>
+              </div> <!--DESTINATIONS COLLAPSE -->
+            </div>
+          </div>
+         <div class="col-sm-1">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <h4>Master</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <button type="button" class="btn btn-default btn-block">Mute</button>
+              </div>
+            </div>
+            <div class="row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                <input type="range" class="vertical" min="0" max="10" step="1" orient="vertical" />
+              </div>
+              <div class="col-sm-6 text-center">
+                <input type="range" class="vertical" min="0" max="10" step="1" orient="vertical" />
+              </div>
+            </div>
+            <div class = "row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                Volume
+              </div>
+              <div class="col-sm-6 text-center">
+                Delay
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                <input class="form-control input-sm" name="c_w" id="c_w" value=100>
+              </div>
+              <div class="col-sm-6 text-center">
+                <input class="form-control input-sm" name="c_w" id="c_w" value=100>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="bs/assets/js/jquery.js"></script>
+    <script src="bs/dist/js/bootstrap.min.js"></script>
+    <script src="bs/assets/js/holder.js"></script>
+    <script type="text/javascript">
+      function showValue(str_id, crop_id, newValue) {
+        id = "op_" + str_id + "_" + crop_id 
+        document.getElementById(id).value=newValue;
+      }
+    </script>
+  </body>
+</html>

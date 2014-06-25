@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/bs/assets/ico/favicon.png">
+
+    <title>i2CAT AVMixer</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/bs/dist/css/bootstrap.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="/bs/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/theme.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Mixer</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <form class="navbar-form navbar-left" action="/app/videoMixer" method="get">
+            <button type="submit" class="btn btn-default btn-sm">Video Mixer</button>
+          </form>
+          <form class="navbar-form navbar-left" action="/app/audioMixer" method="get">
+            <button type="submit" class="btn btn-default btn-sm">Audio Mixer</button>
+          </form>
+          <form class="navbar-form navbar-right" action="/app/stop" method="post">
+            <button type="submit" class="btn btn-danger btn-sm">Stop</button>
+          </form>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="col-md-6"> <!-- INPUT STREAMS -->
+        <div class="page-header">
+          <h1>Input streams</h1> 
+        </div>
+        <div class="col-md-12"> <!--Input streams panel group column -->
+          <div class="panel-group" id="input_streams"> <!--Input stream panel group -->
+          {% for stream in input_streams %}
+        	  <div class="panel panel-success"> <!--Stream-->
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#input_streams" href="#stream_{{ stream.id }}">
+                    Stream {{ stream.id }}
+                  </a>
+                  <div class="btn-group pull-right">
+                    <form class="form" action="/app/streams/{{ stream.id }}/remove" method="post">
+                      <button type="submit" class="btn btn-danger btn-xs">
+                        <span class="glyphicon glyphicon-remove"></span>
+                      </button>
+                    </form>
+                  </div>
+                </h3>
+              </div>
+              <div id="stream_{{ stream.id }}" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <strong>Original Size</strong>
+                    </div>
+                    <div class="col-md-4">
+                      {{stream.width}}x{{stream.height}}
+                    </div>
+                  </div>
+                  <div class = "row">&nbsp;</div>
+                  <div class="panel-group" id="crops_{{ stream.id }}">  <!--CROPS-->
+                  {% for crop in stream.crops %}
+                    {% if crop.state == 1 %}
+                    <div class="panel panel-success">
+                    {% else %}
+                    <div class="panel panel-warning">
+                    {% endif %}
+                      <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a data-toggle="collapse" data-parent="#crops_{{ stream.id }}" href="#stream_{{ stream.id }}_crop_{{ crop.id }}">
+                            Crop {{ crop.id }}
+                          </a>
+                          <div class="btn-group pull-right">
+                            <form class="form" action="/app/streams/{{ stream.id }}/crops/{{ crop.id }}/remove" method="post">
+                              <button type="submit" class="btn btn-danger btn-xs">
+                                <span class="glyphicon glyphicon-remove"></span>
+                              </button>
+                            </form>
+                          </div>
+                          <div class="btn-group pull-right">
+                            {% if crop.state == 1 %}
+                            <form class="form" action="/app/streams/{{ stream.id }}/crops/{{ crop.id }}/disable" method="post">
+                              <button type="submit" class="btn btn-warning btn-xs ">
+                                <span class="glyphicon glyphicon-eye-close"></span>
+                              </button>
+                            </form>
+                            {% else %}
+                            <form class="form" action="/app/streams/{{ stream.id }}/crops/{{ crop.id }}/enable" method="post">
+                              <button type="submit" class="btn btn-success btn-xs ">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                              </button>
+                            </form>
+                            {% endif %}
+                          </div>
+                        </h4>
+                      </div>
+                      <div id="stream_{{ stream.id }}_crop_{{ crop.id }}" class="panel-collapse collapse">
+                        <div class="panel-body">
+                          <form class="form" role="form" action="/app/streams/{{ stream.id }}/crops/{{ crop.id }}/modify" method="post">
+                            <div class = "row">
+                              <div class="col-md-4">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-addon">Crop<br>size</span>
+                                  <input class="form-control input-sm" name="c_w" id="c_w" value={{ crop.c_w }}>
+                                  <input class="form-control input-sm" name="c_h" id="c_h" value={{ crop.c_h }}>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-addon">Crop<br>position</span>
+                                  <input class="form-control input-sm" name="c_x" id="c_x" value={{ crop.c_x }}>
+                                  <input class="form-control input-sm" name="c_y" id="c_y" value={{ crop.c_y }}>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-addon">Layer</span>
+                                  <input class="form-control input-sm" name="layer" id="layer" value={{ crop.layer }}>
+                                </div>
+                              </div>
+                            </div>
+                            <div class = "row">&nbsp;</div>
+                            <div class = "row">
+                              <div class="col-md-4">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-addon">Layout<br>size</span>
+                                  <input class="form-control input-sm" name="dst_w" id="dst_w" value={{ crop.dst_w }}>
+                                  <input class="form-control input-sm" name="dst_h" id="dst_h" value={{ crop.dst_h }}>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-addon">Layout<br>position</span>
+                                  <input class="form-control input-sm" name="dst_x" id="dst_x" value={{ crop.dst_x }}>
+                                  <input class="form-control input-sm" name="dst_y" id="dst_y" value={{ crop.dst_y }}>
+                                </div>
+                              </div>
+                              <div class="col-md-2 col-md-offset-2">
+                                <button type="submit" class="btn btn-primary btn-sm">Apply</button>
+                              </div>
+                            </div>
+                            <div class = "row">&nbsp;</div>
+                            <div class = "row">
+                              <div class="col-md-4">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-addon">Opacity</span>
+                                  <input class="form-control input-sm" name="opacity" id="op_{{ stream.id }}_{{ crop.id }}" value={{ crop.opacity }}>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <input type="range" id="opacity" min="0" max="1" value={{ crop.opacity }} step="0.1" onchange="showValue({{ stream.id }}, {{ crop.id }}, this.value)"/>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                    {% endfor %}
+                    <div class="panel panel-default"> <!--New crop form-->
+                      <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a data-toggle="collapse" data-parent="#crops_{{ stream.id }}" href="#stream_{{ stream.id }}_crop_new">
+                            Add new crop
+                          </a>
+                        </h4>
+                      </div>
+                      <div id="stream_{{ stream.id }}_crop_new" class="panel-collapse collapse">
+                        <div class="panel-body">
+                          <form class="form" role="form" action="/app/streams/{{ stream.id }}/crops/add" method="post">
+                            <div class = "row">
+                              <div class="col-md-4">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-addon">Crop<br>size</span>
+                                  <input class="form-control input-sm" name="c_w" id="c_w" placeholder="Crop width">
+                                  <input class="form-control input-sm" name="c_h" id="c_h" placeholder="Crop height">
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-addon">Crop<br>position</span>
+                                  <input class="form-control input-sm" name="c_x" id="c_x" placeholder="Crop x pos">
+                                  <input class="form-control input-sm" name="c_y" id="c_y" placeholder="Crop y pos">
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-addon">Layer</span>
+                                  <input class="form-control input-sm" name="layer" id="layer" placeholder="Layer">
+                                </div>
+                              </div>
+                            </div>
+                            <div class = "row">&nbsp;</div>
+                            <div class = "row">
+                              <div class="col-md-4">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-addon">Layout<br>size</span>
+                                  <input class="form-control input-sm" name="dst_w" id="dst_w" placeholder="Layout width">
+                                  <input class="form-control input-sm" name="dst_h" id="dst_h" placeholder="Layout height">
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-addon">Layout<br>position</span>
+                                  <input class="form-control input-sm" name="dst_x" id="dst_x" placeholder="Layout x pos.">
+                                  <input class="form-control input-sm" name="dst_y" id="dst_y" placeholder="Layout y pos.">
+                                </div>
+                              </div>
+                              <div class="col-md-2 col-md-offset-2">
+                                <button type="submit" class="btn btn-primary btn-sm">Add</button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div> <!--New crop form-->
+                  </div> <!-- CROPS -->
+                </div>
+              </div> <!-- Stream collapse -->
+            </div> <!-- Stream -->
+          {% endfor %}
+            <div class="panel panel-default"> <!-- New input stream form -->
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                  Add new input stream
+                  <div class="btn-group pull-right">
+                    <form class="form" action="/app/streams/add" method="post">
+                      <button type="submit" class="btn btn-primary btn-xs">
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                      </button>
+                    </form>
+                  </div>
+                </h3>
+              </div>
+            </div> <!-- New input stream form -->
+            <div class="panel panel-default"> <!-- New rtsp stream form -->
+              <div class="panel-heading">
+                <form class="form" role="form" action="/app/add_rtsp_session" method="post">
+                  <div class="input-group input-group-sm">
+                    <input class="form-control" name="uri" id="uri" placeholder="Add new RTSP session URI">
+                    <div class="input-group-btn">
+                      <button type="submit" class="btn btn-primary btn-xs">
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div> <!-- New input stream form -->
+          </div> <!--Input stream panel group -->
+        </div>  <!--Input streams panel group column -->
+
+        <div class="page-header"> <!-- INPUT GRIDS -->
+          <h1>Input grids</h1>
+        </div>
+        <div class="panel panel-default container">
+          <div class="panel-body">
+            <div class="row btn-group" data-toggle="buttons">
+            {% for i in (1..6) %}
+              <label class="btn btn-default {% if i == grid %}active{% endif %}" onclick="set_grid({{i}})">
+                <input type="radio" name="options" id="option1">
+                <img  src="/image/{{i}}.jpeg" alt="grid-{{i}}" class="img-rounded" width="60" height="60">
+              </label>
+            {% endfor %}
+            </div>
+          </div>
+        </div>
+
+      </div> <!-- INPUT STREAMS -->
+
+      <div class="col-md-6"> <!--OUTPUT STREAMS-->
+        <div class="page-header">
+          <h1>Output Streams</h1>
+        </div>
+        <div class="col-md-12"> <!--Input streams panel group column -->
+          <div class="panel-group" id="output_streams"> <!--OUTPUT STREAM PANEL GROUP -->
+            {% for output_stream in output_streams %}
+            {% for crop in output_stream.crops %}
+            <div class="panel panel-success"> <!-- STREAM -->
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#output_streams" href="#output_{{ crop.id }}">
+                    Stream {{ crop.id }}
+                  </a>
+                  <div class="btn-group pull-right">
+                    <form class="form" action="/app/outputs/{{ crop.id }}/remove" method="post">
+                      <button type="submit" class="btn btn-danger btn-xs">
+                        <span class="glyphicon glyphicon-remove"></span>
+                      </button>
+                    </form>
+                  </div>
+                </h3>
+              </div>
+              <div id="output_{{ crop.id }}" class="panel-collapse collapse"> <!-- STREAM COLLAPSE-->
+                <div class="panel-body">
+                  <div class = "row">
+                    <form class="form" role="form" action="/app/output_stream/crops/{{ crop.id }}/modify" method="post">
+                      <div class="col-md-12">
+                        <div class = "row">
+                          <div class="col-md-3">
+                            <div class="input-group input-group-sm">
+                              <span class="input-group-addon">Crop<br>size</span>
+                              <input class="form-control input-sm" name="c_w" id="c_w" value={{ crop.c_w }}>
+                              <input class="form-control input-sm" name="c_h" id="c_h" value={{ crop.c_h }}>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="input-group input-group-sm">
+                              <span class="input-group-addon">Crop<br>pos.</span>
+                              <input class="form-control input-sm" name="c_x" id="c_x" value={{ crop.c_x }}>
+                              <input class="form-control input-sm" name="c_y" id="c_y" value={{ crop.c_y }}>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="input-group input-group-sm">
+                              <span class="input-group-addon">Output<br>size</span>
+                              <input class="form-control input-sm" name="dst_w" id="dst_w" value={{ crop.dst_w }}>
+                              <input class="form-control input-sm" name="dst_h" id="dst_h" value={{ crop.dst_h }}>
+                            </div>
+                          </div>
+                          <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary">Apply</button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="row">&nbsp;</div>
+                  {% if crop.name == null %}
+                  <form class="form-horizontal" role="form" action="/app/output_stream/crops/{{ crop.id }}/add_rtsp_session" method="post">
+                    <div class="form-group">
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control input-sm" name="name" id="name" placeholder="RTSP session name">
+                      </div>
+                      <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary btn-sm">Add</button>
+                      </div>
+                    </div>
+                  </form>
+                  {% else %}
+                  <h4>RTSP Session name<small>  {{ crop.name }} </small></h4>
+                  {% endif %}
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" href="#output_{{ crop.id }}_destinations">
+                          Destinations
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="output_{{ crop.id }}_destinations" class="panel-collapse collapse"> <!--DESTINATIONS COLLAPSE -->
+                      <div class="panel-body">
+                        <table class="table table-condensed">
+                          <tr>
+                            <th>IP</th>
+                            <th>Port</th>
+                            <th></th>
+                          </tr>
+                          {% for destination in crop.destinations%}
+                          <tr>
+                            <td>{{ destination.ip }}</td>
+                            <td>{{ destination.port }}</td>
+                            <td> 
+                              <form class="form" action="/app/output_stream/crops/{{ crop.id }}/destinations/{{ destination.id }}/remove" method="post">
+                                <button type="submit" class="btn btn-danger btn-xs">
+                                  <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                              </form>
+                            </td>
+                          </tr>
+                          {% endfor %}
+                          <tr>
+                            <form class="form" role="form" action="/app/output_stream/crops/{{ crop.id }}/destinations/add" method="post">
+                            <td>
+                              <input type="text" class="form-control input-sm" name="ip" id="ip" placeholder="IP">
+                            </td>
+                            <td>
+                              <input type="number" class="form-control input-sm" name="port" id="port" placeholder="Port">
+                            </td>
+                            <td>
+                              <button type="submit" class="btn btn-primary btn-sm pull-right">Add</button>
+                            </td>
+                            </form>
+                          </tr>
+                        </table>
+                      </div>
+                    </div> <!--DESTINATIONS COLLAPSE -->
+                  </div>
+                </div>
+              </div> <!-- STREAM COLLAPSE-->
+            </div> <!-- STREAM -->
+            {% endfor %}
+            {% endfor %}
+            <div class="panel panel-default"> <!-- ADD STREAM FORM -->
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#output_streams" href="#output_new">
+                    Add new output stream
+                  </a>
+                </h3>
+              </div>
+              <div id="output_new" class="panel-collapse collapse in"> <!-- STREAM COLLAPSE-->
+                <div class="panel-body">
+                  <div class = "row">
+                    <form class="form" role="form" action="/app/output_stream/crops/add" method="post">
+                      <div class="col-md-12">
+                        <div class = "row">
+                          <div class="col-md-3">
+                            <div class="input-group input-group-sm">
+                              <span class="input-group-addon">Crop<br>size</span>
+                              <input class="form-control input-sm" name="c_w" id="c_w" placeholder="Width">
+                              <input class="form-control input-sm" name="c_h" id="c_h" placeholder="Height">
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="input-group input-group-sm">
+                              <span class="input-group-addon">Crop<br>position</span>
+                              <input class="form-control input-sm" name="c_x" id="c_x" placeholder="X">
+                              <input class="form-control input-sm" name="c_y" id="c_y" placeholder="Y">
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="input-group input-group-sm">
+                              <span class="input-group-addon">Output<br>size</span>
+                              <input class="form-control input-sm" name="dst_w" id="dst_w" placeholder="Width">
+                              <input class="form-control input-sm" name="dst_h" id="dst_h" placeholder="Height">
+                            </div>
+                          </div>
+                          <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary">Add</button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div> <!-- STREAM COLLAPSE-->
+            </div> <!-- STREAM -->
+          </div> <!--OUTPUT STREAM PANEL GROUP -->
+        </div>
+
+        <div class="page-header"> <!-- OUTPUT GRIDS -->
+          <h1>Output grids</h1>
+        </div>
+            <div class="btn-group" data-toggle="buttons">
+            {% for i in (1..1) %}
+              <label class="btn btn-default {% if i == output_grid %}active{% endif %}" onclick="set_output_grid({{i}})">
+                <input type="radio" name="options" id="option1">
+                <img  src="/image/{{i}}.jpeg" alt="grid-{{i}}" class="img-rounded" width="60" height="60">
+              </label>
+            {% endfor %}
+            <label class="btn btn-default " onclick="videowall_demo()">
+                <input type="radio" name="options" id="option2">
+                <img  src="/image/lena.jpg" alt="lena" class="img-rounded" width="60" height="60">
+              </label>
+            </div>
+
+      </div> <!--OUTPUT STREAMS-->
+        
+      
+      
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/bs/assets/js/jquery.js"></script>
+    <script src="/bs/dist/js/bootstrap.min.js"></script>
+    <script src="/bs/assets/js/holder.js"></script>
+    <script type="text/javascript">
+      function set_grid(id){
+        // $.post("/app/grid", { id: id });
+        $.ajax({
+          type: 'POST',
+          url: "/app/grid",
+          data: "id=" + id,
+          async:false
+        });
+        location.reload();
+      }
+    </script>
+    <script type="text/javascript">
+      function set_output_grid(id){
+        // $.post("/app/grid", { id: id });
+        $.ajax({
+          type: 'POST',
+          url: "/app/output_grid",
+          data: "id=" + id,
+          async:false
+        });
+        location.reload();
+      }
+    </script>
+    <script type="text/javascript">
+      function videowall_demo(){
+        // $.post("/app/grid", { id: id });
+        $.ajax({
+          type: 'POST',
+          url: "/app/videowall_demo",
+          async:false
+        });
+        location.reload();
+      }
+    </script>
+    <script type="text/javascript">
+      function showValue(str_id, crop_id, newValue) {
+        id = "op_" + str_id + "_" + crop_id 
+        document.getElementById(id).value=newValue;
+      }
+    </script>
+  </body>
+</html>
+

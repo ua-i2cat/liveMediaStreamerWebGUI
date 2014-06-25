@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/bs/assets/ico/favicon.png">
+
+    <title>Audio Mixer</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/bs/dist/css/bootstrap.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="/bs/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/theme.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">AV Mixer</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <form class="navbar-form navbar-left" action="/app/stop" method="post">
+            <button type="submit" class="btn btn-default btn-sm">Video</button>
+          </form>
+          <form class="navbar-form navbar-left" action="/app/stop" method="post">
+            <button type="submit" class="btn btn-default btn-sm">Audio</button>
+          </form>
+          <form class="navbar-form navbar-left" action="/app/stop" method="post">
+            <button type="submit" class="btn btn-default btn-sm">Statistics</button>
+          </form>
+          <form class="navbar-form navbar-right" action="/app/stop" method="post">
+            <button type="submit" class="btn btn-danger btn-sm">Stop</button>
+          </form>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="gui">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            Mixer 1 
+          </h3>
+        </div>
+        <div class="panel-body">
+          {% for channel in stateHash.channels %}
+          <div class="col-sm-1">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <h4>Port {{ channel.id }}</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <div class="btn-group btn-group-sm">
+                  <form class="navbar-form" action="/app/{{stateHash.mixerID}}/channel/{{channel.id}}/mute" method="post">
+                    <button type="submit" class="btn btn-default">Mute</button>
+                  </form>
+                  <form class="navbar-form" action="/app/{{stateHash.mixerID}}/channel/{{channel.id}}/solo" method="post">
+                    <button type="submit" class="btn btn-default">Solo</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                <input type="range" class="vertical" min="0" max="1" step="0.1" orient="vertical" value={{ channel.gain }} onchange="changeChannelVolume({{stateHash.mixerID}}, {{channel.id}}, this.value)"/>
+              </div>
+              <div class="col-sm-6 text-center">
+                <input type="range" class="vertical" min="0" max="10" step="1" orient="vertical" />
+              </div>
+            </div>
+            <div class = "row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                Volume
+              </div>
+              <div class="col-sm-6 text-center">
+                Delay
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                <input class="form-control input-sm" name="{{channel.id}}Gain" id="{{channel.id}}Gain" value={{ channel.gain }}>
+              </div>
+              <div class="col-sm-6 text-center">
+                <input class="form-control input-sm" name="c_w" id="c_w" value={{ channel.delay }}>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          {% for channel in (1...stateHash.freeChannels) %}
+          <div class="col-sm-1">
+            <form class="form" role="form" action="/app/{{stateHash.mixerID}}/addSession" method="post">
+              <div class="row">
+                <div class="col-sm-12 text-center">
+                  <h4>Free Channel</h4>
+                </div>
+              </div>
+              <div class = "row">&nbsp;</div>
+              <div class="row">
+                <div class="col-sm-12 text-center">
+                  <input type="numeric" class="form-control input-sm" name="port" id="port" placeholder="Port">
+                </div>
+              </div>
+              <div class = "row">&nbsp;</div>
+              <div class="row">
+                <div class="col-sm-12 text-center">
+                  <select class="form-control" name="codec">
+                    <option value="pcm">PCM</option>
+                    <option value="pcmu">PCMU</option>
+                    <option value="opus">OPUS</option>
+                    <option value="aac">AAC</option>
+                    <option value="mp3">MP3</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12 text-center">
+                  <select class="form-control" name="sampleRate">
+                    <option>Smp. Rate</option>
+                    <option>8000</option>
+                    <option>44100</option>
+                    <option>48000</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12 text-center">
+                  <select class="form-control" name="channels">
+                    <option>Channels</option>
+                    <option>1</option>
+                    <option>2</option>
+                  </select>
+                </div>
+              </div>
+              <div class = "row">&nbsp;</div>
+              <div class="row">
+                <div class="col-sm-12 text-center">
+                  <button type="submit" class="btn btn-default">Add</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          {% endfor %}
+          <div class="col-sm-3">
+            <form class="form" role="form" id="encoderForm" action="/app/audioMixer/{{ encoderID }}/reconfigure" method="post">
+              <div class="row">
+                <div class="col-sm-3">
+                    Codec
+                </div>
+                <div class="col-sm-4 text-center">
+                  <select class="form-control" name="codec">
+                    <option value="pcm">PCM</option>
+                    <option value="pcmu">PCMU</option>
+                    <option value="opus">OPUS</option>
+                    <option value="aac">AAC</option>
+                    <option value="mp3">MP3</option>
+                  </select>
+                </div>
+                <div class="col-sm-3">
+                  <button type="button" class="btn btn-default">Apply</button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-3">
+                    Samp. Rate
+                </div>
+                <div class="col-sm-4 text-center">
+                  <select class="form-control">
+                    <option value="8000">8000</option>
+                    <option value="44100">44100</option>
+                    <option value="48000">48000</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-3">
+                    BPS
+                </div>
+                <div class="col-sm-4 text-center">
+                  <select class="form-control">
+                    <option value="8">8</option>
+                    <option value="16">16</option>
+                    <option value="32">32</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-3">
+                    Channels
+                </div>
+                <div class="col-sm-4 text-center">
+                  <select class="form-control">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                  </select>
+                </div>
+              </div>
+            </form>
+            <div class = "row">&nbsp;</div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                  Destinations
+                </h3>
+              </div>
+              <div class="panel-body">
+                <form class="navbar-form" action="/app/channel/{{ channel.id }}/solo" method="post">
+                  <button type="submit" class="btn btn-default btn-block">Mute</button>
+                </form>
+              </div> <!--DESTINATIONS COLLAPSE -->
+            </div>
+          </div>
+         <div class="col-sm-1">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <h4>Master</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <form class="navbar-form" action="/app/channel/{{ channel.id }}/solo" method="post">
+                  <button type="submit" class="btn btn-default btn-block">Mute</button>
+                </form>
+              </div>
+            </div>
+            <div class="row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                 <input type="range" class="vertical" min="0" max="1" step="0.1" orient="vertical" value={{ stateHash.masterGain }},                      onchange="changeChannelVolume({{stateHash.mixerID}}, 'master', this.value)"/>
+              </div>
+              <div class="col-sm-6 text-center">
+                <input type="range" class="vertical" min="0" max="10" step="1" orient="vertical" />
+              </div>
+            </div>
+            <div class = "row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                Volume
+              </div>
+              <div class="col-sm-6 text-center">
+                Delay
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                <input class="form-control input-sm" name="masterGain" id="masterGain" value={{ stateHash.masterGain }}>
+              </div>
+              <div class="col-sm-6 text-center">
+                <input class="form-control input-sm" name="c_w" id="c_w" value={{ stateHash.masterDelay }}>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/bs/assets/js/jquery.js"></script>
+    <script src="/bs/dist/js/bootstrap.min.js"></script>
+    <script src="/bs/assets/js/holder.js"></script>
+    <script type="text/javascript">
+      function changeChannelVolume(audioMixerID, channelID, volume) {
+          id = channelID + "Gain"
+          uri = "/app/" + audioMixerID + "/channel/" + channelID + "/changeVolume"
+
+        document.getElementById(id).value = volume;
+
+        $.ajax({
+          type: 'POST',
+          url: uri,
+          data: "volume=" + volume,
+          async:false
+        });
+      }
+    </script>
+  </body>
+</html>
+
