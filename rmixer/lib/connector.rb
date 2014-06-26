@@ -134,7 +134,6 @@ module RMixer
 
     def configAudioEncoder(filterID, sampleRate, channels)
       params = {
-        :codec => codec,
         :sampleRate => sampleRate,
         :channels => channels
       }
@@ -197,6 +196,7 @@ module RMixer
       }
       s = TCPSocket.open(@host, @port)
       s.print(request.to_json)
+      puts request
       response = s.recv(2048) # TODO: max_len ?
       s.close
       return JSON.parse(response, :symbolize_names => true)

@@ -163,7 +163,7 @@
           </div>
           {% endfor %}
           <div class="col-sm-3">
-            <form class="form" role="form" id="encoderForm" action="/app/audioMixer/{{stateHash.encoder.id}}/reconfigure" method="post">
+            <form class="form" role="form" id="encoderForm" action="/app/{{stateHash.mixerID}}/{{stateHash.encoder.id}}/reconfigure" method="post">
               <div class="row">
                 <div class="col-sm-3">
                     Codec
@@ -186,7 +186,7 @@
                     Samp. Rate
                 </div>
                 <div class="col-sm-4 text-center">
-                  <select class="form-control">
+                  <select class="form-control" name="sampleRate">
                     <option {%if stateHash.encoder.sampleRate == 8000%}selected {%endif%}value="8000">8000</option>
                     <option {%if stateHash.encoder.sampleRate == 44100%}selected {%endif%}value="44100">44100</option>
                     <option {%if stateHash.encoder.sampleRate == 48000%}selected {%endif%}value="48000">48000</option>
@@ -198,7 +198,7 @@
                     Channels
                 </div>
                 <div class="col-sm-4 text-center">
-                  <select class="form-control">
+                  <select class="form-control" name="channels">
                     <option {%if stateHash.encoder.channels == 1%}selected {%endif%}value="1">1</option>
                     <option {%if stateHash.encoder.channels == 2%}selected {%endif%}value="2">2</option>
                   </select>
@@ -245,7 +245,7 @@
             <div class="row">&nbsp;</div>
             <div class="row">
               <div class="col-sm-6 text-center">
-                 <input type="range" class="vertical" min="0" max="1" step="0.1" orient="vertical" value={{stateHash.masterGain}},                      onchange="changeChannelVolume({{stateHash.mixerID}}, 'master', this.value)"/>
+                 <input type="range" class="vertical" min="0" max="1" step="0.1" orient="vertical" value={{stateHash.masterGain}} onchange="changeChannelVolume({{stateHash.mixerID}}, 'master', this.value)"/>
               </div>
               <div class="col-sm-6 text-center">
                 <input type="range" class="vertical" min="0" max="10" step="1" orient="vertical" />

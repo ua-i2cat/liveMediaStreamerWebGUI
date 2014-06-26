@@ -47,7 +47,6 @@ module RMixer
     def updateDataBase
       stateHash = getState
       @db.update(stateHash)
-      puts stateHash
     end
 
     def getAudioMixerState

@@ -46,7 +46,6 @@ class MixerAPI < Sinatra::Base
   def dashboardExtra
     settings.mixer.updateDataBase
     mixerHash = settings.mixer.getAudioMixerState
-    puts mixerHash
 
     liquid :audioMixer, :locals => {
           "stateHash" => mixerHash
@@ -187,6 +186,7 @@ class MixerAPI < Sinatra::Base
   post '/app/:mixer_id/:encoder_id/reconfigure' do
     content_type :html
     error_html do
+      puts params
       settings.mixer.configEncoder(params[:encoder_id].to_i, 
                                    params[:codec], 
                                    params[:sampleRate].to_i, 
