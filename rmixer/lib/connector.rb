@@ -132,6 +132,36 @@ module RMixer
       sendReq("muteMaster", params, filterID)
     end
 
+    def configAudioEncoder(filterID, sampleRate, channels)
+      params = {
+        :codec => codec,
+        :sampleRate => sampleRate,
+        :channels => channels
+      }
+
+      sendReq("configure", params, filterID)
+    end
+
+    def reconfigAudioEncoder(encoderID, codec, sampleRate, channels)
+      params = {
+        :encoderID => encoderID,
+        :codec => codec,
+        :sampleRate => sampleRate,
+        :channels => channels
+      }
+      
+      sendReq("reconfigAudioEncoder", params)
+    end
+
+    def addOutputSession(txID, readers, sessionName)
+      params = {
+        :readers => readers,
+        :sessionName => sessionName
+      }
+
+      sendReq("addSession", params, txID)
+    end
+
     # Method that composes the JSON request and sends it over TCP to the
     # targetted remote mixer instance.
     #
@@ -167,9 +197,7 @@ module RMixer
       }
       s = TCPSocket.open(@host, @port)
       s.print(request.to_json)
-      puts request.to_json
       response = s.recv(2048) # TODO: max_len ?
-      puts response
       s.close
       return JSON.parse(response, :symbolize_names => true)
     end

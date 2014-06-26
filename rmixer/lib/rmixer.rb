@@ -47,6 +47,7 @@ module RMixer
     def updateDataBase
       stateHash = getState
       @db.update(stateHash)
+      puts stateHash
     end
 
     def getAudioMixerState
@@ -59,6 +60,23 @@ module RMixer
 
     def updateChannelVolume(id, volume)
       @db.updateChannelVolume
+    end
+
+    def configEncoder(encoderID, codec, sampleRate, channels)
+      encoder = @db.getFilter(encoderID)
+
+      if encoder["codec"] == codec
+        configAudioEncoder(encoderID, sampleRate, channels)
+      else
+        reconfigAudioEncoder(encoderID, codec, sampleRate, channels)
+      end
+    end
+
+    def addOutputSession(mixerID, sessionName)
+      path = @db.getOutputPathFromFilter(mixerID)
+      readers = []
+      readers << path["destinationReader"]
+      @conn.addOutputSession(path["destinationFilter"], readers, sessionName)
     end
 
     def method_missing(name, *args, &block)

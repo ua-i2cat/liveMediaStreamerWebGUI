@@ -155,7 +155,11 @@ class MixerAPI < Sinatra::Base
   post '/app/:mixerid/channel/:channelid/mute' do
     content_type :html
     error_html do
-      settings.mixer.muteChannel(params[:mixerid].to_i, params[:channelid].to_i)
+      if (params[:channelid] == "master")
+        settings.mixer.muteMaster(params[:mixerid].to_i)
+      else
+        settings.mixer.muteChannel(params[:mixerid].to_i, params[:channelid].to_i)
+      end
     end
     redirect '/app'
   end
@@ -171,31 +175,23 @@ class MixerAPI < Sinatra::Base
   post '/app/:mixerid/channel/:channelid/changeVolume' do
     content_type :html
     error_html do
-      settings.mixer.changeChannelVolume(params[:mixerid].to_i, params[:channelid].to_i, params[:volume].to_f)
+      if (params[:channelid] == "master")
+        settings.mixer.changeMasterVolume(params[:mixerid].to_i, params[:volume].to_f)
+      else
+        settings.mixer.changeChannelVolume(params[:mixerid].to_i, params[:channelid].to_i, params[:volume].to_f)
+      end
     end
     redirect '/app'
   end
   
-  post '/app/:mixerid/channel/master/mute' do
+  post '/app/:mixer_id/:encoder_id/reconfigure' do
     content_type :html
     error_html do
-      settings.mixer.muteMaster(params[:mixerid].to_i)
-    end
-    redirect '/app'
-  end
-
-  post '/app/:mixerid/channel/master/changeVolume' do
-    content_type :html
-    error_html do
-      settings.mixer.changeMasterVolume(params[:mixerid].to_i, params[:volume].to_f)
-    end
-    redirect '/app'
-  end
-
-  post '/app/config_output' do
-    content_type :html
-    error_html do
-      settings.mixer.config_output(params[:codec], params[:sample_rate], params[:bps], params[:channels])
+      settings.mixer.configEncoder(params[:encoder_id].to_i, 
+                                   params[:codec], 
+                                   params[:sampleRate].to_i, 
+                                   params[:channels].to_i
+                                  )
     end
     redirect '/app'
   end
@@ -211,6 +207,14 @@ class MixerAPI < Sinatra::Base
                                    params[:sampleRate].to_i, 
                                    params[:channels].to_i
                                   )
+    end
+    redirect '/app'
+  end
+
+   post '/app/:mixerID/addOutputSession' do
+    content_type :html
+    error_html do
+      settings.mixer.addOutputSession(params[:mixerID].to_i, params[:sessionName])
     end
     redirect '/app'
   end

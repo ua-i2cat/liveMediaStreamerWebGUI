@@ -163,22 +163,22 @@
           </div>
           {% endfor %}
           <div class="col-sm-3">
-            <form class="form" role="form" id="encoderForm" action="/app/audioMixer/{{ encoderID }}/reconfigure" method="post">
+            <form class="form" role="form" id="encoderForm" action="/app/audioMixer/{{stateHash.encoder.id}}/reconfigure" method="post">
               <div class="row">
                 <div class="col-sm-3">
                     Codec
                 </div>
                 <div class="col-sm-4 text-center">
                   <select class="form-control" name="codec">
-                    <option value="pcm">PCM</option>
-                    <option value="pcmu">PCMU</option>
-                    <option value="opus">OPUS</option>
-                    <option value="aac">AAC</option>
-                    <option value="mp3">MP3</option>
+                    <option {%if stateHash.encoder.codec == 'pcm'%}selected {%endif%}value="pcm">PCM</option>
+                    <option {%if stateHash.encoder.codec == 'pcmu'%}selected {%endif%}value="pcmu">PCMU</option>
+                    <option {%if stateHash.encoder.codec == 'opus'%}selected {%endif%}value="opus">OPUS</option>
+                    <option {%if stateHash.encoder.codec == 'aac'%}selected {%endif%}value="aac">AAC</option>
+                    <option {%if stateHash.encoder.codec == 'mp3'%}selected {%endif%}value="mp3">MP3</option>
                   </select>
                 </div>
                 <div class="col-sm-3">
-                  <button type="button" class="btn btn-default">Apply</button>
+                  <button type="submit" class="btn btn-default">Apply</button>
                 </div>
               </div>
               <div class="row">
@@ -187,21 +187,9 @@
                 </div>
                 <div class="col-sm-4 text-center">
                   <select class="form-control">
-                    <option value="8000">8000</option>
-                    <option value="44100">44100</option>
-                    <option value="48000">48000</option>
-                  </select>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-3">
-                    BPS
-                </div>
-                <div class="col-sm-4 text-center">
-                  <select class="form-control">
-                    <option value="8">8</option>
-                    <option value="16">16</option>
-                    <option value="32">32</option>
+                    <option {%if stateHash.encoder.sampleRate == 8000%}selected {%endif%}value="8000">8000</option>
+                    <option {%if stateHash.encoder.sampleRate == 44100%}selected {%endif%}value="44100">44100</option>
+                    <option {%if stateHash.encoder.sampleRate == 48000%}selected {%endif%}value="48000">48000</option>
                   </select>
                 </div>
               </div>
@@ -211,8 +199,8 @@
                 </div>
                 <div class="col-sm-4 text-center">
                   <select class="form-control">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
+                    <option {%if stateHash.encoder.channels == 1%}selected {%endif%}value="1">1</option>
+                    <option {%if stateHash.encoder.channels == 2%}selected {%endif%}value="2">2</option>
                   </select>
                 </div>
               </div>
@@ -221,13 +209,23 @@
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="panel-title">
-                  Destinations
+                  Output session
                 </h3>
               </div>
               <div class="panel-body">
-                <form class="navbar-form" action="/app/channel/{{ channel.id }}/solo" method="post">
-                  <button type="submit" class="btn btn-default btn-block">Mute</button>
+                {%if {{stateHash.session.uri}} %}
+                <h4>Session URI</h4>
+                <h5>{{stateHash.session.uri}}</h5>
+                {%else%}
+                <form class="navbar-form" action="/app/{{stateHash.mixerID}}/addOutputSession" method="post">
+                  <div class="col-sm-10 text-center">
+                    <input type="numeric" class="form-control input-sm" name="sessionName" id="sessionName" placeholder="Session Name">
+                  </div>
+                  <div class="col-sm-2 text-center">
+                    <button type="submit" class="btn btn-default">Add</button>
+                  </div>
                 </form>
+                {%endif%}
               </div> <!--DESTINATIONS COLLAPSE -->
             </div>
           </div>
@@ -239,7 +237,7 @@
             </div>
             <div class="row">
               <div class="col-sm-12 text-center">
-                <form class="navbar-form" action="/app/channel/{{ channel.id }}/solo" method="post">
+                <form class="navbar-form" action="/app/{{stateHash.mixerID}}/channel/master/mute" method="post">
                   <button type="submit" class="btn btn-default btn-block">Mute</button>
                 </form>
               </div>
@@ -247,7 +245,7 @@
             <div class="row">&nbsp;</div>
             <div class="row">
               <div class="col-sm-6 text-center">
-                 <input type="range" class="vertical" min="0" max="1" step="0.1" orient="vertical" value={{ stateHash.masterGain }},                      onchange="changeChannelVolume({{stateHash.mixerID}}, 'master', this.value)"/>
+                 <input type="range" class="vertical" min="0" max="1" step="0.1" orient="vertical" value={{stateHash.masterGain}},                      onchange="changeChannelVolume({{stateHash.mixerID}}, 'master', this.value)"/>
               </div>
               <div class="col-sm-6 text-center">
                 <input type="range" class="vertical" min="0" max="10" step="1" orient="vertical" />
@@ -264,7 +262,7 @@
             </div>
             <div class="row">
               <div class="col-sm-6 text-center">
-                <input class="form-control input-sm" name="masterGain" id="masterGain" value={{ stateHash.masterGain }}>
+                <input class="form-control input-sm" name="masterGain" id="masterGain" value={{stateHash.masterGain}}>
               </div>
               <div class="col-sm-6 text-center">
                 <input class="form-control input-sm" name="c_w" id="c_w" value={{ stateHash.masterDelay }}>

@@ -16,6 +16,7 @@ filters.remove
 stateHash = 
 {:filters=>
   [{:id=>846930886, :type=>"transmitter"},
+   {:id=>1111111, :type=>"transmitter"},
    {:id=>900056138, :type=>"audioEncoder", :codec=>"opus", :sampleRate=>48000, :channels=>2, :sampleFormat=>"s16p"},
    {:id=>1804289383, :type=>"receiver"},
    {:id=>2058779693, :type=>"audioMixer", :sampleRate=>48000, :channels=>2, :sampleFormat=>"s16p", :gains=>[]}],
@@ -33,10 +34,10 @@ end
 # puts filters.find.each { |doc| puts doc.inspect }
 
 
-filter = filters.find(:type=>"audioMixer").first
-puts filter["type"]
-filter[:gains] = []  
-filter[:gains] << {:id => 21212, :gain => 0.3}
-filters.update( {:type=>"audioMixer"}, filter )
+filter = filters.find(:type=>"transmitter")
+filter.each { |f| puts f}
+#filter[:gains] = []  
+#filter[:gains] << {:id => 21212, :gain => 0.3}
+#filters.update( {:type=>"audioMixer"}, filter )
 
-puts filters.find.each { |doc| puts doc.inspect }
+#puts filters.find.each { |doc| puts doc.inspect }

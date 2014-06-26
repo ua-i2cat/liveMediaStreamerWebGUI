@@ -51,6 +51,10 @@ module RMixer
       @host = host
       @port = port
       @dbname = dbname
+      db = MongoClient.new(host, port).db(dbname)
+      db.collection_names.each do |name|
+        db.drop_collection(name)
+      end
     end
 
     def k2s
@@ -85,25 +89,44 @@ module RMixer
       db = MongoClient.new(host, port).db(dbname)
       filters = db.collection('filters')
       paths = db.collection('paths')
+      outputSessions = db.collection('outputSessions')
 
       mixer = filters.find(:type=>"audioMixer").first
-
+      transmitter = filters.find(:type=>"transmitter").first
+      encoderPath = paths.find(:originFilter=>mixer["id"]).first
+      encoder = filters.find(:id=>encoderPath["filters"].first).first
 
       gains = []
       mixerHash = {}
+      encoderHash = {}
+      session = {}
 
       if mixer["gains"]
         mixer["gains"].each do |g|
           gains << k2s[g]
         end
       end
+
+      if transmitter["sessions"]
+        transmitter["sessions"].each do |s|
+          s["readers"].each do |r|
+            if r == encoderPath["destinationReader"]
+              session["id"] = s["id"]
+              session["uri"] = s["uri"]
+            end
+          end
+        end
+      end
       
-      mixerHash[:channels] = gains
-      mixerHash[:freeChannels] = 8 - gains.size
-      mixerHash[:mixerID] = mixer["id"]
-      mixerHash[:masterGain] = mixer["masterGain"]
-      mixerHash[:masterDelay] = mixer["masterDelay"]
-      return k2s[mixerHash]
+      mixerHash["channels"] = gains
+      mixerHash["freeChannels"] = 8 - gains.size
+      mixerHash["mixerID"] = mixer["id"]
+      mixerHash["masterGain"] = mixer["masterGain"]
+      mixerHash["masterDelay"] = mixer["masterDelay"]
+      mixerHash["encoder"] = encoder
+      mixerHash["session"] = session
+
+      return mixerHash
     end
 
     def getReceiverID
@@ -113,6 +136,34 @@ module RMixer
       receiver = filters.find(:type=>"receiver").first
 
       return receiver["id"]
+    end
+
+    def getTransmitterID
+      db = MongoClient.new(host, port).db(dbname)
+      filters = db.collection('filters')
+
+      transmitter = filters.find(:type=>"transmitter").first
+
+      return transmitter["id"]
+    end
+
+    def getOutputPathFromFilter(mixerID, writer = 0)
+      db = MongoClient.new(host, port).db(dbname)
+      paths = db.collection('paths')
+
+      if writer == 0
+        path = paths.find(:originFilter=>mixerID).first
+      end
+      
+      return path
+
+    end
+
+    def getFilter(filterID)
+      db = MongoClient.new(host, port).db(dbname)
+      filters = db.collection('filters')
+
+      filter = filters.find(:id=>filterID).first
     end
 
     def updateChannelVolume(id, volume)
