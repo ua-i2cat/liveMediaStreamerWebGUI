@@ -98,6 +98,26 @@ module RMixer
       sendReq("getState")
     end
 
+    def addOutputSession(txID, readers, sessionName)
+      params = {
+        :readers => readers,
+        :sessionName => sessionName
+      }
+
+      sendReq("addSession", params, txID)
+    end
+
+    def addOutputSessionTemporal(txID, readers, sessionName)
+      params = {
+        :readers => readers,
+        :sessionName => sessionName
+      }
+
+      sendReq("addSession", params, txID)
+    end
+
+    #AUDIO METHODS
+
     def changeChannelVolume(filterID, id, volume) 
       params = {
         :id => id,
@@ -152,14 +172,21 @@ module RMixer
       sendReq("reconfigAudioEncoder", params)
     end
 
-    def addOutputSession(txID, readers, sessionName)
-      params = {
-        :readers => readers,
-        :sessionName => sessionName
-      }
+    #VIDEO METHODS
 
-      sendReq("addSession", params, txID)
+    def setPositionSize(mixerID, id, width, height, x, y, layer)
+      params = {
+        :id => id,
+        :width => width,
+        :height => height,
+        :x => x,
+        :y => y,
+        :layer => layer
+      }
+      
+      sendReq("setPositionSize", params, mixerID)
     end
+
 
     # Method that composes the JSON request and sends it over TCP to the
     # targetted remote mixer instance.
