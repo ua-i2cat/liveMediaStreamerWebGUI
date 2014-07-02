@@ -42,6 +42,39 @@ module RMixer
     def initialize(host, port)
       @conn = RMixer::Connector.new(host, port)
       @db = RMixer::MongoMngr.new
+      @started = false
+      @randomSize = 2**16
+    end
+
+    def isStarted
+      @started
+    end
+
+    def start 
+      puts airMixerID = Random.rand(@randomSize)
+      puts previewMixerID = Random.rand(@randomSize)
+      puts airEncoderID = Random.rand(@randomSize)
+      puts previewEncoderID = Random.rand(@randomSize)
+      puts airOutputPathID = Random.rand(@randomSize)
+      puts previewOutputPathID = Random.rand(@randomSize)
+
+      createFilter(airMixerID, 'videoMixer', 'airMixer')
+      createFilter(previewMixerID, 'videoMixer', 'previewMixer')
+      createFilter(airEncoderID, 'videoEncoder', 'airEncoder')
+      createFilter(previewEncoderID, 'videoEncoder', 'previewEncoder')
+
+      txId = @db.getTransmitterID
+
+      createPath(airOutputPathID, airMixerID, txId, [airEncoderID])
+      createPath(previewOutputPathID, previewMixerID, txId, [previewEncoderID])
+
+      airPath = @db.getPath(airOutputPathID)
+      previewPath = @db.getPath(previewOutputPathID)
+
+      @conn.addOutputSession(txId, [airPath["destinationReader"]], 'air')
+      @conn.addOutputSession(txId, [previewPath["destinationReader"]], 'preview')
+
+      @started = true
     end
 
     def updateDataBase
@@ -73,12 +106,12 @@ module RMixer
       orgWriterId = (options[:orgWriterId].to_i != 0) ? options[:orgWriterId].to_i : -1
       dstReaderId = (options[:dstReaderId].to_i != 0) ? options[:dstReaderId].to_i : -1
 
+      begin 
         response = @conn.createPath(id, orgFilterId, dstFilterId, orgWriterId, dstReaderId, midFiltersIds)
-      #begin 
-      #  raise MixerError, response[:error] if response[:error]
-      #rescue
-      #  return response
-      #end
+        raise MixerError, response[:error] if response[:error]
+      rescue
+        return response
+      end
 
       updateDataBase
     end

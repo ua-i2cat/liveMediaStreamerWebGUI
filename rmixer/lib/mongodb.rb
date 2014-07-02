@@ -224,6 +224,13 @@ module RMixer
       filter = filters.find(:id=>filterID).first
     end
 
+    def getPath(pathID)
+      db = MongoClient.new(host,port).db(dbname)
+      paths = db.collection('paths')
+
+      path = paths.find(:id=>pathID).first
+    end
+
     def updateChannelVolume(id, volume)
       db = MongoClient.new(host, port).db(dbname)
       filters = db.collection('filters')

@@ -43,105 +43,56 @@ class MixerAPI < Sinatra::Base
     end
   end
 
+  helpers do
+    def started
+      error_html do
+        settings.mixer.isStarted
+      end
+    end
+  end
+
   def dashboardExtra (id = "videoMixer")
     settings.mixer.updateDataBase
 
-    if (id == "audioMixer")
-      mixerHash = settings.mixer.getAudioMixerState
-      liquid :audioMixer, :locals => {
-          "stateHash" => mixerHash
-        }
-    elsif (id == "videoMixer")
-      #mixerHash = settings.mixer.getAudioMixerState
-      liquid :videoMixer, :locals => {
-          "stateHash" => mixerHash
-        }
+    if started
+     
+      if (id == "audioMixer")
+        mixerHash = settings.mixer.getAudioMixerState
+        liquid :audioMixer, :locals => {
+            "stateHash" => mixerHash
+          }
+      elsif (id == "videoMixer")
+        #mixerHash = settings.mixer.getAudioMixerState
+        liquid :videoMixer, :locals => {
+            "stateHash" => mixerHash
+          }
+      end
+    
+    else
+      liquid :before
     end
+
   end
 
   def dashboardVideo (grid = 'grid2x2')
     mixerHash = settings.mixer.getVideoMixerState
+
+  #  if started
+      liquid :videoMixer, :locals => {
+          "stateHash" => mixerHash
+        }
+  #  else
+  #    liquid :before
+  #  end
   end
 
-  def dashboard (id = 1)
-    k2s =
-    lambda do |h|
-      Hash === h ?
-        Hash[
-          h.map do |k, v|
-            [k.respond_to?(:to_s) ? k.to_s : k, k2s[v]]
-          end
-        ] : h
-    end
-
+   def dashboardAudio
     if started
-      
-      #Input streams json parsing
-      i_streams = settings.mixer.input_streams
-      input_streams = []
-      
-      i_streams.each do |s|
-        crops = []
-        s[:crops].each do |c|
-          crops << k2s[c]
-        end
-        s[:crops] = crops
-        input_streams << k2s[s]
-      end
-
-      #Output stream json parsing
-      o_stream = settings.mixer.output_stream
-      output_stream = []
-      o_crops = []
-
-      o_stream[:crops].each do |c|
-        dst = []
-        c[:destinations].each do |d|
-          dst << k2s[d]
-        end
-        c[:destinations] = dst
-        o_crops << k2s[c]
-      end
-
-      o_stream[:crops] = o_crops
-      output_stream << k2s[o_stream]
-
-      #Stats json parsing
-      hash_stats = settings.mixer.get_stats
-      i_stats, o_stats = [], []
-
-    if hash_stats[:input_streams] != nil
-      hash_stats[:input_streams].each do |s|
-        i_stats << k2s[s]
-      end
-      hash_stats[:input_streams] = i_stats
-    end
-      
-    if hash_stats[:output_streams] != nil
-      hash_stats[:output_streams].each do |s|
-        o_stats << k2s[s]
-      end
-      hash_stats[:output_streams] = o_stats
-    end
-
-      if (id == 2)
-        liquid :commute, :locals => {
-          "input_streams" => input_streams,
-          "fade_time" =>settings.fade_time
+      mixerHash = settings.mixer.getAudioMixerState
+      liquid :audioMixer, :locals => {
+          "stateHash" => mixerHash
         }
-      elsif (id == 3)
-        liquid :stats, :locals => {
-          "input_stats" => i_stats,
-          "output_stats" => o_stats
-        }
-      else
-        liquid :index, :locals => {
-          "input_streams" => input_streams,
-          "output_streams" => output_stream,
-          "grid" => settings.grid,
-          "output_grid" => settings.output_grid
-        }
-      end
+     
     else
       liquid :before
     end
@@ -155,6 +106,19 @@ class MixerAPI < Sinatra::Base
 
   get '/app' do
     redirect '/app/videomixer'
+  end
+
+  get '/app/start' do
+    content_type :html
+    error_html do
+      settings.mixer.start(params)
+    end
+    redirect '/app'
+  end
+
+  get '/app/audiomixer' do
+    content_type :html
+    dashboardAudio
   end
 
   get '/app/videomixer' do
