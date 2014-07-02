@@ -57,6 +57,32 @@ module RMixer
       @db.getReceiverID
     end
 
+    def createFilter(id, type, role = 'default')
+      begin 
+        response = @conn.createFilter(id, type)
+        raise MixerError, response[:error] if response[:error]
+      rescue
+        return response
+      end
+
+      updateDataBase
+      @db.addFilterRole(id, type, role)
+    end
+
+    def createPath(id, orgFilterId, dstFilterId, midFiltersIds, options = {})
+      orgWriterId = (options[:orgWriterId].to_i != 0) ? options[:orgWriterId].to_i : -1
+      dstReaderId = (options[:dstReaderId].to_i != 0) ? options[:dstReaderId].to_i : -1
+
+        response = @conn.createPath(id, orgFilterId, dstFilterId, orgWriterId, dstReaderId, midFiltersIds)
+      #begin 
+      #  raise MixerError, response[:error] if response[:error]
+      #rescue
+      #  return response
+      #end
+
+      updateDataBase
+    end
+
     def updateChannelVolume(id, volume)
       @db.updateChannelVolume
     end
@@ -82,6 +108,15 @@ module RMixer
       if @conn.respond_to?(name)
         begin
           response = @conn.send(name, *args, &block)
+        rescue JSON::ParserError, Errno::ECONNREFUSED => e
+          raise MixerError, e.message
+        end
+        raise MixerError, response[:error] if response[:error]
+        #return nil if response.include?(:error) && response.size == 1
+        return response
+      elsif @db.respond_to?(name)
+        begin
+          response = @db.send(name, *args, &block)
         rescue JSON::ParserError, Errno::ECONNREFUSED => e
           raise MixerError, e.message
         end

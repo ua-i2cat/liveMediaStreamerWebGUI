@@ -27,15 +27,18 @@ stateHash[:filters].each do |h|
     filters.insert(h)
 end
 
+filter = filters.find(:type=>"audioMixer").first
+filter[:role] = 'preview' 
+filters.update({:type=>"audioMixer"}, filter)
+
+filters.update(stateHash)
 
 # newFilter = {:id => 11111, :type => "audioMixer"}
 # filters.insert(newFilter)
 
 # puts filters.find.each { |doc| puts doc.inspect }
 
-
-filter = filters.find(:type=>"transmitter")
-filter.each { |f| puts f}
+puts filters
 #filter[:gains] = []  
 #filter[:gains] << {:id => 21212, :gain => 0.3}
 #filters.update( {:type=>"audioMixer"}, filter )

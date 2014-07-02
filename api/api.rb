@@ -43,13 +43,24 @@ class MixerAPI < Sinatra::Base
     end
   end
 
-  def dashboardExtra
+  def dashboardExtra (id = "videoMixer")
     settings.mixer.updateDataBase
-    mixerHash = settings.mixer.getAudioMixerState
 
-    liquid :audioMixer, :locals => {
+    if (id == "audioMixer")
+      mixerHash = settings.mixer.getAudioMixerState
+      liquid :audioMixer, :locals => {
           "stateHash" => mixerHash
         }
+    elsif (id == "videoMixer")
+      #mixerHash = settings.mixer.getAudioMixerState
+      liquid :videoMixer, :locals => {
+          "stateHash" => mixerHash
+        }
+    end
+  end
+
+  def dashboardVideo (grid = 'grid2x2')
+    mixerHash = settings.mixer.getVideoMixerState
   end
 
   def dashboard (id = 1)
@@ -143,12 +154,31 @@ class MixerAPI < Sinatra::Base
   end
 
   get '/app' do
-    redirect '/app/mixer'
+    redirect '/app/videomixer'
   end
 
-  get '/app/mixer' do
+  get '/app/videomixer' do
+    redirect '/app/videomixer/grid2x2'
+  end
+
+  get '/app/videomixer/grid2x2' do
     content_type :html
-    dashboardExtra
+    dashboardVideo('grid2x2')
+  end
+
+  get '/app/videomixer/grid3x3' do
+    content_type :html
+    dashboardVideo('grid3x3')
+  end
+
+  get '/app/videomixer/grid4x4' do
+    content_type :html
+    dashboardVideo('grid4x4')
+  end
+
+   get '/app/mixer' do
+    content_type :html
+    dashboardExtra("videoMixer")
   end
 
   post '/app/:mixerid/channel/:channelid/mute' do

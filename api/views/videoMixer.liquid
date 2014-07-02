@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/bs/assets/ico/favicon.png">
+
+    <title>Video Mixer</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/bs/dist/css/bootstrap.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="/bs/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/theme.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">AV Mixer</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <form class="navbar-form navbar-left" action="/app/stop" method="post">
+            <button type="submit" class="btn btn-default btn-sm">Video</button>
+          </form>
+          <form class="navbar-form navbar-left" action="/app/stop" method="post">
+            <button type="submit" class="btn btn-default btn-sm">Audio</button>
+          </form>
+          <form class="navbar-form navbar-left" action="/app/stop" method="post">
+            <button type="submit" class="btn btn-default btn-sm">Statistics</button>
+          </form>
+          <form class="navbar-form navbar-right" action="/app/stop" method="post">
+            <button type="submit" class="btn btn-danger btn-sm">Stop</button>
+          </form>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title">
+                    Channel 1 
+                  </h3>
+                </div>
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-10">
+                      <div class="row">
+                        <div class="col-md-5 col-md-offset-7">
+                          <button type="button" class="btn btn-default btn-block">Auto</button>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-7">
+                          <div class="col-md-8 text-center">
+                            <strong>Frame rate</strong>
+                          </div>
+                          <div class="col-md-4 text-center">
+                            25
+                          </div>
+                        </div>
+                        <div class="col-md-5 text-center">
+                          <div class="btn-group">
+                            <button type="button" class="btn btn-default">H</button>
+                            <button type="button" class="btn btn-default">M</button>
+                            <button type="button" class="btn btn-default">L</button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-7">
+                          <div class="col-md-7 text-center">
+                            <strong>Size</strong>
+                          </div>
+                          <div class="col-md-5 text-center">
+                            1920x1080
+                          </div>
+                        </div>
+                        <div class="col-md-5 text-center">
+                          <div class="btn-group">
+                            <button type="button" class="btn btn-default">H</button>
+                            <button type="button" class="btn btn-default">M</button>
+                            <button type="button" class="btn btn-default">L</button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-7">
+                          <div class="col-md-8 text-center">
+                            <strong>Bitrate</strong>
+                          </div>
+                          <div class="col-md-4 text-center">
+                            2000
+                          </div>
+                        </div>
+                        <div class="col-md-5 text-center">
+                          <div class="btn-group">
+                            <button type="button" class="btn btn-default">H</button>
+                            <button type="button" class="btn btn-default">M</button>
+                            <button type="button" class="btn btn-default">L</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-1 text-center">
+                      <input type="range" class="vertical_zoom" min="0" max="10" step="1" orient="vertical" />
+                    </div>
+                  </div>
+                  <div class = "row">&nbsp;</div>
+                  <div class="row text-center">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-default">CUT</button>
+                        <button type="button" class="btn btn-default">FADE1</button>
+                        <button type="button" class="btn btn-default">FADE2</button>
+                        <button type="button" class="btn btn-default">EFF1</button>
+                        <button type="button" class="btn btn-default">EFF2</button>
+                        <button type="button" class="btn btn-default">PRE</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title">
+                    Channel 2 
+                  </h3>
+                </div>
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-10">
+                      <div class="row">
+                        <div class="col-md-5 col-md-offset-7">
+                          <button type="button" class="btn btn-default btn-block">Auto</button>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-7">
+                          <div class="col-md-8 text-center">
+                            <strong>Frame rate</strong>
+                          </div>
+                          <div class="col-md-4 text-center">
+                            25
+                          </div>
+                        </div>
+                        <div class="col-md-5 text-center">
+                          <div class="btn-group">
+                            <button type="button" class="btn btn-default">H</button>
+                            <button type="button" class="btn btn-default">M</button>
+                            <button type="button" class="btn btn-default">L</button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-7">
+                          <div class="col-md-7 text-center">
+                            <strong>Size</strong>
+                          </div>
+                          <div class="col-md-5 text-center">
+                            1920x1080
+                          </div>
+                        </div>
+                        <div class="col-md-5 text-center">
+                          <div class="btn-group">
+                            <button type="button" class="btn btn-default">H</button>
+                            <button type="button" class="btn btn-default">M</button>
+                            <button type="button" class="btn btn-default">L</button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-7">
+                          <div class="col-md-8 text-center">
+                            <strong>Bitrate</strong>
+                          </div>
+                          <div class="col-md-4 text-center">
+                            2000
+                          </div>
+                        </div>
+                        <div class="col-md-5 text-center">
+                          <div class="btn-group">
+                            <button type="button" class="btn btn-default">H</button>
+                            <button type="button" class="btn btn-default">M</button>
+                            <button type="button" class="btn btn-default">L</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-1 text-center">
+                      <input type="range" class="vertical_zoom" min="0" max="10" step="1" orient="vertical" />
+                    </div>
+                  </div>
+                  <div class = "row">&nbsp;</div>
+                  <div class="row text-center">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default">CUT</button>
+                        <button type="button" class="btn btn-default">FADE1</button>
+                        <button type="button" class="btn btn-default">FADE2</button>
+                        <button type="button" class="btn btn-default">EFF1</button>
+                        <button type="button" class="btn btn-default">EFF2</button>
+                        <button type="button" class="btn btn-default">PRE</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title">
+                    Channel 3 
+                  </h3>
+                </div>
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-10">
+                      <div class="row">
+                        <div class="col-md-5 col-md-offset-7">
+                          <button type="button" class="btn btn-default btn-block">Auto</button>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-7">
+                          <div class="col-md-8 text-center">
+                            <strong>Frame rate</strong>
+                          </div>
+                          <div class="col-md-4 text-center">
+                            25
+                          </div>
+                        </div>
+                        <div class="col-md-5 text-center">
+                          <div class="btn-group">
+                            <button type="button" class="btn btn-default">H</button>
+                            <button type="button" class="btn btn-default">M</button>
+                            <button type="button" class="btn btn-default">L</button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-7">
+                          <div class="col-md-7 text-center">
+                            <strong>Size</strong>
+                          </div>
+                          <div class="col-md-5 text-center">
+                            1920x1080
+                          </div>
+                        </div>
+                        <div class="col-md-5 text-center">
+                          <div class="btn-group">
+                            <button type="button" class="btn btn-default">H</button>
+                            <button type="button" class="btn btn-default">M</button>
+                            <button type="button" class="btn btn-default">L</button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-7">
+                          <div class="col-md-8 text-center">
+                            <strong>Bitrate</strong>
+                          </div>
+                          <div class="col-md-4 text-center">
+                            2000
+                          </div>
+                        </div>
+                        <div class="col-md-5 text-center">
+                          <div class="btn-group">
+                            <button type="button" class="btn btn-default">H</button>
+                            <button type="button" class="btn btn-default">M</button>
+                            <button type="button" class="btn btn-default">L</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-1 text-center">
+                      <input type="range" class="vertical_zoom" min="0" max="10" step="1" orient="vertical" />
+                    </div>
+                  </div>
+                  <div class = "row">&nbsp;</div>
+                  <div class="row text-center">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default">CUT</button>
+                        <button type="button" class="btn btn-default">FADE1</button>
+                        <button type="button" class="btn btn-default">FADE2</button>
+                        <button type="button" class="btn btn-default">EFF1</button>
+                        <button type="button" class="btn btn-default">EFF2</button>
+                        <button type="button" class="btn btn-default">PRE</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title">
+                    Channel 4 
+                  </h3>
+                </div>
+                <div class="panel-body">
+                  <form class="form" role="form" action="/app/{{stateHash.mixerID}}/addSession" method="post">
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <h4>Free Channel</h4>
+                      </div>
+                    </div>
+                    <div class = "row">&nbsp;</div>
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <input type="numeric" class="form-control input-sm" name="port" id="port" placeholder="Port">
+                      </div>
+                    </div>
+                    <div class = "row">&nbsp;</div>
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <select class="form-control" name="codec">
+                          <option value="H264">H264</option>
+                          <option value="vp8">VP8</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class = "row">&nbsp;</div>
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <button type="submit" class="btn btn-default">Add</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title">
+                    Channel 5
+                  </h3>
+                </div>
+                <div class="panel-body">
+                  <form class="form" role="form" action="/app/{{stateHash.mixerID}}/addSession" method="post">
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <h4>Free Channel</h4>
+                      </div>
+                    </div>
+                    <div class = "row">&nbsp;</div>
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <input type="numeric" class="form-control input-sm" name="port" id="port" placeholder="Port">
+                      </div>
+                    </div>
+                    <div class = "row">&nbsp;</div>
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <select class="form-control" name="codec">
+                          <option value="H264">H264</option>
+                          <option value="vp8">VP8</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class = "row">&nbsp;</div>
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <button type="submit" class="btn btn-default">Add</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title">
+                    Channel 6 
+                  </h3>
+                </div>
+                <div class="panel-body">
+                  <form class="form" role="form" action="/app/{{stateHash.mixerID}}/addSession" method="post">
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <h4>Free Channel</h4>
+                      </div>
+                    </div>
+                    <div class = "row">&nbsp;</div>
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <input type="numeric" class="form-control input-sm" name="port" id="port" placeholder="Port">
+                      </div>
+                    </div>
+                    <div class = "row">&nbsp;</div>
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <select class="form-control" name="codec">
+                          <option value="H264">H264</option>
+                          <option value="vp8">VP8</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class = "row">&nbsp;</div>
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <button type="submit" class="btn btn-default">Add</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title">
+                    Channel 7 
+                  </h3>
+                </div>
+                <div class="panel-body">
+                  <form class="form" role="form" action="/app/{{stateHash.mixerID}}/addSession" method="post">
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <h4>Free Channel</h4>
+                      </div>
+                    </div>
+                    <div class = "row">&nbsp;</div>
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <input type="numeric" class="form-control input-sm" name="port" id="port" placeholder="Port">
+                      </div>
+                    </div>
+                    <div class = "row">&nbsp;</div>
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <select class="form-control" name="codec">
+                          <option value="H264">H264</option>
+                          <option value="vp8">VP8</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class = "row">&nbsp;</div>
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <button type="submit" class="btn btn-default">Add</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title">
+                    Channel 8
+                  </h3>
+                </div>
+                <div class="panel-body">
+                  <form class="form" role="form" action="/app/{{stateHash.mixerID}}/addSession" method="post">
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <h4>Free Channel</h4>
+                      </div>
+                    </div>
+                    <div class = "row">&nbsp;</div>
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <input type="numeric" class="form-control input-sm" name="port" id="port" placeholder="Port">
+                      </div>
+                    </div>
+                    <div class = "row">&nbsp;</div>
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <select class="form-control" name="codec">
+                          <option value="H264">H264</option>
+                          <option value="vp8">VP8</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class = "row">&nbsp;</div>
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <button type="submit" class="btn btn-default">Add</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6"> 
+    <!-- Layout control panel -->
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="/grid2x2">Grid 2x2</a></li>
+            <li><a href="videomixer/grid3x3">Grid 3x3</a></li>
+            <li><a href="/grid4x4">Grid 4x4</a></li>
+            <li><a href="/grid2x2">PiP</a></li>
+          </ul>
+          <div class = "row">&nbsp;</div>
+          <div class="row">
+            <div class="col-md-5 col-md-offset-1">
+              <div class="row">
+                <label class="btn btn-default" onclick="videowall_demo()">
+                  <input type="radio" name="options" id="option2">
+                  <img  src="/image/lena.jpg" alt="lena" class="img-rounded" width="100" height="100">
+                </label>
+                <label class="btn btn-default" onclick="videowall_demo()">
+                  <input type="radio" name="options" id="option2" checked>
+                  <img  src="/image/lena.jpg" alt="lena" class="img-rounded" width="100" height="100">
+                </label>
+              </div>
+              <div class="row">
+                <label class="btn btn-default" onclick="videowall_demo()">
+                  <input type="radio" name="options" id="option2">
+                  <img  src="/image/lena.jpg" alt="lena" class="img-rounded" width="100" height="100">
+                </label>
+                <label class="btn btn-default" onclick="videowall_demo()">
+                  <input type="radio" name="options" id="option2">
+                  <img  src="/image/lena.jpg" alt="lena" class="img-rounded" width="100" height="100">
+                </label>
+              </div>
+              <div class = "row">&nbsp;</div>
+              <div class="row">
+                <button type="button" class="btn btn-default">Preview</button>
+                <button type="button" class="btn btn-default">Channel</button>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="row">
+                <strong>1</strong>
+                <div class="btn-group">
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position1" id="option2">
+                    <strong>1</strong>
+                  </label>
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position1" id="option2">
+                    <strong>2</strong>
+                  </label>
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position1" id="option2">
+                    <strong>3</strong>
+                  </label>
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position1" id="option2">
+                    <strong>4</strong>
+                  </label>
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position1" id="option2">
+                    <strong>5</strong>
+                  </label>
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position1" id="option2">
+                    <strong>6</strong>
+                  </label>
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position1" id="option2">
+                    <strong>7</strong>
+                  </label>
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position1" id="option2">
+                    <strong>8</strong>
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <strong>2</strong>
+                <div class="btn-group">
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position2" id="option2">
+                    <strong>1</strong>
+                  </label>
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position2" id="option2">
+                    <strong>2</strong>
+                  </label>
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position2" id="option2">
+                    <strong>3</strong>
+                  </label>
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position2" id="option2">
+                    <strong>4</strong>
+                  </label>
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position2" id="option2">
+                    <strong>5</strong>
+                  </label>
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position2" id="option2">
+                    <strong>6</strong>
+                  </label>
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position2" id="option2">
+                    <strong>7</strong>
+                  </label>
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position2" id="option2">
+                    <strong>8</strong>
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <strong>3</strong>
+                <div class="btn-group">
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position3" id="option2">
+                    <strong>1</strong>
+                  </label>
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position3" id="option2">
+                    <strong>2</strong>
+                  </label>
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position3" id="option2">
+                    <strong>3</strong>
+                  </label>
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position3" id="option2">
+                    <strong>4</strong>
+                  </label>
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position3" id="option2">
+                    <strong>5</strong>
+                  </label>
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position3" id="option2">
+                    <strong>6</strong>
+                  </label>
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position3" id="option2">
+                    <strong>7</strong>
+                  </label>
+                  <label class="btn btn-default" onclick="videowall_demo()">
+                    <input type="radio" name="position3" id="option2">
+                    <strong>8</strong>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                  Output
+                </h3>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-10">
+                    <div class="row">
+                      <div class="col-md-5 col-md-offset-7">
+                        <button type="button" class="btn btn-default btn-block">Auto</button>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-7">
+                        <div class="col-md-8 text-center">
+                          <strong>Frame rate</strong>
+                        </div>
+                        <div class="col-md-4 text-center">
+                          25
+                        </div>
+                      </div>
+                      <div class="col-md-5 text-center">
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-default">H</button>
+                          <button type="button" class="btn btn-default">M</button>
+                          <button type="button" class="btn btn-default">L</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-7">
+                        <div class="col-md-7 text-center">
+                          <strong>Size</strong>
+                        </div>
+                        <div class="col-md-5 text-center">
+                          1920x1080
+                        </div>
+                      </div>
+                      <div class="col-md-5 text-center">
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-default">H</button>
+                          <button type="button" class="btn btn-default">M</button>
+                          <button type="button" class="btn btn-default">L</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-7">
+                        <div class="col-md-8 text-center">
+                          <strong>Bitrate</strong>
+                        </div>
+                        <div class="col-md-4 text-center">
+                          2000
+                        </div>
+                      </div>
+                      <div class="col-md-5 text-center">
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-default">H</button>
+                          <button type="button" class="btn btn-default">M</button>
+                          <button type="button" class="btn btn-default">L</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-1 text-center">
+                    <input type="range" class="vertical_zoom" min="0" max="10" step="1" orient="vertical" />
+                  </div>
+                </div>
+                <div class = "row">&nbsp;</div>
+                <div class="row text-center">
+                  <div class="btn-group">
+                      <button type="button" class="btn btn-default">CUT</button>
+                      <button type="button" class="btn btn-default">FADE1</button>
+                      <button type="button" class="btn btn-default">FADE2</button>
+                      <button type="button" class="btn btn-default">EFF1</button>
+                      <button type="button" class="btn btn-default">EFF2</button>
+                      <button type="button" class="btn btn-default">PRE</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                  Destinations
+                </h3>
+              </div>
+              <div class="panel-body">
+                <table class="table table-condensed">
+                  <tr>
+                    <th>IP</th>
+                    <th>Port</th>
+                    <th></th>
+                  </tr>
+                  <tr>
+                    <td>192.168.10.219</td>
+                    <td>5004</td>
+                    <td> 
+                      <form class="form" action="/app/output_stream/crops/{{ crop.id }}/destinations/{{ destination.id }}/remove" method="post">
+                        <button type="submit" class="btn btn-danger btn-xs">
+                          <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>192.168.109.120</td>
+                    <td>8000</td>
+                    <td> 
+                      <form class="form" action="/app/output_stream/crops/{{ crop.id }}/destinations/{{ destination.id }}/remove" method="post">
+                        <button type="submit" class="btn btn-danger btn-xs">
+                          <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                  <tr>
+                    <form class="form" role="form" action="/app/output_stream/crops/{{ crop.id }}/destinations/add" method="post">
+                    <td>
+                      <input type="text" class="form-control input-sm" name="ip" id="ip" placeholder="IP">
+                    </td>
+                    <td>
+                      <input type="number" class="form-control input-sm" name="port" id="port" placeholder="Port">
+                    </td>
+                    <td>
+                      <button type="submit" class="btn btn-primary btn-sm pull-right">Add</button>
+                    </td>
+                    </form>
+                  </tr>
+                </table>
+              </div> <!--DESTINATIONS COLLAPSE -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="bs/assets/js/jquery.js"></script>
+    <script src="bs/dist/js/bootstrap.min.js"></script>
+    <script src="bs/assets/js/holder.js"></script>
+  </body>
+</html>

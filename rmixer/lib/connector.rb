@@ -116,6 +116,38 @@ module RMixer
       sendReq("addSession", params, txID)
     end
 
+    def createFilter(id, type)
+      params = {
+        :id => id,
+        :type => type,
+      }
+
+      sendReq("createFilter", params)
+    end
+
+    def createPath(id, orgFilterId, dstFilterId, orgWriterId, dstReaderId, midFiltersIds)
+      params = {
+        :id => id,
+        :orgFilterId => orgFilterId,
+        :dstFilterId => dstFilterId,
+        :orgWriterId => orgWriterId,
+        :dstReaderId => dstReaderId,
+        :midFiltersIds => midFiltersIds
+      }
+
+      sendReq("createPath", params)
+    end
+
+    def addWorker(id, type, fps = 0)
+      params = {
+        :id => id,
+        :type => type,
+        :fps => fps
+      }
+
+      sendReq("addWorker", params)
+    end
+
     #AUDIO METHODS
 
     def changeChannelVolume(filterID, id, volume) 
@@ -225,6 +257,7 @@ module RMixer
       s.print(request.to_json)
       puts request
       response = s.recv(2048) # TODO: max_len ?
+      puts response
       s.close
       return JSON.parse(response, :symbolize_names => true)
     end
