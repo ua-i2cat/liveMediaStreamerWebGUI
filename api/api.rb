@@ -49,6 +49,9 @@ class MixerAPI < Sinatra::Base
         settings.mixer.isStarted
       end
     end
+    def isNumber?(object)
+      true if Float(object) rescue false
+    end
   end
 
   def dashboardExtra (id = "videoMixer")
@@ -62,7 +65,7 @@ class MixerAPI < Sinatra::Base
             "stateHash" => mixerHash
           }
       elsif (id == "videoMixer")
-        #mixerHash = settings.mixer.getAudioMixerState
+        mixerHash = settings.mixer.getAudioMixerState
         liquid :videoMixer, :locals => {
             "stateHash" => mixerHash
           }
@@ -74,16 +77,19 @@ class MixerAPI < Sinatra::Base
 
   end
 
-  def dashboardVideo (grid = 'grid2x2')
-    mixerHash = settings.mixer.getVideoMixerState
+  def dashboardVideo (grid = '2x2')
+    mixerHash = settings.mixer.getVideoMixerState(grid)
 
-  #  if started
+    puts mixerHash
+
+    #if started
+    if true
       liquid :videoMixer, :locals => {
           "stateHash" => mixerHash
         }
-  #  else
-  #    liquid :before
-  #  end
+    else
+      liquid :before
+    end
   end
 
    def dashboardAudio
@@ -108,10 +114,10 @@ class MixerAPI < Sinatra::Base
     redirect '/app/videomixer'
   end
 
-  get '/app/start' do
+  post '/app/start' do
     content_type :html
     error_html do
-      settings.mixer.start(params)
+      settings.mixer.start
     end
     redirect '/app'
   end
@@ -127,17 +133,22 @@ class MixerAPI < Sinatra::Base
 
   get '/app/videomixer/grid2x2' do
     content_type :html
-    dashboardVideo('grid2x2')
+    dashboardVideo('2x2')
   end
 
   get '/app/videomixer/grid3x3' do
     content_type :html
-    dashboardVideo('grid3x3')
+    dashboardVideo('3x3')
   end
 
   get '/app/videomixer/grid4x4' do
     content_type :html
-    dashboardVideo('grid4x4')
+    dashboardVideo('4x4')
+  end
+
+   get '/app/videomixer/gridPiP' do
+    content_type :html
+    dashboardVideo('PiP')
   end
 
    get '/app/mixer' do
@@ -212,5 +223,26 @@ class MixerAPI < Sinatra::Base
     end
     redirect '/app'
   end
+
+  post '/app/videoMixer/:grid/applyGrid' do
+    content_type :html
+    error_html do
+      positions = []
+      params.each do |k,v|
+        if isNumber?(k)
+          pos = {
+            :pos => k.to_i,
+            :ch => v.to_i
+          }
+          positions << pos
+        end
+      end
+
+      settings.mixer.applyGrid(params[:grid], positions)
+
+    end
+    redirect '/app'
+  end
+
 
 end

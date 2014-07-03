@@ -85,18 +85,27 @@ module RMixer
       end
     end
 
-    def addFilterRole(id, type, role)
+    def loadGrids(gridsArray)
       db = MongoClient.new(host, port).db(dbname)
-      filtersRole = db.collection('filtersRole')
+      grids = db.collection('grids')
 
-      filter = {
-        :id => id,
-        :type => type,
-        :role => role
-      }
+      gridsArray.each do |g|
+        grids.insert(g)
+      end
+    end
 
-      filtersRole.insert(filter)
+    def getGrid(gridId)
+      db = MongoClient.new(host, port).db(dbname)
+      grids = db.collection('grids')
 
+      grid = grids.find(:id => gridId).first
+    end
+
+    def updateGrid(grid)
+      db = MongoClient.new(host, port).db(dbname)
+      grids = db.collection('grids')
+
+      grids.update({:id => grid["id"]}, grid)
     end
 
     def getAudioMixerState
@@ -143,46 +152,13 @@ module RMixer
       return mixerHash
     end
 
-    def getVideoMixerState
+    def getVideoMixerState(grid = '2x2')
       db = MongoClient.new(host, port).db(dbname)
-      filters = db.collection('filters')
-      paths = db.collection('paths')
-      outputSessions = db.collection('outputSessions')
+      grids = db.collection('grids')
 
-      mixer = filters.find(:type=>"videoMixer").first
-      transmitter = filters.find(:type=>"transmitter").first
-      encoderPath = paths.find(:originFilter=>mixer["id"]).first
-      encoder = filters.find(:id=>encoderPath["filters"].first).first
+      grid = grids.find(:id => grid).first
 
-      gains = []
-      mixerHash = {}
-      encoderHash = {}
-      session = {}
-
-      if mixer["gains"]
-        mixer["gains"].each do |g|
-          gains << k2s[g]
-        end
-      end
-
-      if transmitter["sessions"]
-        transmitter["sessions"].each do |s|
-          s["readers"].each do |r|
-            if r == encoderPath["destinationReader"]
-              session["id"] = s["id"]
-              session["uri"] = s["uri"]
-            end
-          end
-        end
-      end
-      
-      mixerHash["channels"] = gains
-      mixerHash["freeChannels"] = 8 - gains.size
-      mixerHash["mixerID"] = mixer["id"]
-      mixerHash["masterGain"] = mixer["masterGain"]
-      mixerHash["masterDelay"] = mixer["masterDelay"]
-      mixerHash["encoder"] = encoder
-      mixerHash["session"] = session
+      mixerHash = {"grid" => grid}
 
       return mixerHash
     end

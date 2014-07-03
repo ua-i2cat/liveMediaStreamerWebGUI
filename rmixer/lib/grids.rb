@@ -21,6 +21,62 @@
 #            Ignacio Contreras <ignacio.contreras@i2cat.net>
 #   
 
+def calcRegularGrid(cellsX = 2, cellsY = 2)
+  grid = {:id => "#{cellsX}x#{cellsY}"}
+  positions = []
+  idCounter = 1
+  width = 1.0/cellsX
+  height = 1.0/cellsY
+  cellsY.times do |i|
+    cellsX.times do |j|
+      positions << {
+        :id => idCounter,
+        :channel => 0,
+        :width => width,
+        :height => height,
+        :x => j * (1.0/cellsX),
+        :y => i * (1.0/cellsY),
+        :layer => 0
+      }
+      idCounter += 1
+    end
+  end
+
+  grid[:positions] = positions
+
+  return grid
+end
+
+def calcPictureInPicture (box_width = 0.25, box_height = 0.25)
+  grid = {:id => "PiP"}
+  positions = []
+  width = 1.0
+  height = 1.0
+  positions << {
+    :id => 1,
+    :width => width,
+    :height => height,
+    :x => 0,
+    :y => 0,
+    :layer => 0
+  }
+
+  positions << {
+    :id => 2,
+    :width => box_width,
+    :height => box_height,
+    :x => width - box_width,
+    :y => height - box_height,
+    :layer => 1
+  }
+
+  grid[:positions] = positions
+
+  return grid
+
+end
+
+
 def calc_regular_grid (cells_x = 2, cells_y = 2)
 
   grid = []

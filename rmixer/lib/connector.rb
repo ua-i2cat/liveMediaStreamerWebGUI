@@ -206,14 +206,15 @@ module RMixer
 
     #VIDEO METHODS
 
-    def setPositionSize(mixerID, id, width, height, x, y, layer)
+    def setPositionSize(mixerID, id, width, height, x, y, layer, enabled = true)
       params = {
         :id => id,
         :width => width,
         :height => height,
         :x => x,
         :y => y,
-        :layer => layer
+        :layer => layer,
+        :enabled => enabled
       }
       
       sendReq("setPositionSize", params, mixerID)
@@ -255,9 +256,7 @@ module RMixer
       }
       s = TCPSocket.open(@host, @port)
       s.print(request.to_json)
-      puts request
       response = s.recv(2048) # TODO: max_len ?
-      puts response
       s.close
       return JSON.parse(response, :symbolize_names => true)
     end

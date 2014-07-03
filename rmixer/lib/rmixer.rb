@@ -44,6 +44,19 @@ module RMixer
       @db = RMixer::MongoMngr.new
       @started = false
       @randomSize = 2**16
+
+      loadGrids
+    end
+
+    def loadGrids
+      grids = []
+
+      grids << calcRegularGrid(2, 2)
+      grids << calcRegularGrid(3, 3)
+      grids << calcRegularGrid(4, 4)
+      grids << calcPictureInPicture
+
+      @db.loadGrids(grids)
     end
 
     def isStarted
@@ -51,22 +64,22 @@ module RMixer
     end
 
     def start 
-      puts airMixerID = Random.rand(@randomSize)
-      puts previewMixerID = Random.rand(@randomSize)
-      puts airEncoderID = Random.rand(@randomSize)
-      puts previewEncoderID = Random.rand(@randomSize)
-      puts airOutputPathID = Random.rand(@randomSize)
-      puts previewOutputPathID = Random.rand(@randomSize)
+      @airMixerID = Random.rand(@randomSize)
+      @previewMixerID = Random.rand(@randomSize)
+      airEncoderID = Random.rand(@randomSize)
+      previewEncoderID = Random.rand(@randomSize)
+      airOutputPathID = Random.rand(@randomSize)
+      previewOutputPathID = Random.rand(@randomSize)
 
-      createFilter(airMixerID, 'videoMixer', 'airMixer')
-      createFilter(previewMixerID, 'videoMixer', 'previewMixer')
+      createFilter(@airMixerID, 'videoMixer', 'airMixer')
+      createFilter(@previewMixerID, 'videoMixer', 'previewMixer')
       createFilter(airEncoderID, 'videoEncoder', 'airEncoder')
       createFilter(previewEncoderID, 'videoEncoder', 'previewEncoder')
 
       txId = @db.getTransmitterID
 
-      createPath(airOutputPathID, airMixerID, txId, [airEncoderID])
-      createPath(previewOutputPathID, previewMixerID, txId, [previewEncoderID])
+      createPath(airOutputPathID, @airMixerID, txId, [airEncoderID])
+      createPath(previewOutputPathID, @previewMixerID, txId, [previewEncoderID])
 
       airPath = @db.getPath(airOutputPathID)
       previewPath = @db.getPath(previewOutputPathID)
@@ -82,14 +95,6 @@ module RMixer
       @db.update(stateHash)
     end
 
-    def getAudioMixerState
-      @db.getAudioMixerState
-    end
-
-    def getReceiverID
-      @db.getReceiverID
-    end
-
     def createFilter(id, type, role = 'default')
       begin 
         response = @conn.createFilter(id, type)
@@ -99,7 +104,6 @@ module RMixer
       end
 
       updateDataBase
-      @db.addFilterRole(id, type, role)
     end
 
     def createPath(id, orgFilterId, dstFilterId, midFiltersIds, options = {})
@@ -136,6 +140,54 @@ module RMixer
       readers << path["destinationReader"]
       @conn.addOutputSession(path["destinationFilter"], readers, sessionName)
     end
+
+    # Video methods
+
+    def applyGrid(gridID, positions)
+      grid = @db.getGrid(gridID)
+
+      updateGrid(grid, position)
+      doApplyGrid(grid)
+
+      @db.updateGrid(grid)
+    end
+
+    def updateGrid(grid, positions)
+
+      grid["positions"].each do |p|
+        p["channel"] = 0
+      end
+
+      grid["positions"].each do |oldP|
+        positions.each do |newP|
+          if newP[:pos] == oldP["id"]
+            oldP["channel"] = newP[:ch]
+            break;
+          end
+        end
+      end
+
+    end
+
+    def doApplyGrid(grid)
+      grid["positions"].each do |p|
+        mixerChannelId = @db.getVideoChannelId(p["id"])
+
+        unless mixerChannelId == 0 
+          setPositionSize(@airMixerID, 
+                          mixerChannelId,
+                          p["width"],
+                          p["height"],
+                          p["x"],
+                          p["y"],
+                          p["layer"] 
+                         )
+        end
+      end
+    end
+
+
+    private :doApplyGrid, :updateGrid
 
     def method_missing(name, *args, &block)
       if @conn.respond_to?(name)
