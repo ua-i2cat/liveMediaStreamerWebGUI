@@ -134,6 +134,11 @@ module RMixer
       end
     end
 
+    def addRTPSession(port, medium, codec, bandwidth, timeStampFrequency, channels = 0)
+      receiver = @db.getFilterByType('receiver')
+      @conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels)
+    end
+
     def addOutputSession(mixerID, sessionName)
       path = @db.getOutputPathFromFilter(mixerID)
       readers = []

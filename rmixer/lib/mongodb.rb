@@ -159,26 +159,10 @@ module RMixer
       grid = grids.find(:id => grid).first
 
       mixerHash = {"grid" => grid}
+      mixerHash["maxChannels"] = 8
+      mixerHash["freeChannels"] = 8
 
       return mixerHash
-    end
-
-    def getReceiverID
-      db = MongoClient.new(host, port).db(dbname)
-      filters = db.collection('filters')
-
-      receiver = filters.find(:type=>"receiver").first
-
-      return receiver["id"]
-    end
-
-    def getTransmitterID
-      db = MongoClient.new(host, port).db(dbname)
-      filters = db.collection('filters')
-
-      transmitter = filters.find(:type=>"transmitter").first
-
-      return transmitter["id"]
     end
 
     def getOutputPathFromFilter(mixerID, writer = 0)
@@ -191,6 +175,13 @@ module RMixer
       
       return path
 
+    end
+
+    def getFilterByType(type)
+      db = MongoClient.new(host, port).db(dbname)
+      filters = db.collection('filters')
+
+      filter = filters.find(:type=>type).first
     end
 
     def getFilter(filterID)

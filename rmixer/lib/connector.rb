@@ -57,7 +57,7 @@ module RMixer
       @testing = testing
     end
 
-    def addRTPSession(filterID, port, medium, codec, bandwidth, timeStampFrequency, channels = 0)
+    def addRTPSession(filterID, port, medium, codec, bandwidth, timeStampFrequency, channels)
       subsessions = []
       subsession = {
         :port => port,

@@ -204,8 +204,7 @@ class MixerAPI < Sinatra::Base
   post '/app/:mixerID/addSession' do
     content_type :html
     error_html do
-      settings.mixer.addRTPSession(settings.mixer.getReceiverID, 
-                                   params[:port].to_i,
+      settings.mixer.addRTPSession(params[:port].to_i,
                                    "audio", 
                                    params[:codec], 
                                    5000, 
@@ -240,6 +239,19 @@ class MixerAPI < Sinatra::Base
 
       settings.mixer.applyGrid(params[:grid], positions)
 
+    end
+    redirect '/app/videomixer/grid#{params[:grid]}'
+  end
+
+  post '/app/videoMixer/addSession' do
+    content_type :html
+    error_html do
+      settings.mixer.addRTPSession(params[:port].to_i,
+                                   "video", 
+                                   params[:codec], 
+                                   5000, 
+                                   90000
+                                  )
     end
     redirect '/app'
   end

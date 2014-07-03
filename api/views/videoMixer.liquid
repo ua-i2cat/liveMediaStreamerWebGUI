@@ -56,12 +56,12 @@
     <div class="col-md-6">
       <div class="panel panel-default">
         <div class="panel-body">
-          <div class="row">
+          {% for channel in stateHash.channels %}
             <div class="col-md-6">
               <div class="panel panel-default">
                 <div class="panel-heading">
                   <h3 class="panel-title">
-                    Channel 1 
+                    Channel {{ forloop.index }} - Port {{ channel.port }}
                   </h3>
                 </div>
                 <div class="panel-body">
@@ -142,178 +142,8 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="panel panel-default">
-                <div class="panel-heading">
-                  <h3 class="panel-title">
-                    Channel 2 
-                  </h3>
-                </div>
-                <div class="panel-body">
-                  <div class="row">
-                    <div class="col-md-10">
-                      <div class="row">
-                        <div class="col-md-5 col-md-offset-7">
-                          <button type="button" class="btn btn-default btn-block">Auto</button>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-7">
-                          <div class="col-md-8 text-center">
-                            <strong>Frame rate</strong>
-                          </div>
-                          <div class="col-md-4 text-center">
-                            25
-                          </div>
-                        </div>
-                        <div class="col-md-5 text-center">
-                          <div class="btn-group">
-                            <button type="button" class="btn btn-default">H</button>
-                            <button type="button" class="btn btn-default">M</button>
-                            <button type="button" class="btn btn-default">L</button>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-7">
-                          <div class="col-md-7 text-center">
-                            <strong>Size</strong>
-                          </div>
-                          <div class="col-md-5 text-center">
-                            1920x1080
-                          </div>
-                        </div>
-                        <div class="col-md-5 text-center">
-                          <div class="btn-group">
-                            <button type="button" class="btn btn-default">H</button>
-                            <button type="button" class="btn btn-default">M</button>
-                            <button type="button" class="btn btn-default">L</button>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-7">
-                          <div class="col-md-8 text-center">
-                            <strong>Bitrate</strong>
-                          </div>
-                          <div class="col-md-4 text-center">
-                            2000
-                          </div>
-                        </div>
-                        <div class="col-md-5 text-center">
-                          <div class="btn-group">
-                            <button type="button" class="btn btn-default">H</button>
-                            <button type="button" class="btn btn-default">M</button>
-                            <button type="button" class="btn btn-default">L</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-1 text-center">
-                      <input type="range" class="vertical_zoom" min="0" max="10" step="1" orient="vertical" />
-                    </div>
-                  </div>
-                  <div class = "row">&nbsp;</div>
-                  <div class="row text-center">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default">CUT</button>
-                        <button type="button" class="btn btn-default">FADE1</button>
-                        <button type="button" class="btn btn-default">FADE2</button>
-                        <button type="button" class="btn btn-default">EFF1</button>
-                        <button type="button" class="btn btn-default">EFF2</button>
-                        <button type="button" class="btn btn-default">PRE</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="panel panel-default">
-                <div class="panel-heading">
-                  <h3 class="panel-title">
-                    Channel 3 
-                  </h3>
-                </div>
-                <div class="panel-body">
-                  <div class="row">
-                    <div class="col-md-10">
-                      <div class="row">
-                        <div class="col-md-5 col-md-offset-7">
-                          <button type="button" class="btn btn-default btn-block">Auto</button>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-7">
-                          <div class="col-md-8 text-center">
-                            <strong>Frame rate</strong>
-                          </div>
-                          <div class="col-md-4 text-center">
-                            25
-                          </div>
-                        </div>
-                        <div class="col-md-5 text-center">
-                          <div class="btn-group">
-                            <button type="button" class="btn btn-default">H</button>
-                            <button type="button" class="btn btn-default">M</button>
-                            <button type="button" class="btn btn-default">L</button>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-7">
-                          <div class="col-md-7 text-center">
-                            <strong>Size</strong>
-                          </div>
-                          <div class="col-md-5 text-center">
-                            1920x1080
-                          </div>
-                        </div>
-                        <div class="col-md-5 text-center">
-                          <div class="btn-group">
-                            <button type="button" class="btn btn-default">H</button>
-                            <button type="button" class="btn btn-default">M</button>
-                            <button type="button" class="btn btn-default">L</button>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-7">
-                          <div class="col-md-8 text-center">
-                            <strong>Bitrate</strong>
-                          </div>
-                          <div class="col-md-4 text-center">
-                            2000
-                          </div>
-                        </div>
-                        <div class="col-md-5 text-center">
-                          <div class="btn-group">
-                            <button type="button" class="btn btn-default">H</button>
-                            <button type="button" class="btn btn-default">M</button>
-                            <button type="button" class="btn btn-default">L</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-1 text-center">
-                      <input type="range" class="vertical_zoom" min="0" max="10" step="1" orient="vertical" />
-                    </div>
-                  </div>
-                  <div class = "row">&nbsp;</div>
-                  <div class="row text-center">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default">CUT</button>
-                        <button type="button" class="btn btn-default">FADE1</button>
-                        <button type="button" class="btn btn-default">FADE2</button>
-                        <button type="button" class="btn btn-default">EFF1</button>
-                        <button type="button" class="btn btn-default">EFF2</button>
-                        <button type="button" class="btn btn-default">PRE</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {% endfor %}
+            {% for channel in (stateHash.maxChannels - stateHash.freeChannels...stateHash.freeChannels) %}
             <div class="col-md-6">
               <div class="panel panel-default">
                 <div class="panel-heading">
@@ -322,7 +152,7 @@
                   </h3>
                 </div>
                 <div class="panel-body">
-                  <form class="form" role="form" action="/app/{{stateHash.mixerID}}/addSession" method="post">
+                  <form class="form" role="form" action="/app/videoMixer/addSession" method="post">
                     <div class="row">
                       <div class="col-sm-12 text-center">
                         <h4>Free Channel</h4>
@@ -331,7 +161,7 @@
                     <div class = "row">&nbsp;</div>
                     <div class="row">
                       <div class="col-sm-12 text-center">
-                        <input type="numeric" class="form-control input-sm" name="port" id="port" placeholder="Port">
+                        <input type="numeric" class="form-control input-sm" name="port" placeholder="Port">
                       </div>
                     </div>
                     <div class = "row">&nbsp;</div>
@@ -339,7 +169,7 @@
                       <div class="col-sm-12 text-center">
                         <select class="form-control" name="codec">
                           <option value="H264">H264</option>
-                          <option value="vp8">VP8</option>
+                          <option value="VP8">VP8</option>
                         </select>
                       </div>
                     </div>
@@ -353,8 +183,6 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="row">
             <div class="col-md-6">
               <div class="panel panel-default">
                 <div class="panel-heading">
@@ -433,8 +261,6 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="row">
             <div class="col-md-6">
               <div class="panel panel-default">
                 <div class="panel-heading">
@@ -513,7 +339,6 @@
                 </div>
               </div>
             </div>
-          </div>
         </div>
       </div>
     </div>
