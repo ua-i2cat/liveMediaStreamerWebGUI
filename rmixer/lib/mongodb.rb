@@ -108,6 +108,27 @@ module RMixer
       grids.update({:id => grid["id"]}, grid)
     end
 
+    def getVideoChannelPort(chID)
+      db = MongoClient.new(host, port).db(dbname)
+      videoChannelPort = db.collection('videoChannelPort')
+
+      channelPort = videoChannelPort.find(:id => chID).first
+
+      return channelPort["port"]
+    end
+
+    def addVideoChannelPort(chID, chPort)
+      db = MongoClient.new(host, port).db(dbname)
+      videoChannelPort = db.collection('videoChannelPort')
+
+      channelPort = {
+        :channel => chID,
+        :port => chPort
+      }
+
+      videoChannelPort.insert(channelPort)
+    end
+
     def getAudioMixerState
       db = MongoClient.new(host, port).db(dbname)
       filters = db.collection('filters')
@@ -152,15 +173,22 @@ module RMixer
       return mixerHash
     end
 
-    def getVideoMixerState(grid = '2x2')
+    def getVideoMixerState(mixerID, grid)
       db = MongoClient.new(host, port).db(dbname)
       grids = db.collection('grids')
+      filters = db.collection('filters')
 
       grid = grids.find(:id => grid).first
+      mixer = filters.find(:id => mixerID).first
+
+      if mixer["channels"]
+        mixer["channels"].each do |c|
+
+        end
+      end
 
       mixerHash = {"grid" => grid}
       mixerHash["maxChannels"] = 8
-      mixerHash["freeChannels"] = 8
 
       return mixerHash
     end

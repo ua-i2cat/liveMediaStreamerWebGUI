@@ -78,12 +78,9 @@ class MixerAPI < Sinatra::Base
   end
 
   def dashboardVideo (grid = '2x2')
-    mixerHash = settings.mixer.getVideoMixerState(grid)
 
-    puts mixerHash
-
-    #if started
-    if true
+    if started
+      mixerHash = settings.mixer.getVideoMixerState(grid)
       liquid :videoMixer, :locals => {
           "stateHash" => mixerHash
         }
@@ -93,15 +90,15 @@ class MixerAPI < Sinatra::Base
   end
 
    def dashboardAudio
-    if started
+    settings.mixer.updateDataBase
+    #if started
       mixerHash = settings.mixer.getAudioMixerState
       liquid :audioMixer, :locals => {
           "stateHash" => mixerHash
         }
-     
-    else
-      liquid :before
-    end
+   # else
+    ##  liquid :before
+    #end
   end
 
   # Web App Methods
@@ -204,7 +201,8 @@ class MixerAPI < Sinatra::Base
   post '/app/:mixerID/addSession' do
     content_type :html
     error_html do
-      settings.mixer.addRTPSession(params[:port].to_i,
+      settings.mixer.addRTPSession(0,
+                                   params[:port].to_i,
                                    "audio", 
                                    params[:codec], 
                                    5000, 
@@ -243,10 +241,11 @@ class MixerAPI < Sinatra::Base
     redirect '/app/videomixer/grid#{params[:grid]}'
   end
 
-  post '/app/videoMixer/addSession' do
+  post '/app/videoMixer/:channel/addSession' do
     content_type :html
     error_html do
-      settings.mixer.addRTPSession(params[:port].to_i,
+      settings.mixer.addRTPSession(params[:channel].to_i,
+                                   params[:port].to_i,
                                    "video", 
                                    params[:codec], 
                                    5000, 

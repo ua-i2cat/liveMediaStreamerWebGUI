@@ -71,12 +71,12 @@ module RMixer
       airOutputPathID = Random.rand(@randomSize)
       previewOutputPathID = Random.rand(@randomSize)
 
-      createFilter(@airMixerID, 'videoMixer', 'airMixer')
-      createFilter(@previewMixerID, 'videoMixer', 'previewMixer')
-      createFilter(airEncoderID, 'videoEncoder', 'airEncoder')
-      createFilter(previewEncoderID, 'videoEncoder', 'previewEncoder')
+      createFilter(@airMixerID, 'videoMixer')
+      createFilter(@previewMixerID, 'videoMixer')
+      createFilter(airEncoderID, 'videoEncoder')
+      createFilter(previewEncoderID, 'videoEncoder')
 
-      txId = @db.getTransmitterID
+      txId = @db.getFilterByType('transmitter')["id"]
 
       createPath(airOutputPathID, @airMixerID, txId, [airEncoderID])
       createPath(previewOutputPathID, @previewMixerID, txId, [previewEncoderID])
@@ -93,6 +93,11 @@ module RMixer
     def updateDataBase
       stateHash = getState
       @db.update(stateHash)
+    end
+
+    def getVideoMixerState(grid = '2x2')
+      updateDataBase
+      @db.getVideoMixerState(@airMixerID, grid)
     end
 
     def createFilter(id, type, role = 'default')
@@ -134,9 +139,15 @@ module RMixer
       end
     end
 
-    def addRTPSession(port, medium, codec, bandwidth, timeStampFrequency, channels = 0)
+    def addRTPSession(mixerChannel, port, medium, codec, bandwidth, timeStampFrequency, channels = 0)
       receiver = @db.getFilterByType('receiver')
       @conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels)
+
+      if medium == 'audio'
+      elsif medium == 'video'
+        @db.addVideoChannelPort(mixerChannel, port)
+        createInputPaths(port)
+      end
     end
 
     def addOutputSession(mixerID, sessionName)
@@ -176,7 +187,7 @@ module RMixer
 
     def doApplyGrid(grid)
       grid["positions"].each do |p|
-        mixerChannelId = @db.getVideoChannelId(p["id"])
+        mixerChannelId = @db.getVideoChannelInternalId(p["id"])
 
         unless mixerChannelId == 0 
           setPositionSize(@airMixerID, 
@@ -189,6 +200,27 @@ module RMixer
                          )
         end
       end
+    end
+
+    #NETWORKED PRODUCTION
+
+    def createInputPaths(port)
+      receiver = @db.getFilterByType('receiver')
+
+      decoderID = Random.rand(@randomSize)
+      airResamplerID = Random.rand(@randomSize)
+      previewResamplerID = Random.rand(@randomSize)
+      decoderPathID = Random.rand(@randomSize)
+      airPathID = Random.rand(@randomSize)
+      previewPathID = Random.rand(@randomSize)
+
+      createFilter(decoderID, 'videoDecoder')
+      createFilter(airResamplerID, 'videoResampler')
+      createFilter(previewResamplerID, 'videoResampler')
+
+      createPath(decoderPathID, receiver["id"], decoderID, [], {:orgWriterId => port})
+      createPath(airPathID, decoderID, @airMixerID, [airResamplerID], {:orgReaderId => port})
+      createPath(previewPathID, decoderID, @previewMixerID, [previewResamplerID], {:orgReaderId => port}, true)
     end
 
 

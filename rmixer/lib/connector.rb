@@ -125,14 +125,15 @@ module RMixer
       sendReq("createFilter", params)
     end
 
-    def createPath(id, orgFilterId, dstFilterId, orgWriterId, dstReaderId, midFiltersIds)
+    def createPath(id, orgFilterId, dstFilterId, orgWriterId, dstReaderId, midFiltersIds, sharedQueue = false)
       params = {
         :id => id,
         :orgFilterId => orgFilterId,
         :dstFilterId => dstFilterId,
         :orgWriterId => orgWriterId,
         :dstReaderId => dstReaderId,
-        :midFiltersIds => midFiltersIds
+        :midFiltersIds => midFiltersIds,
+        :sharedQueue => sharedQueue
       }
 
       sendReq("createPath", params)
@@ -255,8 +256,10 @@ module RMixer
         :filterID => filterID
       }
       s = TCPSocket.open(@host, @port)
+      puts request
       s.print(request.to_json)
       response = s.recv(2048) # TODO: max_len ?
+      puts response
       s.close
       return JSON.parse(response, :symbolize_names => true)
     end
