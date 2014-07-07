@@ -54,6 +54,7 @@ def calcPictureInPicture (box_width = 0.25, box_height = 0.25)
   height = 1.0
   positions << {
     :id => 1,
+    :channel => 0,
     :width => width,
     :height => height,
     :x => 0,
@@ -63,6 +64,7 @@ def calcPictureInPicture (box_width = 0.25, box_height = 0.25)
 
   positions << {
     :id => 2,
+    :channel => 0,
     :width => box_width,
     :height => box_height,
     :x => width - box_width,
@@ -74,6 +76,17 @@ def calcPictureInPicture (box_width = 0.25, box_height = 0.25)
 
   return grid
 
+end
+
+def calcPreviewGrid
+  grid = calcRegularGrid(3,3)
+  grid[:id] = "preview"
+
+  grid[:positions].each do |p|
+    p[:channel] = p[:id]
+  end
+
+  return grid
 end
 
 

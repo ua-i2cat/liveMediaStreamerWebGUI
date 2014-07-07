@@ -55,6 +55,7 @@ module RMixer
       grids << calcRegularGrid(3, 3)
       grids << calcRegularGrid(4, 4)
       grids << calcPictureInPicture
+      grids << calcPreviewGrid
 
       @db.loadGrids(grids)
     end
@@ -87,6 +88,11 @@ module RMixer
       @conn.addOutputSession(txId, [airPath["destinationReader"]], 'air')
       @conn.addOutputSession(txId, [previewPath["destinationReader"]], 'preview')
 
+      addWorker(@airMixerID, 'master')
+      addWorker(@previewMixerID, 'slave')
+
+      addSlavesToWorker(@airMixerID, [@previewMixerID])
+
       @started = true
     end
 
@@ -114,9 +120,10 @@ module RMixer
     def createPath(id, orgFilterId, dstFilterId, midFiltersIds, options = {})
       orgWriterId = (options[:orgWriterId].to_i != 0) ? options[:orgWriterId].to_i : -1
       dstReaderId = (options[:dstReaderId].to_i != 0) ? options[:dstReaderId].to_i : -1
+      sharedQueue = (options[:sharedQueue] != nil) ? options[:sharedQueue] : false
 
       begin 
-        response = @conn.createPath(id, orgFilterId, dstFilterId, orgWriterId, dstReaderId, midFiltersIds)
+        response = @conn.createPath(id, orgFilterId, dstFilterId, orgWriterId, dstReaderId, midFiltersIds, sharedQueue)
         raise MixerError, response[:error] if response[:error]
       rescue
         return response
@@ -147,6 +154,7 @@ module RMixer
       elsif medium == 'video'
         @db.addVideoChannelPort(mixerChannel, port)
         createInputPaths(port)
+        applyPreviewGrid
       end
     end
 
@@ -158,11 +166,29 @@ module RMixer
     end
 
     # Video methods
+    def applyPreviewGrid
+      grid = @db.getGrid('preview')
+
+      grid["positions"].each do |p|
+        mixerChannelId = @db.getVideoChannelPort(p["id"])
+
+        unless mixerChannelId == 0 
+          setPositionSize(@previewMixerID, 
+                          mixerChannelId,
+                          p["width"],
+                          p["height"],
+                          p["x"],
+                          p["y"],
+                          p["layer"] 
+                         )
+        end
+      end
+    end
 
     def applyGrid(gridID, positions)
       grid = @db.getGrid(gridID)
 
-      updateGrid(grid, position)
+      updateGrid(grid, positions)
       doApplyGrid(grid)
 
       @db.updateGrid(grid)
@@ -187,7 +213,7 @@ module RMixer
 
     def doApplyGrid(grid)
       grid["positions"].each do |p|
-        mixerChannelId = @db.getVideoChannelInternalId(p["id"])
+        mixerChannelId = @db.getVideoChannelPort(p["id"])
 
         unless mixerChannelId == 0 
           setPositionSize(@airMixerID, 
@@ -205,22 +231,38 @@ module RMixer
     #NETWORKED PRODUCTION
 
     def createInputPaths(port)
+      # receiver = @db.getFilterByType('receiver')
+
+      # decoderID = Random.rand(@randomSize)
+      # airResamplerID = Random.rand(@randomSize)
+      # previewResamplerID = Random.rand(@randomSize)
+      # decoderPathID = Random.rand(@randomSize)
+      # airPathID = Random.rand(@randomSize)
+      # previewPathID = Random.rand(@randomSize)
+
+      # createFilter(decoderID, 'videoDecoder')
+      # createFilter(airResamplerID, 'videoResampler')
+      # createFilter(previewResamplerID, 'videoResampler')
+
+      # createPath(decoderPathID, receiver["id"], decoderID, [], {:orgWriterId => port})
+      # createPath(airPathID, decoderID, @airMixerID, [airResamplerID], {:orgReaderId => port})
+      # createPath(previewPathID, decoderID, @previewMixerID, [previewResamplerID], {:orgReaderId => port, :sharedQueue => true})
+
       receiver = @db.getFilterByType('receiver')
 
       decoderID = Random.rand(@randomSize)
-      airResamplerID = Random.rand(@randomSize)
-      previewResamplerID = Random.rand(@randomSize)
       decoderPathID = Random.rand(@randomSize)
       airPathID = Random.rand(@randomSize)
       previewPathID = Random.rand(@randomSize)
 
       createFilter(decoderID, 'videoDecoder')
-      createFilter(airResamplerID, 'videoResampler')
-      createFilter(previewResamplerID, 'videoResampler')
 
       createPath(decoderPathID, receiver["id"], decoderID, [], {:orgWriterId => port})
-      createPath(airPathID, decoderID, @airMixerID, [airResamplerID], {:orgReaderId => port})
-      createPath(previewPathID, decoderID, @previewMixerID, [previewResamplerID], {:orgReaderId => port}, true)
+      createPath(airPathID, decoderID, @airMixerID, [], {:dstReaderId => port})
+      createPath(previewPathID, decoderID, @previewMixerID, [], {:dstReaderId => port, :sharedQueue => true})
+
+      addWorker(decoderID, 'bestEffort')
+
     end
 
 

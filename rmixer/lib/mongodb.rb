@@ -112,9 +112,13 @@ module RMixer
       db = MongoClient.new(host, port).db(dbname)
       videoChannelPort = db.collection('videoChannelPort')
 
-      channelPort = videoChannelPort.find(:id => chID).first
+      channelPort = videoChannelPort.find(:channel => chID).first
 
-      return channelPort["port"]
+      if channelPort
+        return channelPort["port"]
+      else
+        return 0
+      end
     end
 
     def addVideoChannelPort(chID, chPort)

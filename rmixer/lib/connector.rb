@@ -149,6 +149,15 @@ module RMixer
       sendReq("addWorker", params)
     end
 
+    def addSlavesToWorker(master, slaves)
+      params = {
+        :master => master,
+        :slaves => slaves
+      }
+
+      sendReq("addSlavesToWorker", params)
+    end
+
     #AUDIO METHODS
 
     def changeChannelVolume(filterID, id, volume) 
