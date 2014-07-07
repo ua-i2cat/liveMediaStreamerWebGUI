@@ -185,14 +185,9 @@ module RMixer
       grid = grids.find(:id => grid).first
       mixer = filters.find(:id => mixerID).first
 
-      if mixer["channels"]
-        mixer["channels"].each do |c|
-
-        end
-      end
-
       mixerHash = {"grid" => grid}
       mixerHash["maxChannels"] = 8
+      mixerHash["channels"] = mixer["channels"]
 
       return mixerHash
     end
