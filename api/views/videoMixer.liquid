@@ -130,14 +130,21 @@
                 </div>
                 <div class = "row">&nbsp;</div>
                 <div class="row text-center">
-                  <div class="btn-group">
-                      <button type="submit" class="btn btn-default">CUT</button>
-                      <button type="button" class="btn btn-default">FADE1</button>
-                      <button type="button" class="btn btn-default">FADE2</button>
-                      <button type="button" class="btn btn-default">EFF1</button>
-                      <button type="button" class="btn btn-default">EFF2</button>
-                      <button type="button" class="btn btn-default">PRE</button>
-                  </div>
+                  <form class="btn-group" action="/app/videoMixer/{{forloop.index}}/commute" method="post">
+                    <button type="submit" class="btn btn-default">CUT</button>
+                  </form>
+                  <form class="btn-group">
+                    <button type="submit" class="btn btn-default" disabled>FADE1</button>
+                  </form>
+                  <form class="btn-group">
+                    <button type="submit" class="btn btn-default" disabled>FADE2</button>
+                  </form>
+                  <form class="btn-group">
+                    <button type="submit" class="btn btn-default" disabled>EFF1</button>
+                  </form>
+                  <form class="btn-group">
+                    <button type="submit" class="btn btn-default" disabled>EFF2</button>
+                  </form>
                 </div>
               </div>
             </div>

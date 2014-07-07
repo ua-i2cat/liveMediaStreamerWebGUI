@@ -207,18 +207,42 @@ module RMixer
     end
 
     def doApplyGrid(grid)
-      grid["positions"].each do |p|
-        mixerChannelId = @db.getVideoChannelPort(p["channel"])
+      mixer = getFilter(@airMixerID)
 
-        unless mixerChannelId == 0 
+      mixer["channels"].each do |ch|
+        position = {}
+
+        grid["positions"].each do |p|
+          if ch["id"] == @db.getVideoChannelPort(p["channel"])
+            position = p
+          end
+        end
+
+        if position.empty?
+          setPositionSize(@airMixerID, ch["id"], 1, 1, 0, 0, 1, false)
+        else
           setPositionSize(@airMixerID, 
-                          mixerChannelId,
-                          p["width"],
-                          p["height"],
-                          p["x"],
-                          p["y"],
-                          p["layer"] 
+                          ch["id"],
+                          position["width"],
+                          position["height"],
+                          position["x"],
+                          position["y"],
+                          position["layer"] 
                          )
+        end
+      end
+    end
+
+    def commute(channel)
+      @db.resetGrids
+      mixer = getFilter(@airMixerID)
+      port = @db.getVideoChannelPort(channel)
+
+      mixer["channels"].each do |ch|
+        if ch["id"] == port
+          setPositionSize(@airMixerID, ch["id"], 1, 1, 0, 0, 1)
+        else 
+          setPositionSize(@airMixerID, ch["id"], 1, 1, 0, 0, 1, false)
         end
       end
     end

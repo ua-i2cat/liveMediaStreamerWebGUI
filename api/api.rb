@@ -255,5 +255,13 @@ class MixerAPI < Sinatra::Base
     redirect '/app'
   end
 
+  post '/app/videoMixer/:channel/commute' do
+    content_type :html
+    error_html do
+      settings.mixer.commute(params[:channel].to_i)
+    end
+    redirect '/app'
+  end
+
 
 end

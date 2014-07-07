@@ -108,6 +108,17 @@ module RMixer
       grids.update({:id => grid["id"]}, grid)
     end
 
+    def resetGrids
+      db = MongoClient.new(host, port).db(dbname)
+      grids = db.collection('grids')
+
+      grids.find.each { |g| 
+        g["positions"].each do |p|
+          p["channel"] = 0
+        end
+      }
+    end
+
     def getVideoChannelPort(chID)
       db = MongoClient.new(host, port).db(dbname)
       videoChannelPort = db.collection('videoChannelPort')
@@ -185,9 +196,14 @@ module RMixer
       grid = grids.find(:id => grid).first
       mixer = filters.find(:id => mixerID).first
 
+      puts mixerID
+      puts mixer
+
       mixerHash = {"grid" => grid}
       mixerHash["maxChannels"] = 8
-      mixerHash["channels"] = mixer["channels"]
+      if mixer["channels"]
+        mixerHash["channels"] = mixer["channels"]
+      end
 
       return mixerHash
     end
