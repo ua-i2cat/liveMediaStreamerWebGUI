@@ -218,38 +218,18 @@
                       <input type="radio" {% if position.channel == 0%} checked {% endif %} name="{{position.id}}" value="0">
                       <strong><span class="glyphicon glyphicon-remove"></span></strong>
                     </label>
+                    {% for channel in stateHash.channels %}
                     <label class="btn btn-default">
-                      <input type="radio" {% if position.channel == 1%} checked {% endif %} name="{{position.id}}" value="1">
-                      <strong>1</strong>
+                      <input type="radio" {% if position.channel == forloop.index%} checked {% endif %} name="{{position.id}}" value="{{forloop.index}}">
+                      <strong>{{forloop.index}}</strong>
                     </label>
-                    <label class="btn btn-default">
-                      <input type="radio" {% if position.channel == 2%} checked {% endif %} name="{{position.id}}" value="2">
-                      <strong>2</strong>
+                    {% endfor %}
+                    {% for channel in (1..stateHash.maxChannels) offset:stateHash.channels.size %}
+                    <label class="btn btn-default" disabled>
+                      <input type="radio">
+                      <strong>{{forloop.index}}</strong>
                     </label>
-                    <label class="btn btn-default">
-                      <input type="radio" {% if position.channel == 3%} checked {% endif %} name="{{position.id}}" value="3">
-                      <strong>3</strong>
-                    </label>
-                    <label class="btn btn-default">
-                      <input type="radio" {% if position.channel == 4%} checked {% endif %} name="{{position.id}}" value="4">
-                      <strong>4</strong>
-                    </label>
-                    <label class="btn btn-default">
-                      <input type="radio" {% if position.channel == 5%} checked {% endif %} name="{{position.id}}" value="5">
-                      <strong>5</strong>
-                    </label>
-                    <label class="btn btn-default">
-                      <input type="radio" {% if position.channel == 6%} checked {% endif %} name="{{position.id}}" value="6">
-                      <strong>6</strong>
-                    </label>
-                    <label class="btn btn-default">
-                      <input type="radio" {% if position.channel == 7%} checked {% endif %} name="{{position.id}}" value="7">
-                      <strong>7</strong>
-                    </label>
-                    <label class="btn btn-default">
-                      <input type="radio" {% if position.channel == 8%} checked {% endif %} name="{{position.id}}" value="8">
-                      <strong>8</strong>
-                    </label>
+                    {% endfor %}
                   </div>
                 </div>
                 {% endfor %}
