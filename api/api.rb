@@ -238,7 +238,7 @@ class MixerAPI < Sinatra::Base
       settings.mixer.applyGrid(params[:grid], positions)
 
     end
-    redirect '/app/videomixer/grid#{params[:grid]}'
+    redirect "/app/videomixer/grid#{params[:grid]}"
   end
 
   post '/app/videoMixer/:channel/addSession' do

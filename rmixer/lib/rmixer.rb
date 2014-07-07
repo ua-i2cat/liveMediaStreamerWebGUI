@@ -195,11 +195,6 @@ module RMixer
     end
 
     def updateGrid(grid, positions)
-
-      grid["positions"].each do |p|
-        p["channel"] = 0
-      end
-
       grid["positions"].each do |oldP|
         positions.each do |newP|
           if newP[:pos] == oldP["id"]
@@ -213,7 +208,7 @@ module RMixer
 
     def doApplyGrid(grid)
       grid["positions"].each do |p|
-        mixerChannelId = @db.getVideoChannelPort(p["id"])
+        mixerChannelId = @db.getVideoChannelPort(p["channel"])
 
         unless mixerChannelId == 0 
           setPositionSize(@airMixerID, 

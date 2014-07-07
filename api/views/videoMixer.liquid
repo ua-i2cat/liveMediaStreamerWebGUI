@@ -200,7 +200,7 @@
           <div class = "row">&nbsp;</div>
           <form class="navbar-form" action="/app/videoMixer/{{stateHash.grid.id}}/applyGrid" method="post">
             <div class="row">
-              <div class="col-md-5 col-md-offset-1">
+              <div class="col-md-4 col-md-offset-1">
                 <div class="row">
                   <img  src="/image/lena.jpg" alt="lena" class="img-rounded" width="100" height="100">
                 </div>
@@ -209,11 +209,15 @@
                   <button type="submit" class="btn btn-default">Apply</button>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-7">
               {% for position in stateHash.grid.positions %}
                 <div class="row">
                   <strong>{{ position.id }}</strong>
                   <div class="btn-group">
+                    <label class="btn btn-default">
+                      <input type="radio" {% if position.channel == 0%} checked {% endif %} name="{{position.id}}" value="0">
+                      <strong><span class="glyphicon glyphicon-remove"></span></strong>
+                    </label>
                     <label class="btn btn-default">
                       <input type="radio" {% if position.channel == 1%} checked {% endif %} name="{{position.id}}" value="1">
                       <strong>1</strong>
