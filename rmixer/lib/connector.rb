@@ -229,7 +229,7 @@ module RMixer
         :enabled => enabled
       }
       
-      createEvent("setPositionSize", params, mixerID)
+      createEvent("configChannel", params, mixerID)
     end
 
 
