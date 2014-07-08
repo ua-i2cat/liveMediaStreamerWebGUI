@@ -218,7 +218,7 @@ module RMixer
 
     #VIDEO METHODS
 
-    def setPositionSize(mixerID, id, width, height, x, y, layer, enabled = true)
+    def setPositionSize(mixerID, id, width, height, x, y, layer, opacity, enabled = true)
       params = {
         :id => id,
         :width => width,
@@ -226,6 +226,7 @@ module RMixer
         :x => x,
         :y => y,
         :layer => layer,
+        :opacity => opacity,
         :enabled => enabled
       }
       

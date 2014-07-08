@@ -173,15 +173,18 @@ module RMixer
         mixerChannelId = @db.getVideoChannelPort(p["id"])
 
         unless mixerChannelId == 0 
-          appendEvent(setPositionSize(@previewMixerID, 
-                                      mixerChannelId,
-                                      p["width"],
-                                      p["height"],
-                                      p["x"],
-                                      p["y"],
-                                      p["layer"] 
-                                     )
-                      )
+          appendEvent(
+            setPositionSize(
+              @previewMixerID, 
+              mixerChannelId,
+              p["width"],
+              p["height"],
+              p["x"],
+              p["y"],
+              p["layer"], 
+              p["opacity"]
+            )
+          )
         end
       end
 
@@ -222,17 +225,20 @@ module RMixer
         end
 
         if position.empty?
-          appendEvent(setPositionSize(@airMixerID, ch["id"], 1, 1, 0, 0, 1, false))
+          appendEvent(setPositionSize(@airMixerID, ch["id"], 1, 1, 0, 0, 1, 1.0, false))
         else
-          appendEvent(setPositionSize(@airMixerID, 
-                                      ch["id"],
-                                      position["width"],
-                                      position["height"],
-                                      position["x"],
-                                      position["y"],
-                                      position["layer"] 
-                                     )
-                      )
+          appendEvent(
+            setPositionSize(
+              @airMixerID, 
+              ch["id"],
+              position["width"],
+              position["height"],
+              position["x"],
+              position["y"],
+              position["layer"],
+              position["opacity"] 
+            )
+          )
         end
       end
 
@@ -246,9 +252,9 @@ module RMixer
 
       mixer["channels"].each do |ch|
         if ch["id"] == port
-          appendEvent(setPositionSize(@airMixerID, ch["id"], 1, 1, 0, 0, 1), 2000)
+          appendEvent(setPositionSize(@airMixerID, ch["id"], 1, 1, 0, 0, 1, 0.5))
         else 
-          appendEvent(setPositionSize(@airMixerID, ch["id"], 1, 1, 0, 0, 1, false))
+          appendEvent(setPositionSize(@airMixerID, ch["id"], 1, 1, 0, 0, 1, 1.0, false))
         end
       end
 
