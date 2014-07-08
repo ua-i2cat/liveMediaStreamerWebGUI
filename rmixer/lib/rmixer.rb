@@ -246,7 +246,7 @@ module RMixer
 
       mixer["channels"].each do |ch|
         if ch["id"] == port
-          appendEvent(setPositionSize(@airMixerID, ch["id"], 1, 1, 0, 0, 1))
+          appendEvent(setPositionSize(@airMixerID, ch["id"], 1, 1, 0, 0, 1), 2000)
         else 
           appendEvent(setPositionSize(@airMixerID, ch["id"], 1, 1, 0, 0, 1, false))
         end

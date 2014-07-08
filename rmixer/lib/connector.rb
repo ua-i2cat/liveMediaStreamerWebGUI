@@ -266,8 +266,6 @@ module RMixer
         :params => params,
         :filterID => filterID
       }
-
-      return event
     end
 
     def sendRequest(events = @eventArray)
@@ -284,7 +282,8 @@ module RMixer
       return JSON.parse(response, :symbolize_names => true)
     end
 
-    def appendEvent(event)
+    def appendEvent(event, delay = 0)
+      event[:delay] = delay
       @eventArray << event
       return {:error => nil}
     end
