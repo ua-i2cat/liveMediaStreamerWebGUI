@@ -85,19 +85,19 @@ module RMixer
       airPath = @db.getPath(airOutputPathID)
       previewPath = @db.getPath(previewOutputPathID)
 
-      @conn.addOutputSession(txId, [airPath["destinationReader"]], 'air')
-      @conn.addOutputSession(txId, [previewPath["destinationReader"]], 'preview')
+      sendRequest(@conn.addOutputSession(txId, [airPath["destinationReader"]], 'air'))
+      sendRequest(@conn.addOutputSession(txId, [previewPath["destinationReader"]], 'preview'))
 
-      addWorker(@airMixerID, 'master')
-      addWorker(@previewMixerID, 'slave')
+      sendRequest(addWorker(@airMixerID, 'master'))
+      sendRequest(addWorker(@previewMixerID, 'slave'))
 
-      addSlavesToWorker(@airMixerID, [@previewMixerID])
+      sendRequest(addSlavesToWorker(@airMixerID, [@previewMixerID]))
 
       @started = true
     end
 
     def updateDataBase
-      stateHash = getState
+      stateHash = sendRequest(getState)
       @db.update(stateHash)
     end
 
@@ -108,7 +108,7 @@ module RMixer
 
     def createFilter(id, type, role = 'default')
       begin 
-        response = @conn.createFilter(id, type)
+        response = sendRequest(@conn.createFilter(id, type))
         raise MixerError, response[:error] if response[:error]
       rescue
         return response
@@ -123,7 +123,7 @@ module RMixer
       sharedQueue = (options[:sharedQueue] != nil) ? options[:sharedQueue] : false
 
       begin 
-        response = @conn.createPath(id, orgFilterId, dstFilterId, orgWriterId, dstReaderId, midFiltersIds, sharedQueue)
+        response = sendRequest(@conn.createPath(id, orgFilterId, dstFilterId, orgWriterId, dstReaderId, midFiltersIds, sharedQueue))
         raise MixerError, response[:error] if response[:error]
       rescue
         return response
@@ -148,7 +148,7 @@ module RMixer
 
     def addRTPSession(mixerChannel, port, medium, codec, bandwidth, timeStampFrequency, channels = 0)
       receiver = @db.getFilterByType('receiver')
-      @conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels)
+      sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
 
       if medium == 'audio'
       elsif medium == 'video'
@@ -162,7 +162,7 @@ module RMixer
       path = @db.getOutputPathFromFilter(mixerID)
       readers = []
       readers << path["destinationReader"]
-      @conn.addOutputSession(path["destinationFilter"], readers, sessionName)
+      sendRequest(@conn.addOutputSession(path["destinationFilter"], readers, sessionName))
     end
 
     # Video methods
@@ -173,16 +173,19 @@ module RMixer
         mixerChannelId = @db.getVideoChannelPort(p["id"])
 
         unless mixerChannelId == 0 
-          setPositionSize(@previewMixerID, 
-                          mixerChannelId,
-                          p["width"],
-                          p["height"],
-                          p["x"],
-                          p["y"],
-                          p["layer"] 
-                         )
+          appendEvent(setPositionSize(@previewMixerID, 
+                                      mixerChannelId,
+                                      p["width"],
+                                      p["height"],
+                                      p["x"],
+                                      p["y"],
+                                      p["layer"] 
+                                     )
+                      )
         end
       end
+
+      sendRequest
     end
 
     def applyGrid(gridID, positions)
@@ -219,18 +222,21 @@ module RMixer
         end
 
         if position.empty?
-          setPositionSize(@airMixerID, ch["id"], 1, 1, 0, 0, 1, false)
+          appendEvent(setPositionSize(@airMixerID, ch["id"], 1, 1, 0, 0, 1, false))
         else
-          setPositionSize(@airMixerID, 
-                          ch["id"],
-                          position["width"],
-                          position["height"],
-                          position["x"],
-                          position["y"],
-                          position["layer"] 
-                         )
+          appendEvent(setPositionSize(@airMixerID, 
+                                      ch["id"],
+                                      position["width"],
+                                      position["height"],
+                                      position["x"],
+                                      position["y"],
+                                      position["layer"] 
+                                     )
+                      )
         end
       end
+
+      sendRequest
     end
 
     def commute(channel)
@@ -240,11 +246,13 @@ module RMixer
 
       mixer["channels"].each do |ch|
         if ch["id"] == port
-          setPositionSize(@airMixerID, ch["id"], 1, 1, 0, 0, 1)
+          appendEvent(setPositionSize(@airMixerID, ch["id"], 1, 1, 0, 0, 1))
         else 
-          setPositionSize(@airMixerID, ch["id"], 1, 1, 0, 0, 1, false)
+          appendEvent(setPositionSize(@airMixerID, ch["id"], 1, 1, 0, 0, 1, false))
         end
       end
+
+      sendRequest
     end
 
     #NETWORKED PRODUCTION
@@ -280,8 +288,7 @@ module RMixer
       createPath(airPathID, decoderID, @airMixerID, [], {:dstReaderId => port})
       createPath(previewPathID, decoderID, @previewMixerID, [], {:dstReaderId => port, :sharedQueue => true})
 
-      addWorker(decoderID, 'bestEffort')
-
+      sendRequest(addWorker(decoderID, 'bestEffort'))
     end
 
 
