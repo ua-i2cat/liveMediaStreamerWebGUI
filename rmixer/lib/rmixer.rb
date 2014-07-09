@@ -70,6 +70,8 @@ module RMixer
       @previewMixerID = Random.rand(@randomSize)
       airEncoderID = Random.rand(@randomSize)
       previewEncoderID = Random.rand(@randomSize)
+      airResamplerEncoderID = Random.rand(@randomSize)
+      previewResamplerEncoderID = Random.rand(@randomSize)
       airOutputPathID = Random.rand(@randomSize)
       previewOutputPathID = Random.rand(@randomSize)
 
@@ -77,11 +79,13 @@ module RMixer
       createFilter(@previewMixerID, 'videoMixer')
       createFilter(airEncoderID, 'videoEncoder')
       createFilter(previewEncoderID, 'videoEncoder')
+      createFilter(airResamplerEncoderID, 'videoResampler')
+      createFilter(previewResamplerEncoderID, 'videoResampler')
 
       txId = @db.getFilterByType('transmitter')["id"]
 
-      createPath(airOutputPathID, @airMixerID, txId, [airEncoderID])
-      createPath(previewOutputPathID, @previewMixerID, txId, [previewEncoderID])
+      createPath(airOutputPathID, @airMixerID, txId, [airResamplerEncoderID, airEncoderID])
+      createPath(previewOutputPathID, @previewMixerID, txId, [previewResamplerEncoderID, previewEncoderID])
 
       airPath = @db.getPath(airOutputPathID)
       previewPath = @db.getPath(previewOutputPathID)
@@ -89,10 +93,15 @@ module RMixer
       sendRequest(@conn.addOutputSession(txId, [airPath["destinationReader"]], 'air'))
       sendRequest(@conn.addOutputSession(txId, [previewPath["destinationReader"]], 'preview'))
 
-      sendRequest(addWorker(@airMixerID, 'master'))
-      sendRequest(addWorker(@previewMixerID, 'slave'))
-
-      sendRequest(addSlavesToWorker(@airMixerID, [@previewMixerID]))
+      sendRequest(addWorker(@airMixerID, 'bestEffort'))
+      sendRequest(addWorker(@previewMixerID, 'bestEffort'))
+      sendRequest(addWorker(airEncoderID, 'bestEffort'))
+      sendRequest(addWorker(previewEncoderID, 'bestEffort'))
+      sendRequest(addWorker(airResamplerEncoderID, 'bestEffort'))
+      sendRequest(addWorker(previewResamplerEncoderID, 'bestEffort'))
+      
+      sendRequest(configureResampler(airResamplerEncoderID, 0, 0, 2))
+      sendRequest(configureResampler(previewResamplerEncoderID, 0, 0, 2))
 
       @started = true
 
@@ -174,11 +183,20 @@ module RMixer
     # Video methods
     def applyPreviewGrid
       grid = @db.getGrid('preview')
+      mixer = getFilter(@previewMixerID)
 
       grid["positions"].each do |p|
         mixerChannelId = @db.getVideoChannelPort(p["id"])
 
-        unless mixerChannelId == 0 
+        unless mixerChannelId == 0
+          path = getPathByDestination(@previewMixerID, mixerChannelId)
+          resamplerID = path["filters"].first
+
+          width = p["width"]*mixer["width"]
+          height = p["height"]*mixer["height"]
+
+          appendEvent(configureResampler(resamplerID, width, height))
+
           appendEvent(
             setPositionSize(
               @previewMixerID, 
@@ -246,6 +264,14 @@ module RMixer
 
           appendEvent(updateVideoChannel(@airMixerID, ch))
 
+          path = getPathByDestination(@airMixerID, ch["id"])
+          resamplerID = path["filters"].first
+
+          width = ch["width"]*mixer["width"]
+          height = ch["height"]*mixer["height"]
+
+          appendEvent(configureResampler(resamplerID, width, height))
+
         end
       end
 
@@ -270,6 +296,14 @@ module RMixer
           ch["enabled"] = true
           
           appendEvent(updateVideoChannel(@airMixerID, ch))
+
+          path = getPathByDestination(@airMixerID, ch["id"])
+          resamplerID = path["filters"].first
+
+          width = ch["width"]*mixer["width"]
+          height = ch["height"]*mixer["height"]
+
+          appendEvent(configureResampler(resamplerID, width, height))
         else
           ch["enabled"] = false 
           
@@ -328,37 +362,42 @@ module RMixer
     #NETWORKED PRODUCTION
 
     def createInputPaths(port)
-      # receiver = @db.getFilterByType('receiver')
-
-      # decoderID = Random.rand(@randomSize)
-      # airResamplerID = Random.rand(@randomSize)
-      # previewResamplerID = Random.rand(@randomSize)
-      # decoderPathID = Random.rand(@randomSize)
-      # airPathID = Random.rand(@randomSize)
-      # previewPathID = Random.rand(@randomSize)
-
-      # createFilter(decoderID, 'videoDecoder')
-      # createFilter(airResamplerID, 'videoResampler')
-      # createFilter(previewResamplerID, 'videoResampler')
-
-      # createPath(decoderPathID, receiver["id"], decoderID, [], {:orgWriterId => port})
-      # createPath(airPathID, decoderID, @airMixerID, [airResamplerID], {:orgReaderId => port})
-      # createPath(previewPathID, decoderID, @previewMixerID, [previewResamplerID], {:orgReaderId => port, :sharedQueue => true})
-
       receiver = @db.getFilterByType('receiver')
 
       decoderID = Random.rand(@randomSize)
+      airResamplerID = Random.rand(@randomSize)
+      previewResamplerID = Random.rand(@randomSize)
       decoderPathID = Random.rand(@randomSize)
       airPathID = Random.rand(@randomSize)
       previewPathID = Random.rand(@randomSize)
 
       createFilter(decoderID, 'videoDecoder')
+      createFilter(airResamplerID, 'videoResampler')
+      createFilter(previewResamplerID, 'videoResampler')
 
       createPath(decoderPathID, receiver["id"], decoderID, [], {:orgWriterId => port})
-      createPath(airPathID, decoderID, @airMixerID, [], {:dstReaderId => port})
-      createPath(previewPathID, decoderID, @previewMixerID, [], {:dstReaderId => port, :sharedQueue => true})
+      createPath(airPathID, decoderID, @airMixerID, [airResamplerID], {:dstReaderId => port})
+      createPath(previewPathID, decoderID, @previewMixerID, [previewResamplerID], {:dstReaderId => port, :sharedQueue => true})
 
       sendRequest(addWorker(decoderID, 'bestEffort'))
+      sendRequest(addWorker(airResamplerID, 'master'))
+      sendRequest(addWorker(previewResamplerID, 'slave'))
+
+      sendRequest(addSlavesToWorker(airResamplerID, [previewResamplerID]))
+      # receiver = @db.getFilterByType('receiver')
+
+      # decoderID = Random.rand(@randomSize)
+      # decoderPathID = Random.rand(@randomSize)
+      # airPathID = Random.rand(@randomSize)
+      # previewPathID = Random.rand(@randomSize)
+
+      # createFilter(decoderID, 'videoDecoder')
+
+      # createPath(decoderPathID, receiver["id"], decoderID, [], {:orgWriterId => port})
+      # createPath(airPathID, decoderID, @airMixerID, [], {:dstReaderId => port})
+      # createPath(previewPathID, decoderID, @previewMixerID, [], {:dstReaderId => port, :sharedQueue => true})
+
+      # sendRequest(addWorker(decoderID, 'bestEffort'))
     end
 
 

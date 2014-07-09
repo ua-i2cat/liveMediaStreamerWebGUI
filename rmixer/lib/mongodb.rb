@@ -229,6 +229,13 @@ module RMixer
 
     end
 
+    def getPathByDestination(filter, reader = 1)
+      db = MongoClient.new(host, port).db(dbname)
+      paths = db.collection('paths')
+
+      path = paths.find({:destinationFilter=>filter,:destinationReader=>reader}).first
+    end
+
     def getFilterByType(type)
       db = MongoClient.new(host, port).db(dbname)
       filters = db.collection('filters')

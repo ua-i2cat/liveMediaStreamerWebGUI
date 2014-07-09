@@ -248,6 +248,19 @@ module RMixer
       createEvent("configChannel", params, mixerId)
     end
 
+    def configureResampler(resamplerID, width, height, pixelFormat = -1)
+      params = {
+        :width => width,
+        :height => height
+      }
+
+      if pixelFormat >= 0
+        params[:pixelFormat] = pixelFormat
+      end
+
+      createEvent("configure", params, resamplerID)
+    end
+
 
     # Method that composes the JSON request and sends it over TCP to the
     # targetted remote mixer instance.
