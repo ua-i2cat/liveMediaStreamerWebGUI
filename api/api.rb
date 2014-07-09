@@ -245,6 +245,7 @@ class MixerAPI < Sinatra::Base
     content_type :html
     error_html do
       settings.mixer.addRTPSession(params[:channel].to_i,
+                                   params[:sourceIP],
                                    params[:port].to_i,
                                    "video", 
                                    params[:codec], 

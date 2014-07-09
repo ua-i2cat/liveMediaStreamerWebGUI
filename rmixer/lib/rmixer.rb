@@ -25,6 +25,7 @@ require "rmixer/version"
 require "connector"
 require "append"
 require "grids"
+require "ultragrid"
 require "mongodb"
 
 
@@ -148,21 +149,26 @@ module RMixer
       end
     end
 
-    def addRTPSession(mixerChannel, port, medium, codec, bandwidth, timeStampFrequency, channels = 0)
-      receiver = @db.getFilterByType('receiver')
-      
-      @conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels)
-      #TODO manage response
-      sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
+    def addRTPSession(mixerChannel, sourceIP, port, medium, codec, bandwidth, timeStampFrequency, channels = 0)
+      if uv_check_and_tx(sourceIP, port)
+        
+        #TODO start tx
+        
+        receiver = @db.getFilterByType('receiver')
 
-      if medium == 'audio'
-      elsif medium == 'video'
-        @db.addVideoChannelPort(mixerChannel, port)
-        createInputPaths(port)
-        applyPreviewGrid
+        @conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels)
+        #TODO manage response
+        sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
+
+        if medium == 'audio'
+        elsif medium == 'video'
+          @db.addVideoChannelPort(mixerChannel, port)
+          createInputPaths(port)
+          applyPreviewGrid
+        end
+
+        updateDataBase
       end
-
-      updateDataBase
     end
     
     def rmRTPSession(mixerChannel, port, medium, codec, bandwidth, timeStampFrequency, channels = 0)
