@@ -233,6 +233,21 @@ module RMixer
       createEvent("configChannel", params, mixerID)
     end
 
+    def updateVideoChannel(mixerId, channel)
+      params = {
+        :id => channel["id"],
+        :width => channel["width"],
+        :height => channel["height"],
+        :x => channel["x"],
+        :y => channel["y"],
+        :layer => channel["layer"],
+        :opacity => channel["opacity"],
+        :enabled => channel["enabled"]
+      }
+
+      createEvent("configChannel", params, mixerId)
+    end
+
 
     # Method that composes the JSON request and sends it over TCP to the
     # targetted remote mixer instance.
@@ -275,9 +290,12 @@ module RMixer
       }
       s = TCPSocket.open(@host, @port)
       s.print(request.to_json)
+      puts
       puts request
-      response = s.recv(2048) # TODO: max_len ?
+      response = s.recv(4096*4) # TODO: max_len ?
+      puts
       puts response
+      puts
       s.close
       @eventArray.clear
       return JSON.parse(response, :symbolize_names => true)

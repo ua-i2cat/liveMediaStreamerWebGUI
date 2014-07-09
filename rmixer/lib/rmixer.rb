@@ -44,6 +44,7 @@ module RMixer
       @db = RMixer::MongoMngr.new
       @started = false
       @randomSize = 2**16
+      @videoFadeInterval = 50 #ms
 
       loadGrids
     end
@@ -94,6 +95,8 @@ module RMixer
       sendRequest(addSlavesToWorker(@airMixerID, [@previewMixerID]))
 
       @started = true
+
+      updateDataBase
     end
 
     def updateDataBase
@@ -102,7 +105,6 @@ module RMixer
     end
 
     def getVideoMixerState(grid = '2x2')
-      updateDataBase
       @db.getVideoMixerState(@airMixerID, grid)
     end
 
@@ -156,6 +158,8 @@ module RMixer
         createInputPaths(port)
         applyPreviewGrid
       end
+
+      updateDataBase
     end
 
     def addOutputSession(mixerID, sessionName)
@@ -163,6 +167,8 @@ module RMixer
       readers = []
       readers << path["destinationReader"]
       sendRequest(@conn.addOutputSession(path["destinationFilter"], readers, sessionName))
+
+      updateDataBase
     end
 
     # Video methods
@@ -189,6 +195,8 @@ module RMixer
       end
 
       sendRequest
+
+      updateDataBase
     end
 
     def applyGrid(gridID, positions)
@@ -225,24 +233,25 @@ module RMixer
         end
 
         if position.empty?
-          appendEvent(setPositionSize(@airMixerID, ch["id"], 1, 1, 0, 0, 1, 1.0, false))
+          ch["enabled"] = false
+          appendEvent(updateVideoChannel(@airMixerID, ch))
         else
-          appendEvent(
-            setPositionSize(
-              @airMixerID, 
-              ch["id"],
-              position["width"],
-              position["height"],
-              position["x"],
-              position["y"],
-              position["layer"],
-              position["opacity"] 
-            )
-          )
+          ch["width"] = position["width"]
+          ch["height"] = position["height"]
+          ch["x"] = position["x"]
+          ch["y"] = position["y"]
+          ch["layer"] = position["layer"]
+          ch["opacity"] = position["opacity"]
+          ch["enabled"] = true 
+
+          appendEvent(updateVideoChannel(@airMixerID, ch))
+
         end
       end
 
       sendRequest
+
+      updateFilter(mixer)
     end
 
     def commute(channel)
@@ -252,13 +261,68 @@ module RMixer
 
       mixer["channels"].each do |ch|
         if ch["id"] == port
-          appendEvent(setPositionSize(@airMixerID, ch["id"], 1, 1, 0, 0, 1, 0.5))
-        else 
-          appendEvent(setPositionSize(@airMixerID, ch["id"], 1, 1, 0, 0, 1, 1.0, false))
+          ch["width"] = 1
+          ch["height"] = 1
+          ch["x"] = 0
+          ch["y"] = 0
+          ch["layer"] = 1
+          ch["opacity"] = 1.0
+          ch["enabled"] = true
+          
+          appendEvent(updateVideoChannel(@airMixerID, ch))
+        else
+          ch["enabled"] = false 
+          
+          appendEvent(updateVideoChannel(@airMixerID, ch))
         end
       end
 
       sendRequest
+
+      updateFilter(mixer)
+    end
+
+    def fade(channel, time)
+      mixer = getFilter(@airMixerID)
+      port = @db.getVideoChannelPort(channel)
+
+      intervals = (time/@videoFadeInterval)
+      deltaOp = 1.0/intervals
+      
+      mixer["channels"].each do |ch|
+        if ch["layer"] >= 7
+          ch["layer"] = 6
+          appendEvent(updateVideoChannel(@airMixerID, ch))
+        end
+      end
+
+      intervals.times do |d|
+        appendEvent(setPositionSize(@airMixerID, port, 1, 1, 0, 0, 7, d*deltaOp), d*@videoFadeInterval)
+      end
+
+      mixer["channels"].each do |ch|
+        if ch["id"] == port
+          ch["width"] = 1
+          ch["height"] = 1
+          ch["x"] = 0
+          ch["y"] = 0
+          ch["layer"] = 7
+          ch["opacity"] = 1.0
+          ch["enabled"] = true
+
+          appendEvent(updateVideoChannel(@airMixerID, ch), intervals*@videoFadeInterval)
+
+        else 
+          ch["enabled"] = false
+
+          appendEvent(updateVideoChannel(@airMixerID, ch), intervals*@videoFadeInterval)
+        end
+      end
+
+      sendRequest
+
+      updateFilter(mixer)
+
     end
 
     #NETWORKED PRODUCTION
