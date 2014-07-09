@@ -254,6 +254,22 @@ class MixerAPI < Sinatra::Base
     end
     redirect '/app'
   end
+  
+  #TODO
+  #gets channel index (not port) to be removed from sessions
+  post '/app/videoMixer/:channel/rmSession' do
+    content_type :html
+    error_html do
+      settings.mixer.rmRTPSession(params[:channel].to_i,
+      params[:port].to_i,
+      "video",
+      params[:codec],
+      5000,
+      90000
+      )
+    end
+    redirect '/app'
+  end
 
   post '/app/videoMixer/:channel/commute' do
     content_type :html

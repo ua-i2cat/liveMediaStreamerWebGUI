@@ -159,6 +159,9 @@ module RMixer
 
     def addRTPSession(mixerChannel, port, medium, codec, bandwidth, timeStampFrequency, channels = 0)
       receiver = @db.getFilterByType('receiver')
+      
+      @conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels)
+      #TODO manage response
       sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
 
       if medium == 'audio'
@@ -169,6 +172,19 @@ module RMixer
       end
 
       updateDataBase
+    end
+    
+    def rmRTPSession(mixerChannel, port, medium, codec, bandwidth, timeStampFrequency, channels = 0)
+#      receiver = @db.getFilterByType('receiver')
+#      @conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels)
+#
+#      if medium == 'audio'
+#      elsif medium == 'video'
+#        @db.addVideoChannelPort(mixerChannel, port)
+#        createInputPaths(port)
+#        applyPreviewGrid
+#      end
+      
     end
 
     def addOutputSession(mixerID, sessionName)

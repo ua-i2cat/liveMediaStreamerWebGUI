@@ -60,9 +60,22 @@
           <div class="col-md-6">
             <div class="panel panel-default">
               <div class="panel-heading">
-                <h3 class="panel-title">
-                  Channel {{ channel.channel }} - Port {{ channel.id }}
-                </h3>
+                <table>
+                	<tr>
+                		<td style="width:400px;">
+                			<h3 class="panel-title">
+                  				Channel {{ forloop.index }} - Port {{ channel.id }}
+                			</h3>
+                		</td>
+                		<td>
+                			<form class="form" action="/app/videoMixer/{{forloop.index}}/rmSession" method="post">
+                        		<button type="submit" class="btn btn-danger btn-xs">
+                          			<span class="glyphicon glyphicon-remove"></span>
+                        		</button>
+                      		</form>
+                      	</td>
+					</tr>
+				</table>
               </div>
               <div class="panel-body">
                 <div class="row">
