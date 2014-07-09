@@ -48,6 +48,7 @@ module RMixer
     #
     # * +host+ - Remote mixer host address
     # * +port+ - Remote mixer port address
+    # * +eventArray+ - Array for sending events
     # * +testing+ - Optional testing parameter. If set to +:request+, changes
     #   the behaviour of RMixer::Connector#get_response
     #
@@ -55,6 +56,7 @@ module RMixer
       @host = host
       @port = port
       @testing = testing
+      @eventArray = []
     end
 
     def addRTPSession(filterID, port, medium, codec, bandwidth, timeStampFrequency, channels)
@@ -74,7 +76,7 @@ module RMixer
         :subsessions => subsessions
       }
 
-      sendReq("addSession", params, filterID)
+      createEvent("addSession", params, filterID)
     end
 
     def addRTSPSession (filterID, progName, uri)
@@ -82,7 +84,7 @@ module RMixer
         :progName => progName,
         :uri => uri
       }
-      sendReq("addSession", params, filterID)
+      createEvent("addSession", params, filterID)
     end
 
     def addOutputSession(filterID, readers)
@@ -90,12 +92,12 @@ module RMixer
         params = {
           :readers => readers
         }
-        sendReq("addSession", params, filterID)
+        createEvent("addSession", params, filterID)
       end
     end
 
     def getState
-      sendReq("getState")
+      createEvent("getState")
     end
 
     def addOutputSession(txID, readers, sessionName)
@@ -104,7 +106,7 @@ module RMixer
         :sessionName => sessionName
       }
 
-      sendReq("addSession", params, txID)
+      createEvent("addSession", params, txID)
     end
 
     def addOutputSessionTemporal(txID, readers, sessionName)
@@ -113,7 +115,7 @@ module RMixer
         :sessionName => sessionName
       }
 
-      sendReq("addSession", params, txID)
+      createEvent("addSession", params, txID)
     end
 
     def createFilter(id, type)
@@ -122,7 +124,7 @@ module RMixer
         :type => type,
       }
 
-      sendReq("createFilter", params)
+      createEvent("createFilter", params)
     end
 
     def createPath(id, orgFilterId, dstFilterId, orgWriterId, dstReaderId, midFiltersIds, sharedQueue = false)
@@ -136,7 +138,7 @@ module RMixer
         :sharedQueue => sharedQueue
       }
 
-      sendReq("createPath", params)
+      createEvent("createPath", params)
     end
 
     def addWorker(id, type, fps = 0)
@@ -146,7 +148,7 @@ module RMixer
         :fps => fps
       }
 
-      sendReq("addWorker", params)
+      createEvent("addWorker", params)
     end
 
     def addSlavesToWorker(master, slaves)
@@ -155,7 +157,7 @@ module RMixer
         :slaves => slaves
       }
 
-      sendReq("addSlavesToWorker", params)
+      createEvent("addSlavesToWorker", params)
     end
 
     #AUDIO METHODS
@@ -165,33 +167,33 @@ module RMixer
         :id => id,
         :volume => volume
       }
-      sendReq("changeChannelVolume", params, filterID)
+      createEvent("changeChannelVolume", params, filterID)
     end
 
     def muteChannel(filterID, id) 
       params = {
         :id => id
       }
-      sendReq("muteChannel", params, filterID)
+      createEvent("muteChannel", params, filterID)
     end
 
     def soloChannel(filterID, id) 
       params = {
         :id => id
       }
-      sendReq("soloChannel", params, filterID)
+      createEvent("soloChannel", params, filterID)
     end
 
     def changeMasterVolume(filterID, volume) 
       params = {
         :volume => volume
       }
-      sendReq("changeMasterVolume", params, filterID)
+      createEvent("changeMasterVolume", params, filterID)
     end
 
     def muteMaster(filterID) 
       params = {}
-      sendReq("muteMaster", params, filterID)
+      createEvent("muteMaster", params, filterID)
     end
 
     def configAudioEncoder(filterID, sampleRate, channels)
@@ -200,7 +202,7 @@ module RMixer
         :channels => channels
       }
 
-      sendReq("configure", params, filterID)
+      createEvent("configure", params, filterID)
     end
 
     def reconfigAudioEncoder(encoderID, codec, sampleRate, channels)
@@ -211,12 +213,12 @@ module RMixer
         :channels => channels
       }
       
-      sendReq("reconfigAudioEncoder", params)
+      createEvent("reconfigAudioEncoder", params)
     end
 
     #VIDEO METHODS
 
-    def setPositionSize(mixerID, id, width, height, x, y, layer, enabled = true)
+    def setPositionSize(mixerID, id, width, height, x, y, layer, opacity, enabled = true)
       params = {
         :id => id,
         :width => width,
@@ -224,10 +226,26 @@ module RMixer
         :x => x,
         :y => y,
         :layer => layer,
+        :opacity => opacity,
         :enabled => enabled
       }
       
-      sendReq("setPositionSize", params, mixerID)
+      createEvent("configChannel", params, mixerID)
+    end
+
+    def updateVideoChannel(mixerId, channel)
+      params = {
+        :id => channel["id"],
+        :width => channel["width"],
+        :height => channel["height"],
+        :x => channel["x"],
+        :y => channel["y"],
+        :layer => channel["layer"],
+        :opacity => channel["opacity"],
+        :enabled => channel["enabled"]
+      }
+
+      createEvent("configChannel", params, mixerId)
     end
 
 
@@ -258,19 +276,35 @@ module RMixer
     #   mixer.get_response("start_mixer", { :width => 1280, :height => 720 })   
     #
 
-    def sendReq(action, params = {}, filterID = 0)
-      request = {
+    def createEvent(action, params = {}, filterID = 0)
+      event = {
         :action => action,
         :params => params,
         :filterID => filterID
       }
+    end
+
+    def sendRequest(events = @eventArray)
+      request = {
+        :events => events
+      }
       s = TCPSocket.open(@host, @port)
-      puts request
       s.print(request.to_json)
-      response = s.recv(2048) # TODO: max_len ?
+      puts
+      puts request
+      response = s.recv(4096*4) # TODO: max_len ?
+      puts
       puts response
+      puts
       s.close
+      @eventArray.clear
       return JSON.parse(response, :symbolize_names => true)
+    end
+
+    def appendEvent(event, delay = 0)
+      event[:delay] = delay
+      @eventArray << event
+      return {:error => nil}
     end
 
   end

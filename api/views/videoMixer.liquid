@@ -143,14 +143,14 @@
                 </div>
                 <div class = "row">&nbsp;</div>
                 <div class="row text-center">
-                  <form class="btn-group" action="/app/videoMixer/{{forloop.index}}/commute" method="post">
+                  <form class="btn-group" action="/app/videoMixer/{{channel.channel}}/commute" method="post">
                     <button type="submit" class="btn btn-default">CUT</button>
                   </form>
-                  <form class="btn-group">
-                    <button type="submit" class="btn btn-default" disabled>FADE1</button>
+                  <form class="btn-group" action="/app/videoMixer/{{channel.channel}}/fade/500" method="post">
+                    <button type="submit" class="btn btn-default">FADE1</button>
                   </form>
-                  <form class="btn-group">
-                    <button type="submit" class="btn btn-default" disabled>FADE2</button>
+                  <form class="btn-group" action="/app/videoMixer/{{channel.channel}}/fade/1500" method="post">
+                    <button type="submit" class="btn btn-default">FADE2</button>
                   </form>
                   <form class="btn-group">
                     <button type="submit" class="btn btn-default" disabled>EFF1</button>
@@ -405,8 +405,8 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="bs/assets/js/jquery.js"></script>
-    <script src="bs/dist/js/bootstrap.min.js"></script>
-    <script src="bs/assets/js/holder.js"></script>
+    <script src="/bs/assets/js/jquery.js"></script>
+    <script src="/bs/dist/js/bootstrap.min.js"></script>
+    <script src="/bs/assets/js/holder.js"></script>
   </body>
 </html>

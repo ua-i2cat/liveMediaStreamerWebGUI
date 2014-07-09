@@ -279,5 +279,13 @@ class MixerAPI < Sinatra::Base
     redirect '/app'
   end
 
+  post '/app/videoMixer/:channel/fade/:time' do
+    content_type :html
+    error_html do
+      settings.mixer.fade(params[:channel].to_i, params[:time].to_i)
+    end
+    redirect '/app'
+  end
+
 
 end

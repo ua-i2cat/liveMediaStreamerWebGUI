@@ -36,6 +36,7 @@ def calcRegularGrid(cellsX = 2, cellsY = 2)
         :height => height,
         :x => j * (1.0/cellsX),
         :y => i * (1.0/cellsY),
+        :opacity => 1.0,
         :layer => 0
       }
       idCounter += 1
@@ -59,6 +60,7 @@ def calcPictureInPicture (box_width = 0.25, box_height = 0.25)
     :height => height,
     :x => 0,
     :y => 0,
+    :opacity => 1.0,
     :layer => 0
   }
 
@@ -69,6 +71,7 @@ def calcPictureInPicture (box_width = 0.25, box_height = 0.25)
     :height => box_height,
     :x => width - box_width,
     :y => height - box_height,
+    :opacity => 1.0,
     :layer => 1
   }
 
