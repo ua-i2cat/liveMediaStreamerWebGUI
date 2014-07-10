@@ -90,15 +90,14 @@ class MixerAPI < Sinatra::Base
   end
 
    def dashboardAudio
-    settings.mixer.updateDataBase
-    #if started
+    if started
       mixerHash = settings.mixer.getAudioMixerState
       liquid :audioMixer, :locals => {
           "stateHash" => mixerHash
         }
-   # else
-    ##  liquid :before
-    #end
+    else
+      liquid :before
+    end
   end
 
   # Web App Methods
@@ -108,7 +107,7 @@ class MixerAPI < Sinatra::Base
   end
 
   get '/app' do
-    redirect '/app/videomixer'
+    redirect '/app/audiomixer'
   end
 
   post '/app/start' do
@@ -153,7 +152,7 @@ class MixerAPI < Sinatra::Base
     dashboardExtra("videoMixer")
   end
 
-  post '/app/:mixerid/channel/:channelid/mute' do
+  post '/app/audiomixer/:mixerid/channel/:channelid/mute' do
     content_type :html
     error_html do
       if (params[:channelid] == "master")
@@ -165,7 +164,7 @@ class MixerAPI < Sinatra::Base
     redirect '/app'
   end
 
-  post '/app/:mixerid/channel/:channelid/solo' do
+  post '/app/audiomixer/:mixerid/channel/:channelid/solo' do
     content_type :html
     error_html do
       settings.mixer.soloChannel(params[:mixerid].to_i, params[:channelid].to_i)
@@ -173,7 +172,7 @@ class MixerAPI < Sinatra::Base
     redirect '/app'
   end
 
-  post '/app/:mixerid/channel/:channelid/changeVolume' do
+  post '/app/audiomixer/:mixerid/channel/:channelid/changeVolume' do
     content_type :html
     error_html do
       if (params[:channelid] == "master")
@@ -185,7 +184,7 @@ class MixerAPI < Sinatra::Base
     redirect '/app'
   end
   
-  post '/app/:mixer_id/:encoder_id/reconfigure' do
+  post '/app/audiomixer/:mixer_id/:encoder_id/reconfigure' do
     content_type :html
     error_html do
       puts params
@@ -198,7 +197,7 @@ class MixerAPI < Sinatra::Base
     redirect '/app'
   end
 
-  post '/app/:mixerID/addSession' do
+  post '/app/audiomixer/:mixerID/addSession' do
     content_type :html
     error_html do
       settings.mixer.addRTPSession(0,
@@ -213,7 +212,7 @@ class MixerAPI < Sinatra::Base
     redirect '/app'
   end
 
-   post '/app/:mixerID/addOutputSession' do
+   post '/app/audiomixer/:mixerID/addOutputSession' do
     content_type :html
     error_html do
       settings.mixer.addOutputSession(params[:mixerID].to_i, params[:sessionName])
