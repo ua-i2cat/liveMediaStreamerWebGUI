@@ -92,15 +92,24 @@ module RMixer
       previewPath = @db.getPath(previewOutputPathID)
 
 
-      sendRequest(addWorker(@airMixerID, 'bestEffort'))
-      sendRequest(addWorker(@previewMixerID, 'bestEffort'))
-      sendRequest(addWorker(airEncoderID, 'bestEffort'))
-      sendRequest(addWorker(previewEncoderID, 'bestEffort'))
-      sendRequest(addWorker(airResamplerEncoderID, 'bestEffort'))
-      sendRequest(addWorker(previewResamplerEncoderID, 'bestEffort'))
+    #  sendRequest(addWorker(@airMixerID, 'bestEffort'))
+    #  sendRequest(addWorker(@previewMixerID, 'bestEffort'))
+    #  sendRequest(addWorker(airEncoderID, 'bestEffort'))
+    #  sendRequest(addWorker(previewEncoderID, 'bestEffort'))
+    #  sendRequest(addWorker(airResamplerEncoderID, 'bestEffort'))
+    #  sendRequest(addWorker(previewResamplerEncoderID, 'bestEffort'))
       
       sendRequest(configureResampler(airResamplerEncoderID, 0, 0, 2))
       sendRequest(configureResampler(previewResamplerEncoderID, 0, 0, 2))
+
+      @audioMixer = Random.rand(@randomSize)
+      audioEncoderID = Random.rand(@randomSize)
+      audioPathID = Random.rand(@randomSize)
+
+      createFilter(@audioMixer, 'audioMixer')
+      createFilter(audioEncoderID, 'audioEncoder')
+
+      createPath(audioPathID, @audioMixer, txId, [audioEncoderID])
 
       @started = true
 
@@ -168,7 +177,7 @@ module RMixer
         sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
 
         if medium == 'audio'
-			createAudioInputPath(port)
+			    createAudioInputPath(port)
         elsif medium == 'video'
           @db.addVideoChannelPort(mixerChannel, port)
           createVideoInputPaths(port)
