@@ -23,11 +23,12 @@
 require 'socket'
 require 'rest_client'
 
-@@uv_cmd_priority_list = [  "uv -t testcard:640:480:15:UYVY-c libavcodec:codec=H.264", #first check if api control errors are working...
-  "uv -t v4l2 -c libavcodec:codec=H.264",
-  "uv -t testcard:640:480:15:UYVY -c libavcodec:codec=H.264",
-  "uv -t testcard:640:480:15:UYVY -c libavcodec:codec=H.264",
-  "uv -t testcard:640:480:15:UYVY -c libavcodec:codec=H.264"]
+@@uv_cmd_priority_list = [  "uv -t testcard:640:480:15:UYVY-c libavcodec:codec=H.264 --rtsp-server", #first check if api control errors are working...
+  "uv -t decklink:0:8 -c libavcodec:codec=H.264 --rtsp-server",
+  "uv -t decklink:0:9 -c libavcodec:codec=H.264 --rtsp-server",
+  "uv -t v4l2 -c libavcodec:codec=H.264 --rtsp-server",
+  "uv -t testcard:1920:1080:20:UYVY -c libavcodec:codec=H.264 --rtsp-server",
+  "uv -t testcard:640:480:15:UYVY -c libavcodec:codec=H.264 --rtsp-server"]
   
 @hash_response 
   
