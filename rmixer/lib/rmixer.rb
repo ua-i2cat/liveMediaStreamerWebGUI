@@ -99,18 +99,28 @@ module RMixer
     #  sendRequest(addWorker(airResamplerEncoderID, 'bestEffort'))
     #  sendRequest(addWorker(previewResamplerEncoderID, 'bestEffort'))
       
-      sendRequest(configureResampler(airResamplerEncoderID, 0, 0, 2))
-      sendRequest(configureResampler(previewResamplerEncoderID, 0, 0, 2))
+    #  sendRequest(configureResampler(airResamplerEncoderID, 0, 0, 2))
+    #  sendRequest(configureResampler(previewResamplerEncoderID, 0, 0, 2))
 
       @audioMixer = Random.rand(@randomSize)
-      audioEncoderID = Random.rand(@randomSize)
+      audioEncoder =  Random.rand(@randomSize)
       audioPathID = Random.rand(@randomSize)
 
       createFilter(@audioMixer, 'audioMixer')
-      createFilter(audioEncoderID, 'audioEncoder')
+      createFilter(audioEncoder, 'audioEncoder')
 
-      createPath(audioPathID, @audioMixer, txId, [audioEncoderID])
+      createPath(audioPathID, @audioMixer, txId, [audioEncoder])
 
+      audioPath = @db.getPath(audioPathID)
+
+      sendRequest(addWorker(@audioMixer, 'bestEffort'))
+      sendRequest(addWorker(audioEncoder, 'bestEffort'))
+
+      #OUTPUT
+
+      sendRequest(@conn.addOutputSession(txId, [audioPath["destinationReader"]], 'audio'))
+      # sendRequest(@conn.addOutputSession(txId, [airPath["destinationReader"]], 'air'))
+      # sendRequest(@conn.addOutputSession(txId, [previewPath["destinationReader"]], 'preview'))
       @started = true
 
       updateDataBase
@@ -166,7 +176,7 @@ module RMixer
     end
 
     def addRTPSession(mixerChannel, sourceIP, port, medium, codec, bandwidth, timeStampFrequency, channels = 0)
-      if uv_check_and_tx(sourceIP, port)
+      #if uv_check_and_tx(sourceIP, port)
         
         #TODO start tx
         
@@ -185,7 +195,6 @@ module RMixer
         end
 
         updateDataBase
-      end
     end
     
     def rmRTPSession(mixerChannel, port, medium, codec, bandwidth, timeStampFrequency, channels = 0)

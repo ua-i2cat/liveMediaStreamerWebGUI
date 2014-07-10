@@ -90,6 +90,8 @@ class MixerAPI < Sinatra::Base
   end
 
    def dashboardAudio
+    settings.mixer.updateDataBase
+    
     if started
       mixerHash = settings.mixer.getAudioMixerState
       liquid :audioMixer, :locals => {
@@ -156,9 +158,13 @@ class MixerAPI < Sinatra::Base
     content_type :html
     error_html do
       if (params[:channelid] == "master")
-        settings.mixer.sendRequest(muteMaster(params[:mixerid].to_i))
+        settings.mixer.sendRequest(
+          settings.mixer.muteMaster(params[:mixerid].to_i)
+        )
       else
-        settings.mixer.sendRequest(muteChannel(params[:mixerid].to_i, params[:channelid].to_i))
+        settings.mixer.sendRequest(
+          settings.mixer.muteChannel(params[:mixerid].to_i, params[:channelid].to_i)
+        )
       end
     end
     redirect '/app'
@@ -167,7 +173,9 @@ class MixerAPI < Sinatra::Base
   post '/app/audiomixer/:mixerid/channel/:channelid/solo' do
     content_type :html
     error_html do
-      settings.mixer.sendRequest(soloChannel(params[:mixerid].to_i, params[:channelid].to_i))
+      settings.mixer.sendRequest(
+        settings.mixer.soloChannel(params[:mixerid].to_i, params[:channelid].to_i)
+      )
     end
     redirect '/app'
   end
@@ -176,9 +184,13 @@ class MixerAPI < Sinatra::Base
     content_type :html
     error_html do
       if (params[:channelid] == "master")
-        settings.mixer.sendRequest(changeMasterVolume(params[:mixerid].to_i, params[:volume].to_f))
+        settings.mixer.sendRequest(
+          settings.mixer.changeMasterVolume(params[:mixerid].to_i, params[:volume].to_f)
+        )
       else
-        settings.mixer.sendRequest(changeChannelVolume(params[:mixerid].to_i, params[:channelid].to_i, params[:volume].to_f))
+        settings.mixer.sendRequest(
+          settings.mixer.changeChannelVolume(params[:mixerid].to_i, params[:channelid].to_i, params[:volume].to_f)
+        )
       end
     end
     redirect '/app'
@@ -200,7 +212,7 @@ class MixerAPI < Sinatra::Base
   post '/app/audiomixer/:mixerID/addSession' do
     content_type :html
     error_html do
-      settings.mixer.addRTPSession(0,
+      settings.mixer.addRTPSession(0, "a",
                                    params[:port].to_i,
                                    "audio", 
                                    params[:codec], 
@@ -286,6 +298,4 @@ class MixerAPI < Sinatra::Base
     end
     redirect '/app'
   end
-
-
 end
