@@ -118,8 +118,7 @@ module RMixer
 
       #OUTPUT
 
-      sendRequest(@conn.addOutputSession(txId, [audioPath["destinationReader"]], 'audio'))
-      sendRequest(@conn.addOutputSession(txId, [airPath["destinationReader"]], 'air'))
+      sendRequest(@conn.addOutputSession(txId, [airPath["destinationReader"], audioPath["destinationReader"]], 'air'))
       sendRequest(@conn.addOutputSession(txId, [previewPath["destinationReader"]], 'preview'))
       @started = true
 
