@@ -91,8 +91,6 @@ module RMixer
       airPath = @db.getPath(airOutputPathID)
       previewPath = @db.getPath(previewOutputPathID)
 
-      sendRequest(@conn.addOutputSession(txId, [airPath["destinationReader"]], 'air'))
-      sendRequest(@conn.addOutputSession(txId, [previewPath["destinationReader"]], 'preview'))
 
       sendRequest(addWorker(@airMixerID, 'bestEffort'))
       sendRequest(addWorker(@previewMixerID, 'bestEffort'))
@@ -104,6 +102,24 @@ module RMixer
       sendRequest(configureResampler(airResamplerEncoderID, 0, 0, 2))
       sendRequest(configureResampler(previewResamplerEncoderID, 0, 0, 2))
 
+      @audioMixer = Random.rand(@randomSize)
+      audioEncoder =  Random.rand(@randomSize)
+      audioPathID = Random.rand(@randomSize)
+
+      createFilter(@audioMixer, 'audioMixer')
+      createFilter(audioEncoder, 'audioEncoder')
+
+      createPath(audioPathID, @audioMixer, txId, [audioEncoder])
+
+      audioPath = @db.getPath(audioPathID)
+
+      sendRequest(addWorker(@audioMixer, 'bestEffort'))
+      sendRequest(addWorker(audioEncoder, 'bestEffort'))
+
+      #OUTPUT
+
+      sendRequest(@conn.addOutputSession(txId, [airPath["destinationReader"], audioPath["destinationReader"]], 'air'))
+      sendRequest(@conn.addOutputSession(txId, [previewPath["destinationReader"]], 'preview'))
       @started = true
 
       updateDataBase
@@ -159,6 +175,10 @@ module RMixer
     end
 
     def addRTPSession(mixerChannel, sourceIP, sourceType, port, medium, codec, bandwidth, timeStampFrequency, channels = 0)
+      
+      #TODO first check if sourceIP already exists inside audio or video list, then give available cport
+      #then check decklink (to check inside audio if embedded or analog)
+      
       case sourceType
       when "ultragrid"
         if uv_check_and_tx(sourceIP, port, 6054)
@@ -191,7 +211,7 @@ module RMixer
             #TODO ADD AUDIO... 
           elsif medium == 'video'
             @db.addVideoChannelPort(mixerChannel, port)
-            createInputPaths(port)
+            createVideoInputPaths(port)
             applyPreviewGrid
           end
 
@@ -200,7 +220,6 @@ module RMixer
       when "other"
         receiver = @db.getFilterByType('receiver')
 
-        @conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels)
         #TODO manage response
         sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
 
@@ -220,17 +239,18 @@ module RMixer
         @db.addInputChannelParams(mixerChannel, chParams) #TODO manage response  
           
         if medium == 'audio'
+			    createAudioInputPath(port)
         elsif medium == 'video'
           @db.addVideoChannelPort(mixerChannel, port)
-          createInputPaths(port)
+          createVideoInputPaths(port)
           applyPreviewGrid
         end
 
         updateDataBase
+        
       else
         puts "Please, select between ultragrid or other type of sources..."
       end
-
     end
     
     def rmRTPSession(mixerChannel, port, medium, codec, bandwidth, timeStampFrequency, channels = 0)
@@ -436,7 +456,7 @@ module RMixer
 
     #NETWORKED PRODUCTION
 
-    def createInputPaths(port)
+    def createVideoInputPaths(port)
       receiver = @db.getFilterByType('receiver')
 
       decoderID = Random.rand(@randomSize)
@@ -459,20 +479,19 @@ module RMixer
       sendRequest(addWorker(previewResamplerID, 'slave'))
 
       sendRequest(addSlavesToWorker(airResamplerID, [previewResamplerID]))
-      # receiver = @db.getFilterByType('receiver')
+    end
 
-      # decoderID = Random.rand(@randomSize)
-      # decoderPathID = Random.rand(@randomSize)
-      # airPathID = Random.rand(@randomSize)
-      # previewPathID = Random.rand(@randomSize)
+    def createAudioInputPath(port)
+      receiver = @db.getFilterByType('receiver')
+      
+      decoderID = Random.rand(@randomSize)
+      decoderPathID = Random.rand(@randomSize)
 
-      # createFilter(decoderID, 'videoDecoder')
+      createFilter(decoderID, 'audioDecoder')
 
-      # createPath(decoderPathID, receiver["id"], decoderID, [], {:orgWriterId => port})
-      # createPath(airPathID, decoderID, @airMixerID, [], {:dstReaderId => port})
-      # createPath(previewPathID, decoderID, @previewMixerID, [], {:dstReaderId => port, :sharedQueue => true})
+      createPath(decoderPathID, receiver["id"], @audioMixer, [decoderID], {:orgWriterId => port, :dstReaderId => port})
 
-      # sendRequest(addWorker(decoderID, 'bestEffort'))
+      sendRequest(addWorker(decoderID, 'bestEffort'))
     end
 
     def updateInputChannelSize(channelID, size)

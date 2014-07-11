@@ -91,14 +91,15 @@ class MixerAPI < Sinatra::Base
 
    def dashboardAudio
     settings.mixer.updateDataBase
-    #if started
+
+    if started
       mixerHash = settings.mixer.getAudioMixerState
       liquid :audioMixer, :locals => {
           "stateHash" => mixerHash
         }
-   # else
-    ##  liquid :before
-    #end
+    else
+      liquid :before
+    end
   end
 
   # Web App Methods
@@ -108,7 +109,7 @@ class MixerAPI < Sinatra::Base
   end
 
   get '/app' do
-    redirect '/app/videomixer'
+    redirect '/app/audiomixer'
   end
 
   post '/app/start' do
@@ -153,39 +154,49 @@ class MixerAPI < Sinatra::Base
     dashboardExtra("videoMixer")
   end
 
-  post '/app/:mixerid/channel/:channelid/mute' do
+  post '/app/audiomixer/:mixerid/channel/:channelid/mute' do
     content_type :html
     error_html do
       if (params[:channelid] == "master")
-        settings.mixer.muteMaster(params[:mixerid].to_i)
+        settings.mixer.sendRequest(
+          settings.mixer.muteMaster(params[:mixerid].to_i)
+        )
       else
-        settings.mixer.muteChannel(params[:mixerid].to_i, params[:channelid].to_i)
+        settings.mixer.sendRequest(
+          settings.mixer.muteChannel(params[:mixerid].to_i, params[:channelid].to_i)
+        )
       end
     end
-    redirect '/app'
+    redirect '/app/audiomixer'
   end
 
-  post '/app/:mixerid/channel/:channelid/solo' do
+  post '/app/audiomixer/:mixerid/channel/:channelid/solo' do
     content_type :html
     error_html do
-      settings.mixer.soloChannel(params[:mixerid].to_i, params[:channelid].to_i)
+      settings.mixer.sendRequest(
+        settings.mixer.soloChannel(params[:mixerid].to_i, params[:channelid].to_i)
+      )
     end
-    redirect '/app'
+    redirect '/app/audiomixer'
   end
 
-  post '/app/:mixerid/channel/:channelid/changeVolume' do
+  post '/app/audiomixer/:mixerid/channel/:channelid/changeVolume' do
     content_type :html
     error_html do
       if (params[:channelid] == "master")
-        settings.mixer.changeMasterVolume(params[:mixerid].to_i, params[:volume].to_f)
+        settings.mixer.sendRequest(
+          settings.mixer.changeMasterVolume(params[:mixerid].to_i, params[:volume].to_f)
+        )
       else
-        settings.mixer.changeChannelVolume(params[:mixerid].to_i, params[:channelid].to_i, params[:volume].to_f)
+        settings.mixer.sendRequest(
+          settings.mixer.changeChannelVolume(params[:mixerid].to_i, params[:channelid].to_i, params[:volume].to_f)
+        )
       end
     end
-    redirect '/app'
+    redirect '/app/audiomixer'
   end
   
-  post '/app/:mixer_id/:encoder_id/reconfigure' do
+  post '/app/audiomixer/:mixer_id/:encoder_id/reconfigure' do
     content_type :html
     error_html do
       puts params
@@ -195,13 +206,13 @@ class MixerAPI < Sinatra::Base
                                    params[:channels].to_i
                                   )
     end
-    redirect '/app'
+    redirect '/app/audiomixer'
   end
 
-  post '/app/:mixerID/addSession' do
+  post '/app/audiomixer/:mixerID/addSession' do
     content_type :html
     error_html do
-      settings.mixer.addRTPSession(0,
+      settings.mixer.addRTPSession(0, "a",
                                    params[:port].to_i,
                                    "audio", 
                                    params[:codec], 
@@ -210,15 +221,15 @@ class MixerAPI < Sinatra::Base
                                    params[:channels].to_i
                                   )
     end
-    redirect '/app'
+    redirect '/app/audiomixer'
   end
 
-   post '/app/:mixerID/addOutputSession' do
+   post '/app/audiomixer/:mixerID/addOutputSession' do
     content_type :html
     error_html do
       settings.mixer.addOutputSession(params[:mixerID].to_i, params[:sessionName])
     end
-    redirect '/app'
+    redirect '/app/audiomixer'
   end
 
   post '/app/videoMixer/:grid/applyGrid' do
@@ -254,7 +265,7 @@ class MixerAPI < Sinatra::Base
                                    90000
                                   )
     end
-    redirect '/app'
+    redirect '/app/videomixer'
   end
   
   post '/app/videoMixer/:channel/set_input_size' do
@@ -311,7 +322,7 @@ class MixerAPI < Sinatra::Base
       90000
       )
     end
-    redirect '/app'
+    redirect '/app/videomixer'
   end
 
   post '/app/videoMixer/:channel/commute' do
@@ -319,7 +330,7 @@ class MixerAPI < Sinatra::Base
     error_html do
       settings.mixer.commute(params[:channel].to_i)
     end
-    redirect '/app'
+    redirect '/app/videomixer'
   end
 
   post '/app/videoMixer/:channel/fade/:time' do
@@ -327,8 +338,6 @@ class MixerAPI < Sinatra::Base
     error_html do
       settings.mixer.fade(params[:channel].to_i, params[:time].to_i)
     end
-    redirect '/app'
+    redirect '/app/videomixer'
   end
-
-
 end
