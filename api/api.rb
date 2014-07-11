@@ -109,7 +109,7 @@ class MixerAPI < Sinatra::Base
   end
 
   get '/app' do
-    redirect '/app/audiomixer'
+    redirect '/app/videomixer'
   end
 
   post '/app/start' do

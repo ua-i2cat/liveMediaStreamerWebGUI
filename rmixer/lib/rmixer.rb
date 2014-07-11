@@ -67,40 +67,58 @@ module RMixer
     end
 
     def start 
-      # @airMixerID = Random.rand(@randomSize)
-      # @previewMixerID = Random.rand(@randomSize)
-      # airEncoderID = Random.rand(@randomSize)
-      # previewEncoderID = Random.rand(@randomSize)
-      # airResamplerEncoderID = Random.rand(@randomSize)
-      # previewResamplerEncoderID = Random.rand(@randomSize)
-      # airOutputPathID = Random.rand(@randomSize)
-      # previewOutputPathID = Random.rand(@randomSize)
+      @airMixerID = Random.rand(@randomSize)
+      @previewMixerID = Random.rand(@randomSize)
+      airEncoderID = Random.rand(@randomSize)
+      previewEncoderID = Random.rand(@randomSize)
+      airResamplerEncoderID = Random.rand(@randomSize)
+      previewResamplerEncoderID = Random.rand(@randomSize)
+      airOutputPathID = Random.rand(@randomSize)
+      previewOutputPathID = Random.rand(@randomSize)
 
-      # createFilter(@airMixerID, 'videoMixer')
-      # createFilter(@previewMixerID, 'videoMixer')
-      # createFilter(airEncoderID, 'videoEncoder')
-      # createFilter(previewEncoderID, 'videoEncoder')
-      # createFilter(airResamplerEncoderID, 'videoResampler')
-      # createFilter(previewResamplerEncoderID, 'videoResampler')
+      createFilter(@airMixerID, 'videoMixer')
+      createFilter(@previewMixerID, 'videoMixer')
+      createFilter(airEncoderID, 'videoEncoder')
+      createFilter(previewEncoderID, 'videoEncoder')
+      createFilter(airResamplerEncoderID, 'videoResampler')
+      createFilter(previewResamplerEncoderID, 'videoResampler')
 
-      # txId = @db.getFilterByType('transmitter')["id"]
+      txId = @db.getFilterByType('transmitter')["id"]
 
-      # createPath(airOutputPathID, @airMixerID, txId, [airResamplerEncoderID, airEncoderID])
-      # createPath(previewOutputPathID, @previewMixerID, txId, [previewResamplerEncoderID, previewEncoderID])
+      createPath(airOutputPathID, @airMixerID, txId, [airResamplerEncoderID, airEncoderID])
+      createPath(previewOutputPathID, @previewMixerID, txId, [previewResamplerEncoderID, previewEncoderID])
 
-      # airPath = @db.getPath(airOutputPathID)
-      # previewPath = @db.getPath(previewOutputPathID)
+      airPath = @db.getPath(airOutputPathID)
+      previewPath = @db.getPath(previewOutputPathID)
 
+      # sendRequest(addWorker(audioMixerWorker, 'bestEffortMaster'))
+      # sendRequest(addWorker(audioEncoderWorker, 'bestEffortMaster'))
 
-      # sendRequest(addWorker(@airMixerID, 'bestEffort'))
-      # sendRequest(addWorker(@previewMixerID, 'bestEffort'))
+      # @db.addWorker(audioMixerWorker, 'bestEffortMaster', 'audioMixer')
+      # @db.addWorker(audioEncoderWorker, 'bestEffortMaster', 'audioEncoder')
+
+      # sendRequest(addFiltersToWorker(audioMixerWorker, [@audioMixer]))
+      # sendRequest(addFiltersToWorker(audioEncoderWorker, [audioEncoder]))
+
+      # @db.addProcessorToWorker(audioMixerWorker, @audioMixer, 'audioMixer')
+      # @db.addProcessorToWorker(audioEncoderWorker, audioEncoder, 'audioEncoder')
+
+      assignWorker(@airMixerID, 'videoMixer', 'bestEffortMaster')
+      assignWorker(@previewMixerID, 'videoMixer', 'bestEffortMaster')
+      assignWorker(airEncoderID, 'videoEncoder', 'cFramerateMaster')
+      assignWorker(previewEncoderID, 'videoEncoder', 'cFramerateMaster')
+      assignWorker(airResamplerEncoderID, 'videoResampler', 'bestEffortMaster')
+      assignWorker(previewResamplerEncoderID, 'videoResampler', 'bestEffortMaster')
+
+      sendRequest(configureResampler(airResamplerEncoderID, 0, 0, 2))
+      sendRequest(configureResampler(previewResamplerEncoderID, 0, 0, 2))
+
+      # sendRequest(addWorker(@airMixerID, 'bestEffortMaster'))
+      # sendRequest(addWorker(@previewMixerID, 'bestEffortMaster'))
       # sendRequest(addWorker(airEncoderID, 'bestEffort'))
       # sendRequest(addWorker(previewEncoderID, 'bestEffort'))
-      # sendRequest(addWorker(airResamplerEncoderID, 'bestEffort'))
-      # sendRequest(addWorker(previewResamplerEncoderID, 'bestEffort'))
-      
-      # sendRequest(configureResampler(airResamplerEncoderID, 0, 0, 2))
-      # sendRequest(configureResampler(previewResamplerEncoderID, 0, 0, 2))
+      # sendRequest(addWorker(airResamplerEncoderID, 'bestEffortMaster'))
+      # sendRequest(addWorker(previewResamplerEncoderID, 'bestEffortMaster'))
 
       @audioMixer = Random.rand(@randomSize)
       audioEncoder =  Random.rand(@randomSize)
@@ -111,28 +129,27 @@ module RMixer
       createFilter(@audioMixer, 'audioMixer')
       createFilter(audioEncoder, 'audioEncoder')
 
-      txId = @db.getFilterByType('transmitter')["id"]
-      createPath(audioPathID, @audioMixer, txId, [audioEncoder])
+      # createPath(audioPathID, @audioMixer, txId, [audioEncoder])
 
-      audioPath = @db.getPath(audioPathID)
+      # audioPath = @db.getPath(audioPathID)
 
-      sendRequest(addWorker(audioMixerWorker, 'bestEffortMaster'))
-      sendRequest(addWorker(audioEncoderWorker, 'bestEffortMaster'))
+      # sendRequest(addWorker(audioMixerWorker, 'bestEffortMaster'))
+      # sendRequest(addWorker(audioEncoderWorker, 'bestEffortMaster'))
 
-      @db.addWorker(audioMixerWorker, 'bestEffortMaster', 'audioMixer')
-      @db.addWorker(audioEncoderWorker, 'bestEffortMaster', 'audioEncoder')
+      # @db.addWorker(audioMixerWorker, 'bestEffortMaster', 'audioMixer')
+      # @db.addWorker(audioEncoderWorker, 'bestEffortMaster', 'audioEncoder')
 
-      sendRequest(addFiltersToWorker(audioMixerWorker, [@audioMixer]))
-      sendRequest(addFiltersToWorker(audioEncoderWorker, [audioEncoder]))
+      # sendRequest(addFiltersToWorker(audioMixerWorker, [@audioMixer]))
+      # sendRequest(addFiltersToWorker(audioEncoderWorker, [audioEncoder]))
 
-      @db.addProcessorToWorker(audioMixerWorker, @audioMixer, 'audioMixer')
-      @db.addProcessorToWorker(audioEncoderWorker, audioEncoder, 'audioEncoder')
+      # @db.addProcessorToWorker(audioMixerWorker, @audioMixer, 'audioMixer')
+      # @db.addProcessorToWorker(audioEncoderWorker, audioEncoder, 'audioEncoder')
 
-      #OUTPUT
+      # #OUTPUT
 
-      sendRequest(@conn.addOutputSession(txId, [audioPath["destinationReader"]], 'audio'))
-    #  sendRequest(@conn.addOutputSession(txId, [airPath["destinationReader"], audioPath["destinationReader"]], 'air'))
-    #  sendRequest(@conn.addOutputSession(txId, [previewPath["destinationReader"]], 'preview'))
+      # sendRequest(@conn.addOutputSession(txId, [audioPath["destinationReader"]], 'audio'))
+      sendRequest(@conn.addOutputSession(txId, [airPath["destinationReader"]], 'air'))
+      sendRequest(@conn.addOutputSession(txId, [previewPath["destinationReader"]], 'preview'))
       @started = true
 
       updateDataBase
@@ -245,7 +262,7 @@ module RMixer
         #   :vbcc => false
         # }  
         
-        # @db.addInputChannelParams(mixerChannel, chParams) #TODO manage response  
+        #@db.addInputChannelParams(mixerChannel, chParams) #TODO manage response  
           
         if medium == 'audio'
 			    createAudioInputPath(port)
@@ -289,7 +306,7 @@ module RMixer
         unless processorLimit != 0 and processorLimit >= w["processors"].size
           sendRequest(addFiltersToWorker(w["id"], [filterId]))
           @db.addProcessorToWorker(w["id"], filterId, filterType)
-          return
+          return w["id"]
         end
       end
 
@@ -298,6 +315,7 @@ module RMixer
       @db.addWorker(newWorker, workerType, filterType)
       sendRequest(addFiltersToWorker(newWorker, [filterId]))
       @db.addProcessorToWorker(newWorker, filterId, filterType)
+      return newWorker
     end
 
     # Video methods
@@ -499,11 +517,11 @@ module RMixer
       createPath(airPathID, decoderID, @airMixerID, [airResamplerID], {:dstReaderId => port})
       createPath(previewPathID, decoderID, @previewMixerID, [previewResamplerID], {:dstReaderId => port, :sharedQueue => true})
 
-      sendRequest(addWorker(decoderID, 'bestEffort'))
-      sendRequest(addWorker(airResamplerID, 'master'))
-      sendRequest(addWorker(previewResamplerID, 'slave'))
+      assignWorker(decoderID, 'videoDecoder', 'bestEffortMaster')
+      master = assignWorker(airResamplerID, 'videoResampler', 'bestEffortMaster')
+      slave = assignWorker(previewResamplerID, 'videoResampler', 'bestEffortSlave')
 
-      sendRequest(addSlavesToWorker(airResamplerID, [previewResamplerID]))
+      sendRequest(addSlavesToWorker(master, [slave]))
     end
 
     def createAudioInputPath(port)
