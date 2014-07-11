@@ -93,15 +93,15 @@
                           <strong>Frame rate</strong>
                         </div>
                         <div class="col-md-4 text-center">
-                          {{ channel.fps }}
+                          {{ channel.fps }} fps
                         </div>
                       </div>
                       <div class="col-md-5 text-center {% if channel.vbcc %} is-disabled {% endif %}">
                         <form class="btn-group" action="/app/videoMixer/{{forloop.index}}/set_input_fps" method="post">
 	                        <div class="btn-group">
-	                          <button type="submit" class="btn btn-default" name="fps" value="H">H</button>
-	                          <button type="submit" class="btn btn-default" name="fps" value="M">M</button>
-	                          <button type="submit" class="btn btn-default" name="fps" value="L">L</button>
+	                          <button type="submit" class="btn btn-default {% if channel.fps == 'H' %}active{% endif %}" name="fps" value="H">H</button>
+	                          <button type="submit" class="btn btn-default {% if channel.fps == 'M' %}active{% endif %}" name="fps" value="M">M</button>
+	                          <button type="submit" class="btn btn-default {% if channel.fps == 'L' %}active{% endif %}" name="fps" value="L">L</button>
 	                        </div>
                       	</form>
                       </div>
@@ -109,18 +109,18 @@
                     <div class="row">
                       <div class="col-md-7">
                         <div class="col-md-7 text-center">
-                          <strong>Size</strong>
+                          <center><strong>Size</strong></center>
                         </div>
                         <div class="col-md-5 text-center">
-                          {{ channel.size }}
+                          <center>{{ channel.size }}</center>
                         </div>
                       </div>
                       <div class="col-md-5 text-center {% if channel.vbcc %} is-disabled {% endif %}">
                        	<form class="btn-group" action="/app/videoMixer/{{forloop.index}}/set_input_size" method="post">
 	                        <div class="btn-group">
-	                          <button type="submit" class="btn btn-default" name="size" value="H">H</button>
-	                          <button type="submit" class="btn btn-default" name="size" value="M">M</button>
-	                          <button type="submit" class="btn btn-default" name="size" value="L">L</button>
+	                          <button type="submit" class="btn btn-default {% if channel.size == 'H' %}active{% endif %}" name="size" value="H">H</button>
+	                          <button type="submit" class="btn btn-default {% if channel.size == 'M' %}active{% endif %}" name="size" value="M">M</button>
+	                          <button type="submit" class="btn btn-default {% if channel.size == 'L' %}active{% endif %}" name="size" value="L">L</button>
 	                        </div>
                         </form>
                       </div>
@@ -131,15 +131,15 @@
                           <strong>Bitrate</strong>
                         </div>
                         <div class="col-md-4 text-center">
-                          {{ channel.br }}
+                          {{ channel.br }} kbps
                         </div>
                       </div>
                       <div class="col-md-5 text-center {% if channel.vbcc %} is-disabled {% endif %}">
                        	<form class="btn-group" action="/app/videoMixer/{{forloop.index}}/set_input_br" method="post">
 	                        <div class="btn-group">
-	                          <button type="submit" class="btn btn-default" name="br" value="H">H</button>
-	                          <button type="submit" class="btn btn-default" name="br" value="M">M</button>
-	                          <button type="submit" class="btn btn-default" name="br" value="L">L</button>
+	                          <button type="submit" class="btn btn-default {% if channel.br == 'H' %}active{% endif %}" name="br" value="H">H</button>
+	                          <button type="submit" class="btn btn-default {% if channel.br == 'M' %}active{% endif %}" name="br" value="M">M</button>
+	                          <button type="submit" class="btn btn-default {% if channel.br == 'L' %}active{% endif %}" name="br" value="L">L</button>
 	                        </div>
                         </form>
                       </div>

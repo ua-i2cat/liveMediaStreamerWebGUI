@@ -494,6 +494,16 @@ module RMixer
       sendRequest(addWorker(decoderID, 'bestEffort'))
     end
 
+    def updateInputChannelVBCC(channelID, mode)
+      chParams = @db.getInputChannelParams(channelID)
+      config_hash = set_vbcc(chParams["ip"], mode)
+      if config_hash.empty?
+        #TODO manage errors
+      else
+        updateInputChannelParams(channelID, config_hash)
+      end
+    end
+    
     def updateInputChannelSize(channelID, size)
       chParams = @db.getInputChannelParams(channelID)
       config_hash = set_size(chParams["ip"], size)
@@ -504,16 +514,25 @@ module RMixer
       end
     end
     
-    def updateInputChannelVBCC(channelID, mode)
+    def updateInputChannelFPS(channelID, fps)
       chParams = @db.getInputChannelParams(channelID)
-      config_hash = set_vbcc(chParams["ip"], mode)
+      config_hash = set_fps(chParams["ip"], fps)
       if config_hash.empty?
         #TODO manage errors
       else
         updateInputChannelParams(channelID, config_hash)
       end
     end
-
+    
+    def updateInputChannelBitRate(channelID, br)
+      chParams = @db.getInputChannelParams(channelID)
+      config_hash = set_br(chParams["ip"], br)
+      if config_hash.empty?
+        #TODO manage errors
+      else
+        updateInputChannelParams(channelID, config_hash)
+      end
+    end
 
     private :doApplyGrid, :updateGrid
 

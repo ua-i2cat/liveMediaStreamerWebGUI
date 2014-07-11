@@ -275,27 +275,27 @@ class MixerAPI < Sinatra::Base
                                               params[:size]
                                               )
     end
-    redirect '/app'
+    redirect '/app/videomixer'
   end
   
   post '/app/videoMixer/:channel/set_input_fps' do
     content_type :html
     error_html do
-      settings.mixer.updateInputChannelSize(params[:channel].to_i,
+      settings.mixer.updateInputChannelFPS(params[:channel].to_i,
                                               params[:fps]
                                               )
     end
-    redirect '/app'
+    redirect '/app/videomixer'
   end
   
   post '/app/videoMixer/:channel/set_input_br' do
     content_type :html
     error_html do
-      settings.mixer.updateInputChannelSize(params[:channel].to_i,
+      settings.mixer.updateInputChannelBitRate(params[:channel].to_i,
                                               params[:br]
                                               )
     end
-    redirect '/app'
+    redirect '/app/videomixer'
   end
   
   post '/app/videoMixer/:channel/set_input_vbcc' do
@@ -306,7 +306,7 @@ class MixerAPI < Sinatra::Base
                                               params[:vbcc]
                                               )
     end
-    redirect '/app'
+    redirect '/app/videomixer'
   end
   
   #TODO
@@ -315,12 +315,12 @@ class MixerAPI < Sinatra::Base
     content_type :html
     error_html do
       settings.mixer.rmRTPSession(params[:channel].to_i,
-      params[:port].to_i,
-      "video",
-      params[:codec],
-      5000,
-      90000
-      )
+                                  params[:port].to_i,
+                                  "video",
+                                  params[:codec],
+                                  5000,
+                                  90000
+                                  )
     end
     redirect '/app/videomixer'
   end

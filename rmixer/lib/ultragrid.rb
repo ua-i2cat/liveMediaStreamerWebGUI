@@ -146,7 +146,7 @@ def set_vbcc(ip, vbcc)
   end
   hash_response = JSON.parse(response, :symbolize_names => true)
   if hash_response[:result]
-    return hash_response[:curr_stream_config]
+    return clean_hash_response(hash_response[:curr_stream_config])
   end
   return {}
 end
@@ -163,7 +163,49 @@ def set_size(ip, size)
   end
   hash_response = JSON.parse(response, :symbolize_names => true)
   if hash_response[:result]
-    return hash_response[:curr_stream_config]
+    return clean_hash_response(hash_response[:curr_stream_config])
   end
   return {}
+end
+
+def set_fps(ip, fps)
+  puts "setting config to #{ip} with fps: #{fps}"
+  begin
+    response = RestClient.post "http://#{ip}/ultragrid/gui/set_fps", :value => fps
+  rescue SignalException => e
+    raise e
+  rescue Exception => e
+    puts "No connection to UltraGrid's machine or selected port in use! Please check far-end UltraGrid."
+    return {}
+  end
+  hash_response = JSON.parse(response, :symbolize_names => true)
+  if hash_response[:result]
+    return clean_hash_response(hash_response[:curr_stream_config])
+  end
+  return {}
+end
+
+def set_br(ip, br)
+  puts "setting config to #{ip} with bitrate: #{br}"
+  begin
+    response = RestClient.post "http://#{ip}/ultragrid/gui/set_br", :value => br
+  rescue SignalException => e
+    raise e
+  rescue Exception => e
+    puts "No connection to UltraGrid's machine or selected port in use! Please check far-end UltraGrid."
+    return {}
+  end
+  hash_response = JSON.parse(response, :symbolize_names => true)
+  if hash_response[:result]
+    return clean_hash_response(hash_response[:curr_stream_config])
+  end
+  return {}
+end
+
+def clean_hash_response(hash_response)
+  hash_response[:curr_size] = hash_response[:curr_size].chomp
+  hash_response[:curr_fps] = hash_response[:curr_fps].chomp
+  hash_response[:curr_br] = hash_response[:curr_br].chomp
+  puts hash_response
+  return hash_response
 end
