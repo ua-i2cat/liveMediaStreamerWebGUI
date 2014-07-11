@@ -78,11 +78,13 @@
 				</table>
               </div>
               <div class="panel-body">
-                <div class="row">
+                <div class="row {% if channel.sourceType == 'other' %} is-disabled {% endif %}">
                   <div class="col-md-10">
                     <div class="row">
                       <div class="col-md-5 col-md-offset-7">
-                        <button type="button" class="btn btn-default btn-block">Auto</button>
+                        <form class="btn-group" action="/app/videoMixer/{{forloop.index}}/set_input_vbcc" method="post">
+                        	<button style="width:112px;" type="submit" class="btn btn-default btn-block" name="vbcc" value="{% if channel.vbcc %}manual{% else %}auto{% endif %}">{% if channel.vbcc %} Manual {% else %} Auto {% endif %}</button>
+                        </form>
                       </div>
                     </div>
                     <div class="row">
@@ -91,15 +93,17 @@
                           <strong>Frame rate</strong>
                         </div>
                         <div class="col-md-4 text-center">
-                          25
+                          {{ channel.fps }}
                         </div>
                       </div>
-                      <div class="col-md-5 text-center">
-                        <div class="btn-group">
-                          <button type="button" class="btn btn-default">H</button>
-                          <button type="button" class="btn btn-default">M</button>
-                          <button type="button" class="btn btn-default">L</button>
-                        </div>
+                      <div class="col-md-5 text-center {% if channel.vbcc %} is-disabled {% endif %}">
+                        <form class="btn-group" action="/app/videoMixer/{{forloop.index}}/set_input_fps" method="post">
+	                        <div class="btn-group">
+	                          <button type="submit" class="btn btn-default" name="fps" value="H">H</button>
+	                          <button type="submit" class="btn btn-default" name="fps" value="M">M</button>
+	                          <button type="submit" class="btn btn-default" name="fps" value="L">L</button>
+	                        </div>
+                      	</form>
                       </div>
                     </div>
                     <div class="row">
@@ -108,15 +112,17 @@
                           <strong>Size</strong>
                         </div>
                         <div class="col-md-5 text-center">
-                          1920x1080
+                          {{ channel.size }}
                         </div>
                       </div>
-                      <div class="col-md-5 text-center">
-                        <div class="btn-group">
-                          <button type="button" class="btn btn-default">H</button>
-                          <button type="button" class="btn btn-default">M</button>
-                          <button type="button" class="btn btn-default">L</button>
-                        </div>
+                      <div class="col-md-5 text-center {% if channel.vbcc %} is-disabled {% endif %}">
+                       	<form class="btn-group" action="/app/videoMixer/{{forloop.index}}/set_input_size" method="post">
+	                        <div class="btn-group">
+	                          <button type="submit" class="btn btn-default" name="size" value="H">H</button>
+	                          <button type="submit" class="btn btn-default" name="size" value="M">M</button>
+	                          <button type="submit" class="btn btn-default" name="size" value="L">L</button>
+	                        </div>
+                        </form>
                       </div>
                     </div>
                     <div class="row">
@@ -125,15 +131,17 @@
                           <strong>Bitrate</strong>
                         </div>
                         <div class="col-md-4 text-center">
-                          2000
+                          {{ channel.br }}
                         </div>
                       </div>
-                      <div class="col-md-5 text-center">
-                        <div class="btn-group">
-                          <button type="button" class="btn btn-default">H</button>
-                          <button type="button" class="btn btn-default">M</button>
-                          <button type="button" class="btn btn-default">L</button>
-                        </div>
+                      <div class="col-md-5 text-center {% if channel.vbcc %} is-disabled {% endif %}">
+                       	<form class="btn-group" action="/app/videoMixer/{{forloop.index}}/set_input_br" method="post">
+	                        <div class="btn-group">
+	                          <button type="submit" class="btn btn-default" name="br" value="H">H</button>
+	                          <button type="submit" class="btn btn-default" name="br" value="M">M</button>
+	                          <button type="submit" class="btn btn-default" name="br" value="L">L</button>
+	                        </div>
+                        </form>
                       </div>
                     </div>
                   </div>
@@ -197,7 +205,13 @@
                   </div>
                   <div class = "row">&nbsp;</div>
                   <div class="row">
-                    <div class="col-sm-12 text-center">
+                    <div class="col-sm-6 text-center">
+                      <select class="form-control" name="sourceType">
+                        <option value="ultragrid">ultragrid</option>
+                        <option value="other">other</option>
+                      </select>
+                    </div>
+                    <div class="col-sm-6 text-center">
                       <select class="form-control" name="codec">
                         <option value="H264">H264</option>
                         <option value="VP8">VP8</option>

@@ -246,12 +246,54 @@ class MixerAPI < Sinatra::Base
     error_html do
       settings.mixer.addRTPSession(params[:channel].to_i,
                                    params[:sourceIP],
+                                   params[:sourceType],
                                    params[:port].to_i,
                                    "video", 
                                    params[:codec], 
                                    5000, 
                                    90000
                                   )
+    end
+    redirect '/app'
+  end
+  
+  post '/app/videoMixer/:channel/set_input_size' do
+    content_type :html
+    error_html do
+      settings.mixer.updateInputChannelSize(params[:channel].to_i,
+                                              params[:size]
+                                              )
+    end
+    redirect '/app'
+  end
+  
+  post '/app/videoMixer/:channel/set_input_fps' do
+    content_type :html
+    error_html do
+      settings.mixer.updateInputChannelSize(params[:channel].to_i,
+                                              params[:fps]
+                                              )
+    end
+    redirect '/app'
+  end
+  
+  post '/app/videoMixer/:channel/set_input_br' do
+    content_type :html
+    error_html do
+      settings.mixer.updateInputChannelSize(params[:channel].to_i,
+                                              params[:br]
+                                              )
+    end
+    redirect '/app'
+  end
+  
+  post '/app/videoMixer/:channel/set_input_vbcc' do
+    content_type :html
+    error_html do
+      puts params
+      settings.mixer.updateInputChannelVBCC(params[:channel].to_i,
+                                              params[:vbcc]
+                                              )
     end
     redirect '/app'
   end

@@ -45,3 +45,12 @@ input[type=range].vertical_zoom
     float: none;
     margin: 0 auto;
 }
+
+.is-disabled {
+    opacity: .5;
+    pointer-events: none;
+}	
+.is-enabled {
+    opacity: 1;
+    pointer-events: all;
+}

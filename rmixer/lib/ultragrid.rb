@@ -23,23 +23,22 @@
 require 'socket'
 require 'rest_client'
 
-@@uv_cmd_priority_list = [  "uv -t testcard:640:480:15:UYVY-c libavcodec:codec=H.264 --rtsp-server", #first check if api control errors are working...
-  "uv -t decklink:0:8 -c libavcodec:codec=H.264 --rtsp-server",
+@@uv_cmd_priority_list = ["uv -t decklink:0:8 -c libavcodec:codec=H.264 --rtsp-server",
   "uv -t decklink:0:9 -c libavcodec:codec=H.264 --rtsp-server",
-  "uv -t v4l2 -c libavcodec:codec=H.264 --rtsp-server",
+#  "uv -t v4l2 -c libavcodec:codec=H.264 --rtsp-server",
   "uv -t testcard:1920:1080:20:UYVY -c libavcodec:codec=H.264 --rtsp-server",
   "uv -t testcard:640:480:15:UYVY -c libavcodec:codec=H.264 --rtsp-server"]
   
 @hash_response 
   
-def uv_check_and_tx(ip, port)
+def uv_check_and_tx(ip, port, cport)
   if ip.eql?""
     ip="127.0.0.1"
   end
 
   ip_mixer = local_ip
 
-  puts "\nTrying to set-up and transmit from #{ip_mixer} to mixer port #{port}\n"
+  puts "\nTrying to set-up and transmit from #{ip} to #{ip_mixer} to mixer port #{port}\n"
 
   #first check uv availability (machine and ultragrid inside machine). Then proper configuration
   #1.- check decklink (fullHD, then HD)
@@ -56,7 +55,7 @@ def uv_check_and_tx(ip, port)
   end
 
   @@uv_cmd_priority_list.each { |cmd|
-    replyCmd = "#{cmd} #{ip_mixer} -P#{port}"
+    replyCmd = "#{cmd} --control-port #{cport} #{ip_mixer} -P#{port}"
     puts replyCmd
     begin
       response = RestClient.post "http://#{ip}/ultragrid/gui/check", :mode => 'local', :cmd => replyCmd
@@ -81,6 +80,19 @@ def uv_check_and_tx(ip, port)
   return false
 end
 
+def set_controlport(ip, port)
+  puts "setting port #{port} with following configuration:"
+  begin
+    response = RestClient.post "http://#{ip}/ultragrid/gui/set_controlport", :port => port
+  rescue SignalException => e
+    raise e
+  rescue Exception => e
+    puts "No connection to UltraGrid's machine or selected port in use! Please check far-end UltraGrid."
+    return false
+  end
+  return true
+end
+
 def uv_run(ip, cmd)
   puts "running ultragrid with following configuration:"
   puts cmd
@@ -102,4 +114,56 @@ end
 
 def local_ip
   UDPSocket.open {|s| s.connect("64.233.187.99", 1); s.addr.last}
+end
+
+def getUltraGridParams(ip)
+  puts "getting original ultragrid channel params from: #{ip}"
+  begin
+    response = RestClient.get "http://#{ip}/ultragrid/gui/state"
+  rescue SignalException => e
+    raise e
+  rescue Exception => e
+    puts "No connection to UltraGrid's machine or selected port in use! Please check far-end UltraGrid."
+    return {}
+  end
+  hash_response = JSON.parse(response, :symbolize_names => true)
+  if hash_response[:uv_running]
+    puts "RUNNING!"
+    return hash_response
+  end
+  return {}
+end
+
+def set_vbcc(ip, vbcc)
+  puts "setting config to #{ip} with vbcc: #{vbcc}"
+  begin
+    response = RestClient.post "http://#{ip}/ultragrid/gui/set_vbcc", :mode => vbcc
+  rescue SignalException => e
+    raise e
+  rescue Exception => e
+    puts "No connection to UltraGrid's machine or selected port in use! Please check far-end UltraGrid."
+    return {}
+  end
+  hash_response = JSON.parse(response, :symbolize_names => true)
+  if hash_response[:result]
+    return hash_response[:curr_stream_config]
+  end
+  return {}
+end
+
+def set_size(ip, size)
+  puts "setting config to #{ip} with size: #{size}"
+  begin
+    response = RestClient.post "http://#{ip}/ultragrid/gui/set_size", :value => size
+  rescue SignalException => e
+    raise e
+  rescue Exception => e
+    puts "No connection to UltraGrid's machine or selected port in use! Please check far-end UltraGrid."
+    return {}
+  end
+  hash_response = JSON.parse(response, :symbolize_names => true)
+  if hash_response[:result]
+    return hash_response[:curr_stream_config]
+  end
+  return {}
 end
