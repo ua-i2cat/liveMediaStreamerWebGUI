@@ -160,6 +160,15 @@ module RMixer
       createEvent("addSlavesToWorker", params)
     end
 
+    def addFiltersToWorker(worker, filters)
+      params = {
+        :worker => worker,
+        :filters => filters
+      }
+
+      createEvent("addFiltersToWorker", params)
+    end
+
     #AUDIO METHODS
 
     def changeChannelVolume(filterID, id, volume) 

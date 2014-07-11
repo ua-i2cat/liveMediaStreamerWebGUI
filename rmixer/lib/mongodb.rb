@@ -72,9 +72,11 @@ module RMixer
       db = MongoClient.new(host, port).db(dbname)
       paths = db.collection('paths')
       filters = db.collection('filters')
+      workers = db.collection('workers')
 
       paths.remove
       filters.remove
+      workers.remove
 
       stateHash[:filters].each do |h|
         filters.insert(h)
@@ -83,6 +85,44 @@ module RMixer
       stateHash[:paths].each do |h|
         paths.insert(h)
       end
+
+      stateHash[:workers].each do |h|
+        workers.insert(h)
+      end
+    end
+
+    def getWorkerByType(workerType, filterType)
+      db = MongoClient.new(host, port).db(dbname)
+      workers = db.collection('workers')
+
+      workers.find({:workerType => workerType, :filterType => filterType})
+    end
+
+    def addWorker(id, workerType, filterType)
+      db = MongoClient.new(host, port).db(dbname)
+      workers = db.collection('workers')
+
+      processors = []
+
+      w = {
+        :id => id,
+        :workerType => workerType,
+        :filterType => filterType,
+        :processors => processors
+      }
+
+      workers.insert(w)
+    end
+
+    def addProcessorToWorker(workerId, filterId, filterType)
+      db = MongoClient.new(host, port).db(dbname)
+      workers = db.collection('workers')
+
+      w = workers.find({:id => workerId, :filterType => filterType}).first
+
+      w["processors"] << {"id" => filterId, "type" => filterType}
+
+      workers.update({:id => workerId}, w)
     end
 
     def updateFilter(filter)

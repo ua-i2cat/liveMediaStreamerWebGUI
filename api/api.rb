@@ -212,7 +212,7 @@ class MixerAPI < Sinatra::Base
   post '/app/audiomixer/:mixerID/addSession' do
     content_type :html
     error_html do
-      settings.mixer.addRTPSession(0, "a",
+      settings.mixer.addRTPSession(0, "a", 'other',
                                    params[:port].to_i,
                                    "audio", 
                                    params[:codec], 
