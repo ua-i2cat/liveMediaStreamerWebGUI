@@ -129,9 +129,12 @@ module RMixer
       createFilter(@audioMixer, 'audioMixer')
       createFilter(audioEncoder, 'audioEncoder')
 
-      # createPath(audioPathID, @audioMixer, txId, [audioEncoder])
+      createPath(audioPathID, @audioMixer, txId, [audioEncoder])
 
-      # audioPath = @db.getPath(audioPathID)
+      audioPath = @db.getPath(audioPathID)
+
+      assignWorker(@audioMixer, 'audioMixer', 'bestEffortMaster')
+      assignWorker(audioEncoder, 'audioEncoder', 'bestEffortMaster')
 
       # sendRequest(addWorker(audioMixerWorker, 'bestEffortMaster'))
       # sendRequest(addWorker(audioEncoderWorker, 'bestEffortMaster'))
@@ -148,7 +151,7 @@ module RMixer
       # #OUTPUT
 
       # sendRequest(@conn.addOutputSession(txId, [audioPath["destinationReader"]], 'audio'))
-      sendRequest(@conn.addOutputSession(txId, [airPath["destinationReader"]], 'air'))
+      sendRequest(@conn.addOutputSession(txId, [airPath["destinationReader"], audioPath["destinationReader"]], 'air'))
       sendRequest(@conn.addOutputSession(txId, [previewPath["destinationReader"]], 'preview'))
       @started = true
 
