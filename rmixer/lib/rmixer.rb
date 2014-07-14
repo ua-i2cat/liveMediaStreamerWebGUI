@@ -174,6 +174,33 @@ module RMixer
       end
     end
 
+    def addRTSPSession(mixerChannel, progName, uri, r_id)
+      id = uri.split('/').last
+    #  sendRequest(@conn.addRTSPSession(receiver["id"], progName, uri, id))
+      sendRequest(@conn.addRTSPSession(r_id, progName, uri, id))
+
+      session = {}
+
+      begin
+        sleep(1.0/5.0) #sleep 200 ms
+        stateHash = sendRequest(getState)
+
+        stateHash[:filters].each do |f|
+          if f[:type] == 'receiver' and f[:sessions]
+            f[:sessions].each do |s|
+              if s[:id] == id and s[:subsessions]
+                session = s
+              end
+            end
+          end
+        end
+      end while session.empty?
+
+      puts 'WE HAVE THE SSSEEESSSIONNNN'
+      puts session
+
+    end
+
     def addRTPSession(mixerChannel, sourceIP, sourceType, port, medium, codec, bandwidth, timeStampFrequency, channels = 0)
       
       #TODO first check if sourceIP already exists inside audio or video list, then give available cport

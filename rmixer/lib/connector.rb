@@ -79,10 +79,11 @@ module RMixer
       createEvent("addSession", params, filterID)
     end
 
-    def addRTSPSession (filterID, progName, uri)
+    def addRTSPSession (filterID, progName, uri, id)
       params = {
         :progName => progName,
-        :uri => uri
+        :uri => uri,
+        :id => id
       }
       createEvent("addSession", params, filterID)
     end
