@@ -141,7 +141,7 @@ module RMixer
       createEvent("createPath", params)
     end
 
-    def addWorker(id, type, fps = 0)
+    def addWorker(id, type, fps = 24)
       params = {
         :id => id,
         :type => type,
@@ -272,6 +272,32 @@ module RMixer
       end
 
       createEvent("configure", params, resamplerID)
+    end
+
+    def configureVideoEncoder(encoderId, options = {})
+      params = {}
+
+      if options[:fps]
+        params[:fps] = options[:fps]
+      end
+
+      if options[:gop]
+        params[:gop] = options[:gop]
+      end
+
+      if options[:bitrate]
+        params[:bitrate] = options[:bitrate]
+      end
+
+      if options[:threads]
+        params[:threads] = options[:threads]
+      end
+
+      if options[:annexb]
+        params[:annexb] = options[:annexb]
+      end
+
+      createEvent("configure", params, encoderId)
     end
 
 

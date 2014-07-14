@@ -91,34 +91,19 @@ module RMixer
       airPath = @db.getPath(airOutputPathID)
       previewPath = @db.getPath(previewOutputPathID)
 
-      # sendRequest(addWorker(audioMixerWorker, 'bestEffortMaster'))
-      # sendRequest(addWorker(audioEncoderWorker, 'bestEffortMaster'))
-
-      # @db.addWorker(audioMixerWorker, 'bestEffortMaster', 'audioMixer')
-      # @db.addWorker(audioEncoderWorker, 'bestEffortMaster', 'audioEncoder')
-
-      # sendRequest(addFiltersToWorker(audioMixerWorker, [@audioMixer]))
-      # sendRequest(addFiltersToWorker(audioEncoderWorker, [audioEncoder]))
-
-      # @db.addProcessorToWorker(audioMixerWorker, @audioMixer, 'audioMixer')
-      # @db.addProcessorToWorker(audioEncoderWorker, audioEncoder, 'audioEncoder')
+      airEncoderFPS = 24
 
       assignWorker(@airMixerID, 'videoMixer', 'bestEffortMaster')
       assignWorker(@previewMixerID, 'videoMixer', 'bestEffortMaster')
-      assignWorker(airEncoderID, 'videoEncoder', 'cFramerateMaster')
-      assignWorker(previewEncoderID, 'videoEncoder', 'cFramerateMaster')
+      assignWorker(airEncoderID, 'videoEncoder', 'cFramerateMaster', {:fps => airEncoderFPS})
+      assignWorker(previewEncoderID, 'videoEncoder', 'cFramerateMaster', {:fps => airEncoderFPS/2})
       assignWorker(airResamplerEncoderID, 'videoResampler', 'bestEffortMaster')
       assignWorker(previewResamplerEncoderID, 'videoResampler', 'bestEffortMaster')
 
+      sendRequest(configureVideoEncoder(airEncoderID, {:fps => airEncoderFPS, :bitrate => 3000}))
+      sendRequest(configureVideoEncoder(previewEncoderID, {:fps => airEncoderFPS/2, :bitrate => 3000}))
       sendRequest(configureResampler(airResamplerEncoderID, 0, 0, {:pixelFormat => 2}))
       sendRequest(configureResampler(previewResamplerEncoderID, 0, 0, {:pixelFormat => 2, :discartPeriod => 2}))
-
-      # sendRequest(addWorker(@airMixerID, 'bestEffortMaster'))
-      # sendRequest(addWorker(@previewMixerID, 'bestEffortMaster'))
-      # sendRequest(addWorker(airEncoderID, 'bestEffort'))
-      # sendRequest(addWorker(previewEncoderID, 'bestEffort'))
-      # sendRequest(addWorker(airResamplerEncoderID, 'bestEffortMaster'))
-      # sendRequest(addWorker(previewResamplerEncoderID, 'bestEffortMaster'))
 
       @audioMixer = Random.rand(@randomSize)
       audioEncoder =  Random.rand(@randomSize)
@@ -136,21 +121,8 @@ module RMixer
       assignWorker(@audioMixer, 'audioMixer', 'bestEffortMaster')
       assignWorker(audioEncoder, 'audioEncoder', 'bestEffortMaster')
 
-      # sendRequest(addWorker(audioMixerWorker, 'bestEffortMaster'))
-      # sendRequest(addWorker(audioEncoderWorker, 'bestEffortMaster'))
-
-      # @db.addWorker(audioMixerWorker, 'bestEffortMaster', 'audioMixer')
-      # @db.addWorker(audioEncoderWorker, 'bestEffortMaster', 'audioEncoder')
-
-      # sendRequest(addFiltersToWorker(audioMixerWorker, [@audioMixer]))
-      # sendRequest(addFiltersToWorker(audioEncoderWorker, [audioEncoder]))
-
-      # @db.addProcessorToWorker(audioMixerWorker, @audioMixer, 'audioMixer')
-      # @db.addProcessorToWorker(audioEncoderWorker, audioEncoder, 'audioEncoder')
-
       # #OUTPUT
 
-      # sendRequest(@conn.addOutputSession(txId, [audioPath["destinationReader"]], 'audio'))
       sendRequest(@conn.addOutputSession(txId, [airPath["destinationReader"], audioPath["destinationReader"]], 'air'))
       sendRequest(@conn.addOutputSession(txId, [previewPath["destinationReader"]], 'preview'))
       @started = true
@@ -304,10 +276,11 @@ module RMixer
       updateDataBase
     end
 
-    def assignWorker(filterId, filterType, workerType, options = {},processorLimit = 0)
+    def assignWorker(filterId, filterType, workerType, options = {})
       processorLimit = (options[:processorLimit]) ? options[:processorLimit] : 0
+      fps = (options[:fps]) ? options[:fps] : 24
 
-      @db.getWorkerByType(workerType, filterType).each do |w|
+      @db.getWorkerByType(workerType, filterType, fps).each do |w|
         unless processorLimit != 0 and processorLimit >= w["processors"].size
           sendRequest(addFiltersToWorker(w["id"], [filterId]))
           @db.addProcessorToWorker(w["id"], filterId, filterType)
@@ -317,7 +290,7 @@ module RMixer
 
       newWorker = Random.rand(@randomSize)
       sendRequest(addWorker(newWorker, workerType))
-      @db.addWorker(newWorker, workerType, filterType)
+      @db.addWorker(newWorker, workerType, filterType, fps)
       sendRequest(addFiltersToWorker(newWorker, [filterId]))
       @db.addProcessorToWorker(newWorker, filterId, filterType)
       return newWorker
