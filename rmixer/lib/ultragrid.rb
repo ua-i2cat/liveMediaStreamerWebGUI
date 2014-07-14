@@ -231,10 +231,10 @@ def clean_and_set_hash_response(hash_response)
   when "H"
     hash_response[:curr_fps_value] = hash_response[:o_fps].to_f.round(2)
   when "M"
-    fpsM = (hash_response[:o_fps].to_f / 2).round(2)
+    fpsM = 20 #(hash_response[:o_fps].to_f / 2).round(2)
     hash_response[:curr_fps_value] = "#{fpsM}"
   when "L"
-    fpsL = (hash_response[:o_fps].to_f / 4).round(2)
+    fpsL = 15 #(hash_response[:o_fps].to_f / 4).round(2)
     hash_response[:curr_fps_value] = "#{fpsL}"
   else
     puts "error when applying current stream size config"
@@ -244,10 +244,10 @@ def clean_and_set_hash_response(hash_response)
   when "H"
     hash_response[:curr_br_value] = hash_response[:o_br].to_f.round(2)
   when "M"
-    brM = (hash_response[:o_br].to_f / 2).round(2)
+    brM = 1500 #(hash_response[:o_br].to_f / 2).round(2)
     hash_response[:curr_br_value] = "#{brM}"
   when "L"
-    brL = (hash_response[:o_br].to_f / 4).round(2)
+    brL = 600  #(hash_response[:o_br].to_f / 4).round(2)
     hash_response[:curr_br_value] = "#{brL}"
   else
     puts "error when applying current stream size config"

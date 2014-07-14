@@ -175,10 +175,18 @@ module RMixer
     end
 
     def addRTPSession(mixerChannel, sourceIP, sourceType, port, medium, codec, bandwidth, timeStampFrequency, channels = 0)
-      
+      puts mixerChannel
+      puts sourceIP
+      puts sourceType
+      puts port
+      puts medium
+      puts codec
+      puts bandwidth
+      puts timeStampFrequency
+      puts channels
       #TODO first check if sourceIP already exists inside audio or video list, then give available cport
       #then check decklink (to check inside audio if embedded or analog)
-      
+      return if port == 0
       case sourceType
       when "ultragrid"
         if uv_check_and_tx(sourceIP, port, 6054)
@@ -191,34 +199,38 @@ module RMixer
           puts "error setting control port" if !set_controlport(sourceIP, 6054)
             
           orig_chParams = getUltraGridParams(sourceIP)
+          if !orig_chParams.empty?
             
-          chParams = {
-            :ip => sourceIP.to_s,
-            :sourceType => sourceType,
-            :size_val => !orig_chParams.empty? ? orig_chParams[:o_size]: "",
-            :fps_val => !orig_chParams.empty? ? orig_chParams[:o_fps]: "",
-            :br_val => !orig_chParams.empty? ? orig_chParams[:o_br]: "",
-            :size => "H",
-            :fps => "H",
-            :br => "H",
-            :vbcc => false
-          }  
-          
-          puts "\n\nADDING NEW ULTRAGRID CHANNEL PARAMS TO DB:"  
-          puts chParams
-          puts "\n\n"  
+            puts "UltraGrid has crashed... check source!"
+            
+            chParams = {
+              :ip => sourceIP.to_s,
+              :sourceType => sourceType,
+              :size_val => !orig_chParams.empty? ? orig_chParams[:o_size]: "",
+              :fps_val => !orig_chParams.empty? ? orig_chParams[:o_fps].to_f.round(2): "",
+              :br_val => !orig_chParams.empty? ? orig_chParams[:o_br].to_f.round(2): "",
+              :size => "H",
+              :fps => "H",
+              :br => "H",
+              :vbcc => false
+            }
 
-          @db.addInputChannelParams(mixerChannel, chParams) #TODO manage response
-            
-          if medium == 'audio'
-            #TODO ADD AUDIO... 
-          elsif medium == 'video'
-            @db.addVideoChannelPort(mixerChannel, port)
-            createVideoInputPaths(port)
-            applyPreviewGrid
+            puts "\n\nADDING NEW ULTRAGRID CHANNEL PARAMS TO DB:"
+            puts chParams
+            puts "\n\n"
+
+            @db.addInputChannelParams(mixerChannel, chParams) #TODO manage response
+
+            if medium == 'audio'
+              #TODO ADD AUDIO...
+            elsif medium == 'video'
+              @db.addVideoChannelPort(mixerChannel, port)
+              createVideoInputPaths(port)
+              applyPreviewGrid
+            end
+
+            updateDataBase
           end
-
-          updateDataBase
         end
       when "other"
         receiver = @db.getFilterByType('receiver')
