@@ -110,8 +110,8 @@ module RMixer
       assignWorker(airResamplerEncoderID, 'videoResampler', 'bestEffortMaster')
       assignWorker(previewResamplerEncoderID, 'videoResampler', 'bestEffortMaster')
 
-      sendRequest(configureResampler(airResamplerEncoderID, 0, 0, 2))
-      sendRequest(configureResampler(previewResamplerEncoderID, 0, 0, 2))
+      sendRequest(configureResampler(airResamplerEncoderID, 0, 0, {:pixelFormat => 2}))
+      sendRequest(configureResampler(previewResamplerEncoderID, 0, 0, {:pixelFormat => 2, :discartPeriod => 2}))
 
       # sendRequest(addWorker(@airMixerID, 'bestEffortMaster'))
       # sendRequest(addWorker(@previewMixerID, 'bestEffortMaster'))
@@ -304,7 +304,9 @@ module RMixer
       updateDataBase
     end
 
-    def assignWorker(filterId, filterType, workerType, processorLimit = 0)
+    def assignWorker(filterId, filterType, workerType, options = {},processorLimit = 0)
+      processorLimit = (options[:processorLimit]) ? options[:processorLimit] : 0
+
       @db.getWorkerByType(workerType, filterType).each do |w|
         unless processorLimit != 0 and processorLimit >= w["processors"].size
           sendRequest(addFiltersToWorker(w["id"], [filterId]))

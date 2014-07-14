@@ -257,14 +257,18 @@ module RMixer
       createEvent("configChannel", params, mixerId)
     end
 
-    def configureResampler(resamplerID, width, height, pixelFormat = -1)
+    def configureResampler(resamplerID, width, height, options = {})
       params = {
         :width => width,
         :height => height
       }
 
-      if pixelFormat >= 0
-        params[:pixelFormat] = pixelFormat
+      if options[:pixelFormat]
+        params[:pixelFormat] = options[:pixelFormat]
+      end
+
+      if options[:discartPeriod]
+        params[:discartPeriod] = options[:discartPeriod]
       end
 
       createEvent("configure", params, resamplerID)
