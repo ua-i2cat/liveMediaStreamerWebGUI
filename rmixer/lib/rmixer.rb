@@ -281,7 +281,7 @@ module RMixer
       fps = (options[:fps]) ? options[:fps] : 24
 
       @db.getWorkerByType(workerType, filterType, fps).each do |w|
-        unless processorLimit != 0 and processorLimit >= w["processors"].size
+        if processorLimit == 0 || processorLimit > w["processors"].size
           sendRequest(addFiltersToWorker(w["id"], [filterId]))
           @db.addProcessorToWorker(w["id"], filterId, filterType)
           return w["id"]
