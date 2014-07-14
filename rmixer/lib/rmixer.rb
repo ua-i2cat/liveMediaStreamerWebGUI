@@ -495,9 +495,9 @@ module RMixer
       createPath(airPathID, decoderID, @airMixerID, [airResamplerID], {:dstReaderId => port})
       createPath(previewPathID, decoderID, @previewMixerID, [previewResamplerID], {:dstReaderId => port, :sharedQueue => true})
 
-      assignWorker(decoderID, 'videoDecoder', 'bestEffortMaster')
-      master = assignWorker(airResamplerID, 'videoResampler', 'bestEffortMaster')
-      slave = assignWorker(previewResamplerID, 'videoResampler', 'bestEffortSlave')
+      assignWorker(decoderID, 'videoDecoder', 'bestEffortMaster', {:processorLimit => 2})
+      master = assignWorker(airResamplerID, 'videoResampler', 'bestEffortMaster', {:processorLimit => 2})
+      slave = assignWorker(previewResamplerID, 'videoResampler', 'bestEffortSlave', {:processorLimit => 2})
 
       sendRequest(addSlavesToWorker(master, [slave]))
     end
