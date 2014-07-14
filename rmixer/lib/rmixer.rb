@@ -195,9 +195,12 @@ module RMixer
           chParams = {
             :ip => sourceIP.to_s,
             :sourceType => sourceType,
-            :size => !orig_chParams.empty? ? orig_chParams[:o_size]: "",
-            :fps => !orig_chParams.empty? ? orig_chParams[:o_fps]: "",
-            :br => !orig_chParams.empty? ? orig_chParams[:o_br]: "",
+            :size_val => !orig_chParams.empty? ? orig_chParams[:o_size]: "",
+            :fps_val => !orig_chParams.empty? ? orig_chParams[:o_fps]: "",
+            :br_val => !orig_chParams.empty? ? orig_chParams[:o_br]: "",
+            :size => "H",
+            :fps => "H",
+            :br => "H",
             :vbcc => false
           }  
           
@@ -229,6 +232,9 @@ module RMixer
           :size => "",
           :fps => "",
           :br => "",
+          :size_val => "",
+          :fps_val => "",
+          :br_val => "",
           :vbcc => false
         }  
         

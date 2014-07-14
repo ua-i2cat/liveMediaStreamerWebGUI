@@ -93,7 +93,7 @@
                           <strong>Frame rate</strong>
                         </div>
                         <div class="col-md-4 text-center">
-                          {{ channel.fps }} fps
+                          {{ channel.fps_val }} fps
                         </div>
                       </div>
                       <div class="col-md-5 text-center {% if channel.vbcc %} is-disabled {% endif %}">
@@ -112,7 +112,7 @@
                           <center><strong>Size</strong></center>
                         </div>
                         <div class="col-md-5 text-center">
-                          <center>{{ channel.size }}</center>
+                          <center>{{ channel.size_val }}</center>
                         </div>
                       </div>
                       <div class="col-md-5 text-center {% if channel.vbcc %} is-disabled {% endif %}">
@@ -131,7 +131,7 @@
                           <strong>Bitrate</strong>
                         </div>
                         <div class="col-md-4 text-center">
-                          {{ channel.br }} kbps
+                          {{ channel.br_val }} kbps
                         </div>
                       </div>
                       <div class="col-md-5 text-center {% if channel.vbcc %} is-disabled {% endif %}">

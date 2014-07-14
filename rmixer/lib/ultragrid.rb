@@ -28,9 +28,9 @@ require 'rest_client'
   "uv -t v4l2:fmt=YUYV:size=640x480 -c libavcodec:codec=H.264 --rtsp-server",
   "uv -t testcard:1920:1080:20:UYVY -c libavcodec:codec=H.264 --rtsp-server",
   "uv -t testcard:640:480:15:UYVY -c libavcodec:codec=H.264 --rtsp-server"]
-  
-@hash_response 
-  
+
+@hash_response
+
 def uv_check_and_tx(ip, port, cport)
   if ip.eql?""
     ip="127.0.0.1"
@@ -72,11 +72,11 @@ def uv_check_and_tx(ip, port, cport)
       break if uv_run(ip,replyCmd)
     end
   }
-  
+
   if @hash_response[:uv_running]
     return true
   end
-  
+
   return false
 end
 
@@ -94,6 +94,7 @@ def set_controlport(ip, port)
 end
 
 def uv_run(ip, cmd)
+  sleep 1
   puts "running ultragrid with following configuration:"
   puts cmd
   begin
@@ -146,7 +147,7 @@ def set_vbcc(ip, vbcc)
   end
   hash_response = JSON.parse(response, :symbolize_names => true)
   if hash_response[:result]
-    return clean_hash_response(hash_response[:curr_stream_config])
+    return clean_and_set_hash_response(hash_response[:curr_stream_config])
   end
   return {}
 end
@@ -163,7 +164,7 @@ def set_size(ip, size)
   end
   hash_response = JSON.parse(response, :symbolize_names => true)
   if hash_response[:result]
-    return clean_hash_response(hash_response[:curr_stream_config])
+    return clean_and_set_hash_response(hash_response[:curr_stream_config])
   end
   return {}
 end
@@ -180,7 +181,7 @@ def set_fps(ip, fps)
   end
   hash_response = JSON.parse(response, :symbolize_names => true)
   if hash_response[:result]
-    return clean_hash_response(hash_response[:curr_stream_config])
+    return clean_and_set_hash_response(hash_response[:curr_stream_config])
   end
   return {}
 end
@@ -197,15 +198,65 @@ def set_br(ip, br)
   end
   hash_response = JSON.parse(response, :symbolize_names => true)
   if hash_response[:result]
-    return clean_hash_response(hash_response[:curr_stream_config])
+    return clean_and_set_hash_response(hash_response[:curr_stream_config])
   end
   return {}
 end
 
-def clean_hash_response(hash_response)
+def clean_and_set_hash_response(hash_response)
   hash_response[:curr_size] = hash_response[:curr_size].chomp
   hash_response[:curr_fps] = hash_response[:curr_fps].chomp
   hash_response[:curr_br] = hash_response[:curr_br].chomp
+
+  case hash_response[:curr_size]
+  when "H"
+    hash_response[:curr_size_value] = hash_response[:o_size]
+  when "M"
+    height = hash_response[:o_size].split('x')[1]
+    width = hash_response[:o_size].split('x')[0]
+    heightM = height.to_i / 2
+    widthM = width.to_i / 2
+    hash_response[:curr_size_value] = "#{widthM}x#{heightM}"
+  when "L"
+    height = hash_response[:o_size].split('x')[1]
+    width = hash_response[:o_size].split('x')[0]
+    heightL = height.to_i / 4
+    widthL = width.to_i / 4
+    hash_response[:curr_size_value] = "#{widthL}x#{heightL}"
+  else
+    puts "error when applying current stream size config"
+  end
+
+  case hash_response[:curr_fps]
+  when "H"
+    hash_response[:curr_fps_value] = hash_response[:o_fps].to_f.round(2)
+  when "M"
+    fpsM = (hash_response[:o_fps].to_f / 2).round(2)
+    hash_response[:curr_fps_value] = "#{fpsM}"
+  when "L"
+    fpsL = (hash_response[:o_fps].to_f / 4).round(2)
+    hash_response[:curr_fps_value] = "#{fpsL}"
+  else
+    puts "error when applying current stream size config"
+  end
+
+  case hash_response[:curr_br]
+  when "H"
+    hash_response[:curr_br_value] = hash_response[:o_br].to_f.round(2)
+  when "M"
+    brM = (hash_response[:o_br].to_f / 2).round(2)
+    hash_response[:curr_br_value] = "#{brM}"
+  when "L"
+    brL = (hash_response[:o_br].to_f / 4).round(2)
+    hash_response[:curr_br_value] = "#{brL}"
+  else
+    puts "error when applying current stream size config"
+  end
+  
   puts hash_response
   return hash_response
 end
+
+#TODO MANAGE PORTS FROM SAME IP (RTSP SERVER, AND AUDIO vs VIDEO DISTINGUISHING - FOR DECKLINK TOO -...)
+#TODO SO, manage LIST OF IP used and its usage to (video, audio, another video, another audio...?...)
+

@@ -221,6 +221,9 @@ module RMixer
             ch["size"] = cparams["size"]
             ch["fps"] = cparams["fps"]
             ch["br"] = cparams["br"]
+            ch["size_val"] = cparams["size_val"]
+            ch["fps_val"] = cparams["fps_val"]
+            ch["br_val"] = cparams["br_val"]
             ch["vbcc"] = cparams["vbcc"]
           end
             
@@ -313,6 +316,9 @@ module RMixer
         chParam["size"] = params[:curr_size]
         chParam["fps"] = params[:curr_fps]
         chParam["br"] = params[:curr_br]
+        chParam["size_val"] = params[:curr_size_value]
+        chParam["fps_val"] = params[:curr_fps_value]
+        chParam["br_val"] = params[:curr_br_value]
         chParam["vbcc"] = params[:uv_vbcc]
 
         updatedChannelParams = {
