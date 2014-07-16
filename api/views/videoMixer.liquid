@@ -89,57 +89,57 @@
                     </div>
                     <div class="row">
                       <div class="col-md-7">
-                        <div class="col-md-8 text-center">
+                        <div class="col-md-6 text-center" style="margin-left:-15px;width:110px;">
                           <strong>Frame rate</strong>
                         </div>
-                        <div class="col-md-4 text-center">
-                          {{ channel.fps }}
+                        <div class="col-md-1 text-center" style="margin-left:-30px;width:90px;">
+                          {{ channel.fps_val }} fps
                         </div>
                       </div>
                       <div class="col-md-5 text-center {% if channel.vbcc %} is-disabled {% endif %}">
                         <form class="btn-group" action="/app/videoMixer/{{forloop.index}}/set_input_fps" method="post">
 	                        <div class="btn-group">
-	                          <button type="submit" class="btn btn-default" name="fps" value="H">H</button>
-	                          <button type="submit" class="btn btn-default" name="fps" value="M">M</button>
-	                          <button type="submit" class="btn btn-default" name="fps" value="L">L</button>
+	                          <button type="submit" class="btn btn-default {% if channel.fps == 'H' %}active{% endif %}" name="fps" value="H">H</button>
+	                          <button type="submit" class="btn btn-default {% if channel.fps == 'M' %}active{% endif %}" name="fps" value="M">M</button>
+	                          <button type="submit" class="btn btn-default {% if channel.fps == 'L' %}active{% endif %}" name="fps" value="L">L</button>
 	                        </div>
                       	</form>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-md-7">
-                        <div class="col-md-7 text-center">
-                          <strong>Size</strong>
+                        <div class="col-md-6 text-center" style="margin-left:-15px;width:110px;">
+                          <center><strong>Size</strong></center>
                         </div>
-                        <div class="col-md-5 text-center">
-                          {{ channel.size }}
+                        <div class="col-md-1 text-center" style="margin-left:-35px;width:90px;">
+                          <center>{{ channel.size_val }}</center>
                         </div>
                       </div>
                       <div class="col-md-5 text-center {% if channel.vbcc %} is-disabled {% endif %}">
                        	<form class="btn-group" action="/app/videoMixer/{{forloop.index}}/set_input_size" method="post">
 	                        <div class="btn-group">
-	                          <button type="submit" class="btn btn-default" name="size" value="H">H</button>
-	                          <button type="submit" class="btn btn-default" name="size" value="M">M</button>
-	                          <button type="submit" class="btn btn-default" name="size" value="L">L</button>
+	                          <button type="submit" class="btn btn-default {% if channel.size == 'H' %}active{% endif %}" name="size" value="H">H</button>
+	                          <button type="submit" class="btn btn-default {% if channel.size == 'M' %}active{% endif %}" name="size" value="M">M</button>
+	                          <button type="submit" class="btn btn-default {% if channel.size == 'L' %}active{% endif %}" name="size" value="L">L</button>
 	                        </div>
                         </form>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-md-7">
-                        <div class="col-md-8 text-center">
+                        <div class="col-md-6 text-center" style="margin-left:-20px;width:110px;">
                           <strong>Bitrate</strong>
                         </div>
-                        <div class="col-md-4 text-center">
-                          {{ channel.br }}
+                        <div class="col-md-1 text-center" style="margin-left:-40px;width:120px;">
+                          {{ channel.br_val }} kbps
                         </div>
                       </div>
-                      <div class="col-md-5 text-center {% if channel.vbcc %} is-disabled {% endif %}">
+                      <div class="col-md-5 text-center {% if channel.vbcc %} is-disabled {% endif %}" style="margin-left:0px;"">
                        	<form class="btn-group" action="/app/videoMixer/{{forloop.index}}/set_input_br" method="post">
 	                        <div class="btn-group">
-	                          <button type="submit" class="btn btn-default" name="br" value="H">H</button>
-	                          <button type="submit" class="btn btn-default" name="br" value="M">M</button>
-	                          <button type="submit" class="btn btn-default" name="br" value="L">L</button>
+	                          <button type="submit" class="btn btn-default {% if channel.br == 'H' %}active{% endif %}" name="br" value="H">H</button>
+	                          <button type="submit" class="btn btn-default {% if channel.br == 'M' %}active{% endif %}" name="br" value="M">M</button>
+	                          <button type="submit" class="btn btn-default {% if channel.br == 'L' %}active{% endif %}" name="br" value="L">L</button>
 	                        </div>
                         </form>
                       </div>
@@ -192,7 +192,7 @@
                   	<tr>
                     	<td style="width:250px;">
                     		<div class="col-sm-12 text-center">
-                      			<input type="numeric" class="form-control input-sm" name="sourceIP" placeholder="Source {{ channel }}: IP ">
+                      			<input type="numeric" class="form-control input-sm" name="sourceIP" placeholder="Source IP {{ channel }} (def.: localhost)">
                     		</div>
                     	</td>
                     	<td style="width:250px">
@@ -207,12 +207,14 @@
                   <div class="row">
                     <div class="col-sm-6 text-center">
                       <select class="form-control" name="sourceType">
+                        <option value="none">Source Type</option>
                         <option value="ultragrid">ultragrid</option>
                         <option value="other">other</option>
                       </select>
                     </div>
                     <div class="col-sm-6 text-center">
                       <select class="form-control" name="codec">
+                        <option value="none">Codec</option>
                         <option value="H264">H264</option>
                         <option value="VP8">VP8</option>
                       </select>
@@ -433,5 +435,6 @@
     <script src="/bs/assets/js/jquery.js"></script>
     <script src="/bs/dist/js/bootstrap.min.js"></script>
     <script src="/bs/assets/js/holder.js"></script>
+    <script src="/utils.js"></script>
   </body>
 </html>
