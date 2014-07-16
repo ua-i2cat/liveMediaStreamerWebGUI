@@ -180,6 +180,7 @@ module RMixer
     end
 
     def addRTSPSession(mixerChannel, progName, uri, r_id)
+    #  receiver = @db.getFilterByType('receiver')
       id = uri.split('/').last
     #  sendRequest(@conn.addRTSPSession(receiver["id"], progName, uri, id))
       sendRequest(@conn.addRTSPSession(r_id, progName, uri, id))
@@ -201,9 +202,17 @@ module RMixer
         end
       end while session.empty?
 
-      puts 'WE HAVE THE SSSEEESSSIONNNN'
-      puts session
-
+      chCount = 0
+      session[:subsessions].each do |s|
+        if s[:medium] == 'audio'
+          createAudioInputPath(s[:port])
+        elsif s[:medium] == 'video'
+          @db.addVideoChannelPort(mixerChannel + chCount, s[:port])
+          createVideoInputPaths(s[:port])
+          applyPreviewGrid
+          chCount += 1
+        end
+      end
     end
 
     def addRTPSession(mixerChannel, sourceIP, sourceType, port, medium, codec, bandwidth, timeStampFrequency, channels = 0)
