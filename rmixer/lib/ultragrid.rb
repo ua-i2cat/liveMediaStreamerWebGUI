@@ -23,15 +23,21 @@
 require 'socket'
 require 'rest_client'
 
-@@uv_cmd_priority_list = ["uv -t decklink:0:8 -c libavcodec:codec=H.264 --rtsp-server",
-  "uv -t decklink:0:9 -c libavcodec:codec=H.264 --rtsp-server",
-  "uv -t v4l2:fmt=YUYV:size=640x480 -c libavcodec:codec=H.264 --rtsp-server",
-  "uv -t testcard:1920:1080:20:UYVY -c libavcodec:codec=H.264 --rtsp-server",
-  "uv -t testcard:640:480:15:UYVY -c libavcodec:codec=H.264 --rtsp-server"]
+@@uv_cmd_priority_list = ["uv -t decklink:0:8 -c libavcodec:codec=H.264",
+  "uv -t decklink:0:9 -c libavcodec:codec=H.264",
+  "uv -t v4l2:fmt=YUYV:size=640x480 -c libavcodec:codec=H.264",
+  "uv -t testcard:1920:1080:25:UYVY -c libavcodec:codec=H.264",
+  "uv -t testcard:640:480:25:UYVY -c libavcodec:codec=H.264"]
 
 @hash_response
 
-def uv_check_and_tx(ip, port, cport)
+@@rtspPort = 8548
+@@controlPort = 8546
+
+
+#TODO IMPLEMENT DISTINGUISHING.... (CHID, TYPE, PID, THRD...)
+
+def uv_check_and_tx(ip, port)
   if ip.eql?""
     ip="127.0.0.1"
   end
@@ -45,6 +51,7 @@ def uv_check_and_tx(ip, port, cport)
   #2.- check v4l2
   #3.- check testcard
   #set working cmd by array (@uv_cmd) index
+  @@controlPort = @@controlPort.to_i + 100
   begin
     response = RestClient.post "http://#{ip}/ultragrid/gui/check", :mode => 'local', :cmd => "uv -t testcard:640:480:15:UYVY -c libavcodec:codec=H.264 -P#{port}"
   rescue SignalException => e
@@ -55,7 +62,7 @@ def uv_check_and_tx(ip, port, cport)
   end
 
   @@uv_cmd_priority_list.each { |cmd|
-    replyCmd = "#{cmd} --control-port #{cport} #{ip_mixer} -P#{port}"
+    replyCmd = "#{cmd} --control-port #{@@controlPort} #{ip_mixer} -P#{port}"
     puts replyCmd
     begin
       response = RestClient.post "http://#{ip}/ultragrid/gui/check", :mode => 'local', :cmd => replyCmd
@@ -80,10 +87,10 @@ def uv_check_and_tx(ip, port, cport)
   return false
 end
 
-def set_controlport(ip, port)
-  puts "setting port #{port} with following configuration:"
+def set_controlport(ip)
+  puts "setting port #{@@controlPort} with following configuration:"
   begin
-    response = RestClient.post "http://#{ip}/ultragrid/gui/set_controlport", :port => port
+    response = RestClient.post "http://#{ip}/ultragrid/gui/set_controlport", :port => @@controlPort
   rescue SignalException => e
     raise e
   rescue Exception => e
@@ -96,7 +103,13 @@ end
 def uv_run(ip, cmd)
   sleep 1
   puts "running ultragrid with following configuration:"
+  
+  @@rtspPort = @@rtspPort.to_i + 100
+  
+  cmd << " --rtsp-server=port:#{@@rtspPort}"
   puts cmd
+
+  #execute cmd
   begin
     response = RestClient.post "http://#{ip}/ultragrid/gui/run_uv_cmd", :cmd => cmd
   rescue SignalException => e

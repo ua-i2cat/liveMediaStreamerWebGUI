@@ -175,28 +175,20 @@ module RMixer
     end
 
     def addRTPSession(mixerChannel, sourceIP, sourceType, port, medium, codec, bandwidth, timeStampFrequency, channels = 0)
-      puts mixerChannel
-      puts sourceIP
-      puts sourceType
-      puts port
-      puts medium
-      puts codec
-      puts bandwidth
-      puts timeStampFrequency
-      puts channels
+      #TODO CHECK IF PORT ALREADY OCCUPYED!!!
       #TODO first check if sourceIP already exists inside audio or video list, then give available cport
       #then check decklink (to check inside audio if embedded or analog)
       return if port == 0
       case sourceType
       when "ultragrid"
-        if uv_check_and_tx(sourceIP, port, 6054)
+        if uv_check_and_tx(sourceIP, port)
           receiver = @db.getFilterByType('receiver')
 
           @conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels)
           #TODO manage response
           sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
 
-          puts "error setting control port" if !set_controlport(sourceIP, 6054)
+          puts "error setting control port" if !set_controlport(sourceIP)
             
           orig_chParams = getUltraGridParams(sourceIP)
           if !orig_chParams.empty?
