@@ -179,11 +179,10 @@ module RMixer
       end
     end
 
-    def addRTSPSession(mixerChannel, progName, uri, r_id)
-    #  receiver = @db.getFilterByType('receiver')
+    def addRTSPSession(mixerChannel, progName, uri)
+      receiver = @db.getFilterByType('receiver')
       id = uri.split('/').last
-    #  sendRequest(@conn.addRTSPSession(receiver["id"], progName, uri, id))
-      sendRequest(@conn.addRTSPSession(r_id, progName, uri, id))
+      sendRequest(@conn.addRTSPSession(receiver["id"], progName, uri, id))
 
       session = {}
 
