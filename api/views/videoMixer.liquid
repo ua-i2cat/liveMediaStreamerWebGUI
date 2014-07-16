@@ -89,11 +89,11 @@
                     </div>
                     <div class="row">
                       <div class="col-md-7">
-                        <div class="col-md-8 text-center">
+                        <div class="col-md-6 text-center" style="margin-left:-15px;width:110px;">
                           <strong>Frame rate</strong>
                         </div>
-                        <div class="col-md-4 text-center">
-                          {{ channel.fps }} fps
+                        <div class="col-md-1 text-center" style="margin-left:-30px;width:90px;">
+                          {{ channel.fps_val }} fps
                         </div>
                       </div>
                       <div class="col-md-5 text-center {% if channel.vbcc %} is-disabled {% endif %}">
@@ -108,11 +108,11 @@
                     </div>
                     <div class="row">
                       <div class="col-md-7">
-                        <div class="col-md-7 text-center">
+                        <div class="col-md-6 text-center" style="margin-left:-15px;width:110px;">
                           <center><strong>Size</strong></center>
                         </div>
-                        <div class="col-md-5 text-center">
-                          <center>{{ channel.size }}</center>
+                        <div class="col-md-1 text-center" style="margin-left:-35px;width:90px;">
+                          <center>{{ channel.size_val }}</center>
                         </div>
                       </div>
                       <div class="col-md-5 text-center {% if channel.vbcc %} is-disabled {% endif %}">
@@ -127,14 +127,14 @@
                     </div>
                     <div class="row">
                       <div class="col-md-7">
-                        <div class="col-md-8 text-center">
+                        <div class="col-md-6 text-center" style="margin-left:-20px;width:110px;">
                           <strong>Bitrate</strong>
                         </div>
-                        <div class="col-md-4 text-center">
-                          {{ channel.br }} kbps
+                        <div class="col-md-1 text-center" style="margin-left:-40px;width:120px;">
+                          {{ channel.br_val }} kbps
                         </div>
                       </div>
-                      <div class="col-md-5 text-center {% if channel.vbcc %} is-disabled {% endif %}">
+                      <div class="col-md-5 text-center {% if channel.vbcc %} is-disabled {% endif %}" style="margin-left:0px;"">
                        	<form class="btn-group" action="/app/videoMixer/{{forloop.index}}/set_input_br" method="post">
 	                        <div class="btn-group">
 	                          <button type="submit" class="btn btn-default {% if channel.br == 'H' %}active{% endif %}" name="br" value="H">H</button>
@@ -192,7 +192,7 @@
                   	<tr>
                     	<td style="width:250px;">
                     		<div class="col-sm-12 text-center">
-                      			<input type="numeric" class="form-control input-sm" name="sourceIP" placeholder="Source {{ channel }}: IP ">
+                      			<input type="numeric" class="form-control input-sm" name="sourceIP" placeholder="Source IP {{ channel }} (def.: localhost)">
                     		</div>
                     	</td>
                     	<td style="width:250px">
@@ -207,12 +207,14 @@
                   <div class="row">
                     <div class="col-sm-6 text-center">
                       <select class="form-control" name="sourceType">
+                        <option value="none">Source Type</option>
                         <option value="ultragrid">ultragrid</option>
                         <option value="other">other</option>
                       </select>
                     </div>
                     <div class="col-sm-6 text-center">
                       <select class="form-control" name="codec">
+                        <option value="none">Codec</option>
                         <option value="H264">H264</option>
                         <option value="VP8">VP8</option>
                       </select>
@@ -433,5 +435,6 @@
     <script src="/bs/assets/js/jquery.js"></script>
     <script src="/bs/dist/js/bootstrap.min.js"></script>
     <script src="/bs/assets/js/holder.js"></script>
+    <script src="/utils.js"></script>
   </body>
 </html>

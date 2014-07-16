@@ -83,6 +83,46 @@ module RMixer
       stateHash[:paths].each do |h|
         paths.insert(h)
       end
+
+    end
+
+    def getWorkerByType(workerType, filterType, fps = 24)
+      db = MongoClient.new(host, port).db(dbname)
+      workers = db.collection('workers')
+
+      workers.find({:workerType => workerType, 
+                    :filterType => filterType,
+                    :fps => fps
+                    }
+                  )
+    end
+
+    def addWorker(id, workerType, filterType, fps = 24)
+      db = MongoClient.new(host, port).db(dbname)
+      workers = db.collection('workers')
+
+      processors = []
+
+      w = {
+        :id => id,
+        :workerType => workerType,
+        :filterType => filterType,
+        :processors => processors,
+        :fps => fps
+      }
+
+      workers.insert(w)
+    end
+
+    def addProcessorToWorker(workerId, filterId, filterType)
+      db = MongoClient.new(host, port).db(dbname)
+      workers = db.collection('workers')
+
+      w = workers.find({:id => workerId, :filterType => filterType}).first
+
+      w["processors"] << {"id" => filterId, "type" => filterType}
+
+      workers.update({:id => workerId}, w)
     end
 
     def updateFilter(filter)
@@ -221,6 +261,9 @@ module RMixer
             ch["size"] = cparams["size"]
             ch["fps"] = cparams["fps"]
             ch["br"] = cparams["br"]
+            ch["size_val"] = cparams["size_val"]
+            ch["fps_val"] = cparams["fps_val"]
+            ch["br_val"] = cparams["br_val"]
             ch["vbcc"] = cparams["vbcc"]
           end
             
@@ -313,6 +356,9 @@ module RMixer
         chParam["size"] = params[:curr_size]
         chParam["fps"] = params[:curr_fps]
         chParam["br"] = params[:curr_br]
+        chParam["size_val"] = params[:curr_size_value]
+        chParam["fps_val"] = params[:curr_fps_value]
+        chParam["br_val"] = params[:curr_br_value]
         chParam["vbcc"] = params[:uv_vbcc]
 
         updatedChannelParams = {

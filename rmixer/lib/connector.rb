@@ -142,7 +142,7 @@ module RMixer
       createEvent("createPath", params)
     end
 
-    def addWorker(id, type, fps = 0)
+    def addWorker(id, type, fps = 24)
       params = {
         :id => id,
         :type => type,
@@ -159,6 +159,15 @@ module RMixer
       }
 
       createEvent("addSlavesToWorker", params)
+    end
+
+    def addFiltersToWorker(worker, filters)
+      params = {
+        :worker => worker,
+        :filters => filters
+      }
+
+      createEvent("addFiltersToWorker", params)
     end
 
     #AUDIO METHODS
@@ -249,17 +258,47 @@ module RMixer
       createEvent("configChannel", params, mixerId)
     end
 
-    def configureResampler(resamplerID, width, height, pixelFormat = -1)
+    def configureResampler(resamplerID, width, height, options = {})
       params = {
         :width => width,
         :height => height
       }
 
-      if pixelFormat >= 0
-        params[:pixelFormat] = pixelFormat
+      if options[:pixelFormat]
+        params[:pixelFormat] = options[:pixelFormat]
+      end
+
+      if options[:discartPeriod]
+        params[:discartPeriod] = options[:discartPeriod]
       end
 
       createEvent("configure", params, resamplerID)
+    end
+
+    def configureVideoEncoder(encoderId, options = {})
+      params = {}
+
+      if options[:fps]
+        params[:fps] = options[:fps]
+      end
+
+      if options[:gop]
+        params[:gop] = options[:gop]
+      end
+
+      if options[:bitrate]
+        params[:bitrate] = options[:bitrate]
+      end
+
+      if options[:threads]
+        params[:threads] = options[:threads]
+      end
+
+      if options[:annexb]
+        params[:annexb] = options[:annexb]
+      end
+
+      createEvent("configure", params, encoderId)
     end
 
 

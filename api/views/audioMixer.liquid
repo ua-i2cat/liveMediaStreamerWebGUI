@@ -119,13 +119,28 @@
               <div class = "row">&nbsp;</div>
               <div class="row">
                 <div class="col-sm-12 text-center">
+                  <input type="numeric" class="form-control input-sm" name="sourceIP" id="sourceIP" placeholder="Source IP">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12 text-center">
                   <input type="numeric" class="form-control input-sm" name="port" id="port" placeholder="Port">
                 </div>
               </div>
               <div class = "row">&nbsp;</div>
               <div class="row">
                 <div class="col-sm-12 text-center">
+                  <select class="form-control" name="sourceType">
+                    <option value="none">Src. Type</option>
+                    <option value="ultragrid">ultragrid</option>
+                    <option value="other">other</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12 text-center">
                   <select class="form-control" name="codec">
+                    <option value="none">Codec</option>
                     <option value="pcm">PCM</option>
                     <option value="pcmu">PCMU</option>
                     <option value="opus">OPUS</option>
@@ -137,19 +152,19 @@
               <div class="row">
                 <div class="col-sm-12 text-center">
                   <select class="form-control" name="sampleRate">
-                    <option>Smp. Rate</option>
-                    <option>8000</option>
-                    <option>44100</option>
-                    <option>48000</option>
+                    <option value="none">Smp. Rate</option>
+                    <option value="8000">8000</option>
+                    <option value="44100">44100</option>
+                    <option value="48000">48000</option>
                   </select>
                 </div>
               </div>
               <div class="row">
                 <div class="col-sm-12 text-center">
                   <select class="form-control" name="channels">
-                    <option>Channels</option>
-                    <option>1</option>
-                    <option>2</option>
+                    <option value="none">Channels</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
                   </select>
                 </div>
               </div>

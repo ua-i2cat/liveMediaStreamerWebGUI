@@ -109,7 +109,7 @@ class MixerAPI < Sinatra::Base
   end
 
   get '/app' do
-    redirect '/app/audiomixer'
+    redirect '/app/videomixer'
   end
 
   post '/app/start' do
@@ -212,7 +212,7 @@ class MixerAPI < Sinatra::Base
   post '/app/audiomixer/:mixerID/addSession' do
     content_type :html
     error_html do
-      settings.mixer.addRTPSession(0, "a",
+      settings.mixer.addRTPSession(0, "a", 'other',
                                    params[:port].to_i,
                                    "audio", 
                                    params[:codec], 
