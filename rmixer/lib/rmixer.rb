@@ -100,8 +100,8 @@ module RMixer
       assignWorker(airResamplerEncoderID, 'videoResampler', 'bestEffortMaster')
       assignWorker(previewResamplerEncoderID, 'videoResampler', 'bestEffortMaster')
 
-      sendRequest(configureVideoEncoder(airEncoderID, {:fps => airEncoderFPS, :bitrate => 3000}))
-      sendRequest(configureVideoEncoder(previewEncoderID, {:fps => airEncoderFPS/2, :bitrate => 3000}))
+      sendRequest(configureVideoEncoder(airEncoderID, {:bitrate => 3000}))
+      sendRequest(configureVideoEncoder(previewEncoderID, {:bitrate => 3000}))
       sendRequest(configureResampler(airResamplerEncoderID, 0, 0, {:pixelFormat => 2}))
       sendRequest(configureResampler(previewResamplerEncoderID, 0, 0, {:pixelFormat => 2}))
 
@@ -546,7 +546,7 @@ module RMixer
 
       assignWorker(decoderID, 'videoDecoder', 'bestEffortMaster', {:processorLimit => 2})
       master = assignWorker(airResamplerID, 'videoResampler', 'bestEffortMaster', {:processorLimit => 2})
-      slave = assignWorker(previewResamplerID, 'videoResampler', 'bestEffortSlave', {:processorLimit => 2})
+      slave = assignWorker(previewResamplerID, 'videoResampler', 'slave', {:processorLimit => 2})
      
       sendRequest(addSlavesToWorker(master, [slave]))
       sendRequest(configureResampler(previewResamplerID, 0, 0, {:discartPeriod => 2}))
