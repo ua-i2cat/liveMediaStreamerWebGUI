@@ -154,6 +154,14 @@ class MixerAPI < Sinatra::Base
     dashboardExtra("videoMixer")
   end
 
+  post '/app/addRTSPSession' do 
+    content_type :html
+    error_html do
+        settings.mixer.addRTSPSession(params[:channel].to_i, 'mixer', params[:uri])
+    end
+    redirect '/app/videomixer'
+  end
+
   post '/app/audiomixer/:mixerid/channel/:channelid/mute' do
     content_type :html
     error_html do
