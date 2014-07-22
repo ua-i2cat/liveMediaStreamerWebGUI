@@ -244,9 +244,14 @@ module RMixer
 
       grid = grids.find(:id => grid).first
       mixer = filters.find(:id => mixerID).first
+      transmitter = filters.find(:type=>"transmitter").first
       
       mixerHash = {"grid" => grid}
       mixerHash["maxChannels"] = 8
+      if transmitter["sessions"]
+        mixerHash["sessions"] = transmitter["sessions"]
+      end
+
       if mixer["channels"]
         mixer["channels"].each do |ch|
           channelPort = videoChannelPort.find(:port => ch["id"]).first
