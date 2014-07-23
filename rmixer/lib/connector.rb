@@ -59,6 +59,12 @@ module RMixer
       @eventArray = []
     end
 
+    def reset
+      params = {}
+
+      createEvent("reset", params)
+    end
+
     def addRTPSession(filterID, port, medium, codec, bandwidth, timeStampFrequency, channels)
       subsessions = []
       subsession = {
@@ -128,6 +134,14 @@ module RMixer
       createEvent("createFilter", params)
     end
 
+    def removeFilter(id)
+      params = {
+        :id => id
+      }
+
+      createEvent("removeFilter", params)
+    end
+
     def createPath(id, orgFilterId, dstFilterId, orgWriterId, dstReaderId, midFiltersIds, sharedQueue = false)
       params = {
         :id => id,
@@ -142,6 +156,14 @@ module RMixer
       createEvent("createPath", params)
     end
 
+    def removePath(id)
+      params = {
+        :id => id
+      }
+
+      createEvent("removePath", params)
+    end
+
     def addWorker(id, type, fps = 24)
       params = {
         :id => id,
@@ -150,6 +172,14 @@ module RMixer
       }
 
       createEvent("addWorker", params)
+    end
+
+    def removeWorker(id)
+      params = {
+        :id => id
+      }
+
+      createEvent("removeWorker", params)
     end
 
     def addSlavesToWorker(master, slaves)
