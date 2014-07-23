@@ -484,6 +484,8 @@ module RMixer
     def fade(channel, time)
       mixer = getFilter(@airMixerID)
       port = @db.getVideoChannelPort(channel)
+      path = getPathByDestination(@airMixerID, port)
+      resamplerID = path["filters"].first
 
       intervals = (time/@videoFadeInterval)
       deltaOp = 1.0/intervals
@@ -494,6 +496,8 @@ module RMixer
           appendEvent(updateVideoChannel(@airMixerID, ch))
         end
       end
+
+      appendEvent(configureResampler(resamplerID, mixer["width"], mixer["height"]))
 
       intervals.times do |d|
         appendEvent(setPositionSize(@airMixerID, port, 1, 1, 0, 0, 7, d*deltaOp), d*@videoFadeInterval)
