@@ -233,11 +233,29 @@ module RMixer
         timeStampFrequency = params[:sampleRate].to_i
         case sourceType
           when "ultragrid"
-            
+            if @uv.uv_check_and_tx(sourceIP, port, medium, timeStampFrequency, channels)
+              receiver = @db.getFilterByType('receiver')
+              #TODO ADD OPUS SUPPORT IN ULTRAGRID, NOW ONLY PCMU
+              #TODO manage response
+              sendRequest(@conn.addRTPSession(receiver["id"], port, medium, "pcmu", bandwidth, timeStampFrequency, channels))
+
+              puts "error setting control port" if !@uv.set_controlport(sourceIP)
+              chParams = {:ip => sourceIP.to_s,
+                :medium => medium,
+                :sourceType => sourceType
+              }
+              @db.addInputChannelParams(mixerChannel, chParams) #TODO manage response
+              createAudioInputPath(port)
+              updateDataBase
+            end
           when "other"
             receiver = @db.getFilterByType('receiver')
             #TODO manage response
             sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
+            chParams = {:ip => sourceIP.to_s,
+              :medium => medium,
+              :sourceType => sourceType 
+            }
             @db.addInputChannelParams(mixerChannel, chParams) #TODO manage response
             createAudioInputPath(port)
             updateDataBase
@@ -250,10 +268,10 @@ module RMixer
         
         case sourceType
         when "ultragrid"
-          if @uv.uv_check_and_tx(sourceIP, port)
+          if @uv.uv_check_and_tx(sourceIP, port, medium, 0, 0)
             receiver = @db.getFilterByType('receiver')
 
-            @conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels)
+            #@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels)
             #TODO manage response
             sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
 
@@ -267,9 +285,9 @@ module RMixer
               chParams = {
                 :ip => sourceIP.to_s,
                 :sourceType => sourceType,
-                :size_val => !orig_chParams.empty? ? orig_chParams[:o_size]: "",
-                :fps_val => !orig_chParams.empty? ? orig_chParams[:o_fps].to_f.round(2): "",
-                :br_val => !orig_chParams.empty? ? orig_chParams[:o_br].to_f.round(2): "",
+                :size_val => "1920x1080"#!orig_chParams.empty? ? orig_chParams[:o_size]: "",
+                :fps_val => 25#!orig_chParams.empty? ? orig_chParams[:o_fps].to_f.round(2): "",
+                :br_val => 12000#!orig_chParams.empty? ? orig_chParams[:o_br].to_f.round(2): "",
                 :size => "H",
                 :fps => "H",
                 :br => "H",
@@ -279,7 +297,21 @@ module RMixer
               puts "\n\nADDING NEW ULTRAGRID CHANNEL PARAMS TO DB:"
               puts chParams
               puts "\n\n"
-
+              
+              if orig_chParams[:uv_params].include?"embedded"
+                #ADD AUDIO EMBEDDED
+                receiver = @db.getFilterByType('receiver')
+                #TODO manage response
+                sendRequest(@conn.addRTPSession(receiver["id"], port+2, "audio", "pcmu", 5000, 48000, 2))
+                chParams = {:ip => sourceIP.to_s,
+                  :medium => "audio",
+                  :sourceType => "ultragrid" 
+                }
+                @db.addInputChannelParams(0, chParams) #TODO manage response
+                createAudioInputPath(port)
+                updateDataBase
+              end
+              
               @db.addInputChannelParams(mixerChannel, chParams) #TODO manage response
 
               @db.addVideoChannelPort(mixerChannel, port)
