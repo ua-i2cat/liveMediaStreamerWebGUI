@@ -32,8 +32,8 @@ module RMixer
     attr_reader :rtspPort
     attr_reader :controlPort
     def initialize()
-      @uv_video_cmd_priority_list = ["uv -t decklink:0:8 -c libavcodec:codec=H.264 -s embedded --audio-codec u-law",
-        "uv -t decklink:0:9 -c libavcodec:codec=H.264 -s embedded --audio-codec u-law",
+      @uv_video_cmd_priority_list = [#"uv -t decklink:0:8 -c libavcodec:codec=H.264 -s embedded --audio-codec u-law",
+        #"uv -t decklink:0:9 -c libavcodec:codec=H.264 -s embedded --audio-codec u-law",
         "uv -t decklink:0:8 -c libavcodec:codec=H.264",
         "uv -t decklink:0:9 -c libavcodec:codec=H.264",
         #"uv -t v4l2:fmt=YUYV:size=640x480 -c libavcodec:codec=H.264", #TODO ADD FLAG IF V4L2ACTIVE TO CHECK WHEN MANUAL PARAMS SETTING REQUEST
@@ -140,7 +140,7 @@ module RMixer
       end
 
       @uv_audio_cmd_priority_list.each { |cmd|
-        replyCmd = "#{cmd} --control-port #{@controlPort} #{ip_mixer} -P#{port}"
+        replyCmd = "#{cmd} --control-port #{@controlPort} #{ip_mixer} -P44440:44440:#{port}:#{port}"
         puts replyCmd
         begin
           response = RestClient.post "http://#{ip}/ultragrid/gui/check", :mode => 'local', :cmd => replyCmd

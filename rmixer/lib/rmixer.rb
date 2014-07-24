@@ -281,13 +281,15 @@ module RMixer
             if !orig_chParams.empty?
 
               puts "UltraGrid has crashed... check source!"
-
+              orig_chParams[:o_size] = "1920x1080"
+              orig_chParams[:o_fps] = 25
+              orig_chParams[:o_br] = 12200
               chParams = {
                 :ip => sourceIP.to_s,
                 :sourceType => sourceType,
-                :size_val => "1920x1080"#!orig_chParams.empty? ? orig_chParams[:o_size]: "",
-                :fps_val => 25#!orig_chParams.empty? ? orig_chParams[:o_fps].to_f.round(2): "",
-                :br_val => 12000#!orig_chParams.empty? ? orig_chParams[:o_br].to_f.round(2): "",
+                :size_val => !orig_chParams.empty? ? orig_chParams[:o_size]: "",
+                :fps_val => !orig_chParams.empty? ? orig_chParams[:o_fps].to_f.round(2): "",
+                :br_val => !orig_chParams.empty? ? orig_chParams[:o_br].to_f.round(2): "",
                 :size => "H",
                 :fps => "H",
                 :br => "H",
