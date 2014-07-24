@@ -220,14 +220,7 @@ class MixerAPI < Sinatra::Base
   post '/app/audiomixer/:mixerID/addSession' do
     content_type :html
     error_html do
-      settings.mixer.addRTPSession(0, "a", 'other',
-                                   params[:port].to_i,
-                                   "audio", 
-                                   params[:codec], 
-                                   5000, 
-                                   params[:sampleRate].to_i, 
-                                   params[:channels].to_i
-                                  )
+      settings.mixer.addRTPSession("audio", params, 5000, 0)
     end
     redirect '/app/audiomixer'
   end
@@ -263,15 +256,7 @@ class MixerAPI < Sinatra::Base
   post '/app/videoMixer/:channel/addSession' do
     content_type :html
     error_html do
-      settings.mixer.addRTPSession(params[:channel].to_i,
-                                   params[:sourceIP],
-                                   params[:sourceType],
-                                   params[:port].to_i,
-                                   "video", 
-                                   params[:codec], 
-                                   5000, 
-                                   90000
-                                  )
+      settings.mixer.addRTPSession("video", params, 5000, 90000)
     end
     redirect '/app/videomixer'
   end
