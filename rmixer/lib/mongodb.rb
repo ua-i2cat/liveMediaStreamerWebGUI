@@ -83,7 +83,13 @@ module RMixer
       stateHash[:paths].each do |h|
         paths.insert(h)
       end
+    end
 
+    def clear
+      db = MongoClient.new(host, port).db(dbname)
+      db.collection_names.each do |name|
+        db.drop_collection(name)
+      end
     end
 
     def getWorkerByType(workerType, filterType, fps = 24)

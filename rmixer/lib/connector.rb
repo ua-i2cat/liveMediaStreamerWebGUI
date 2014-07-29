@@ -65,6 +65,12 @@ module RMixer
       createEvent("reset", params)
     end
 
+    def stop
+      params = {}
+
+      createEvent("stop", params)
+    end
+
     def addRTPSession(filterID, port, medium, codec, bandwidth, timeStampFrequency, channels)
       subsessions = []
       subsession = {

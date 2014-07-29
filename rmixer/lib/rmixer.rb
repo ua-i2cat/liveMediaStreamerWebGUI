@@ -138,6 +138,12 @@ module RMixer
       updateDataBase
     end
 
+    def stop
+      sendRequest(@conn.stop)
+      @db.clear
+      @started = false
+    end
+
     def updateDataBase
       stateHash = sendRequest(getState)
       @db.update(stateHash)

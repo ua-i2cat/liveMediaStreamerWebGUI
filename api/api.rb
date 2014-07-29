@@ -120,6 +120,14 @@ class MixerAPI < Sinatra::Base
     redirect '/app'
   end
 
+  post '/app/stop' do
+    content_type :html
+    error_html do
+      settings.mixer.stop
+    end
+    redirect '/app'
+  end
+
   get '/app/audiomixer' do
     content_type :html
     dashboardAudio
