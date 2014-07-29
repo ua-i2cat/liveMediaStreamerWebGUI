@@ -73,7 +73,7 @@ module RMixer
     end
 
     def start
-      resetScenario
+      #resetScenario
 
       @airMixerID = Random.rand(@randomSize)
       @previewMixerID = Random.rand(@randomSize)
