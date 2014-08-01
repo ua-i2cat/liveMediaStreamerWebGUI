@@ -595,7 +595,40 @@ module RMixer
       end
 
       sendRequest
+      updateFilter(mixer)
 
+    end
+
+    def blend(channel)
+      mixer = getFilter(@airMixerID)
+      port = @db.getVideoChannelPort(channel)
+      path = getPathByDestination(@airMixerID, port)
+      resamplerID = path["filters"].first
+
+      mixer["channels"].each do |ch|
+        if ch["layer"] >= 7
+          ch["layer"] = 6
+          appendEvent(updateVideoChannel(@airMixerID, ch))
+        end
+      end
+
+      appendEvent(configureResampler(resamplerID, mixer["width"], mixer["height"]))
+
+      mixer["channels"].each do |ch|
+        if ch["id"] == port
+          ch["width"] = 1
+          ch["height"] = 1
+          ch["x"] = 0
+          ch["y"] = 0
+          ch["layer"] = 7
+          ch["opacity"] = 0.5
+          ch["enabled"] = true
+
+          appendEvent(updateVideoChannel(@airMixerID, ch), intervals*@videoFadeInterval)
+        end
+      end
+
+      sendRequest
       updateFilter(mixer)
 
     end

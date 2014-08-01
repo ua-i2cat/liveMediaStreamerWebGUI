@@ -341,4 +341,13 @@ class MixerAPI < Sinatra::Base
     end
     redirect '/app/videomixer'
   end
+
+  post '/app/videoMixer/:channel/blend' do
+    content_type :html
+    error_html do
+      settings.mixer.blend(params[:channel].to_i)
+    end
+    redirect '/app/videomixer'
+  end
+
 end

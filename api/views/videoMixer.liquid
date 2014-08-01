@@ -157,11 +157,11 @@
                   <form class="btn-group" action="/app/videoMixer/{{channel.channel}}/fade/500" method="post">
                     <button type="submit" class="btn btn-default">FADE1</button>
                   </form>
-                  <form class="btn-group" action="/app/videoMixer/{{channel.channel}}/fade/1500" method="post">
+                  <form class="btn-group" action="/app/videoMixer/{{channel.channel}}/fade/1000" method="post">
                     <button type="submit" class="btn btn-default">FADE2</button>
                   </form>
-                  <form class="btn-group">
-                    <button type="submit" class="btn btn-default" disabled>EFF1</button>
+                  <form class="btn-group" action="/app/videoMixer/{{channel.channel}}/blend" method="post">
+                    <button type="submit" class="btn btn-default">BLEND</button>
                   </form>
                   <form class="btn-group">
                     <button type="submit" class="btn btn-default" disabled>EFF2</button>
