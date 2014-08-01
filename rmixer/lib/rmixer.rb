@@ -624,7 +624,7 @@ module RMixer
           ch["opacity"] = 0.5
           ch["enabled"] = true
 
-          appendEvent(updateVideoChannel(@airMixerID, ch), intervals*@videoFadeInterval)
+          appendEvent(updateVideoChannel(@airMixerID, ch))
         end
       end
 
