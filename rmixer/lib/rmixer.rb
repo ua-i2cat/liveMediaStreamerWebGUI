@@ -99,12 +99,12 @@ module RMixer
       airPath = @db.getPath(airOutputPathID)
       previewPath = @db.getPath(previewOutputPathID)
 
-      airEncoderFPS = 24
+      airEncoderFPS = 25
 
       assignWorker(@airMixerID, 'videoMixer', 'bestEffortMaster')
       assignWorker(@previewMixerID, 'videoMixer', 'bestEffortMaster')
       assignWorker(airEncoderID, 'videoEncoder', 'cFramerateMaster', {:fps => airEncoderFPS})
-      assignWorker(previewEncoderID, 'videoEncoder', 'cFramerateMaster', {:fps => airEncoderFPS/2})
+      assignWorker(previewEncoderID, 'videoEncoder', 'cFramerateMaster', {:fps => airEncoderFPS})
       assignWorker(airResamplerEncoderID, 'videoResampler', 'bestEffortMaster')
       assignWorker(previewResamplerEncoderID, 'videoResampler', 'bestEffortMaster')
 
@@ -354,10 +354,6 @@ module RMixer
             :br_val => "",
             :vbcc => false
           }
-
-          puts "\n\nADDING NEW CHANNEL PARAMS TO DB:"
-          puts chParams
-          puts "\n\n"
 
           @db.addInputChannelParams(mixerChannel, chParams) #TODO manage response
 
@@ -658,7 +654,7 @@ module RMixer
       slave = assignWorker(previewResamplerID, 'videoResampler', 'slave', {:processorLimit => 2})
      
       sendRequest(addSlavesToWorker(master, [slave]))
-      sendRequest(configureResampler(previewResamplerID, 0, 0, {:discartPeriod => 2}))
+      sendRequest(configureResampler(previewResamplerID, 0, 0))
     end
 
     def createAudioInputPath(port)
