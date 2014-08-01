@@ -47,8 +47,6 @@ module RMixer
       @started = false
       @randomSize = 2**16
       @videoFadeInterval = 50 #ms
-
-      loadGrids
     end
 
     def loadGrids
@@ -68,12 +66,14 @@ module RMixer
     end
 
     def resetScenario
+      @db.clear
       sendRequest(reset)
 
     end
 
     def start
       resetScenario
+      loadGrids
 
       @airMixerID = Random.rand(@randomSize)
       @previewMixerID = Random.rand(@randomSize)
