@@ -1,5 +1,5 @@
 #
-#  RUBYMIXER - A management ruby interface for MIXER 
+#  RUBYMIXER - A management ruby interface for MIXER
 #  Copyright (C) 2013  Fundació i2CAT, Internet i Innovació digital a Catalunya
 #
 #  This file is part of thin RUBYMIXER.
@@ -19,7 +19,8 @@
 #
 #  Authors:  Marc Palau <marc.palau@i2cat.net>,
 #            Ignacio Contreras <ignacio.contreras@i2cat.net>
-#   
+#            Gerard Castillo <gerard.castillo@i2cat.net>
+#
 
 require "rmixer/version"
 require "connector"
@@ -27,10 +28,10 @@ require "append"
 require "grids"
 require "ultragrid"
 require "mongodb"
-
+require 'open3'
+require 'thread'
 
 module RMixer
-
   # Generic error to be thrown when an error is returned by the remote
   # *Mixer* instance
   class MixerError < StandardError
@@ -39,12 +40,14 @@ module RMixer
   # Proxy class that delegates most of it functions to a RMixer::Connector
   # instance while adding exception and convenience methods.
   class Mixer
-
     def initialize(host, port)
       @conn = RMixer::Connector.new(host, port)
       @db = RMixer::MongoMngr.new
       @uv = RMixer::UltraGridRC.new
       @started = false
+      @lmsStarted = false
+      @lmsThread = nil
+      @lmspid = nil
       @randomSize = 2**16
       @videoFadeInterval = 50 #ms
     end
@@ -72,76 +75,142 @@ module RMixer
     end
 
     def start
-      resetScenario
-      loadGrids
+      if !@lmsStarted
+        run_livemediastreamer
+        sleep(1)
+        if @lmsStarted
+          resetScenario
+          loadGrids
 
-      @airMixerID = Random.rand(@randomSize)
-      @previewMixerID = Random.rand(@randomSize)
-      airEncoderID = Random.rand(@randomSize)
-      previewEncoderID = Random.rand(@randomSize)
-      airResamplerEncoderID = Random.rand(@randomSize)
-      previewResamplerEncoderID = Random.rand(@randomSize)
-      airOutputPathID = Random.rand(@randomSize)
-      previewOutputPathID = Random.rand(@randomSize)
+          @airMixerID = Random.rand(@randomSize)
+          @previewMixerID = Random.rand(@randomSize)
+          airEncoderID = Random.rand(@randomSize)
+          previewEncoderID = Random.rand(@randomSize)
+          airResamplerEncoderID = Random.rand(@randomSize)
+          previewResamplerEncoderID = Random.rand(@randomSize)
+          airOutputPathID = Random.rand(@randomSize)
+          previewOutputPathID = Random.rand(@randomSize)
 
-      createFilter(@airMixerID, 'videoMixer')
-      createFilter(@previewMixerID, 'videoMixer')
-      createFilter(airEncoderID, 'videoEncoder')
-      createFilter(previewEncoderID, 'videoEncoder')
-      createFilter(airResamplerEncoderID, 'videoResampler')
-      createFilter(previewResamplerEncoderID, 'videoResampler')
+          createFilter(@airMixerID, 'videoMixer')
+          createFilter(@previewMixerID, 'videoMixer')
+          createFilter(airEncoderID, 'videoEncoder')
+          createFilter(previewEncoderID, 'videoEncoder')
+          createFilter(airResamplerEncoderID, 'videoResampler')
+          createFilter(previewResamplerEncoderID, 'videoResampler')
 
-      txId = @db.getFilterByType('transmitter')["id"]
+          txId = @db.getFilterByType('transmitter')["id"]
 
-      createPath(airOutputPathID, @airMixerID, txId, [airResamplerEncoderID, airEncoderID])
-      createPath(previewOutputPathID, @previewMixerID, txId, [previewResamplerEncoderID, previewEncoderID])
+          createPath(airOutputPathID, @airMixerID, txId, [airResamplerEncoderID, airEncoderID])
+          createPath(previewOutputPathID, @previewMixerID, txId, [previewResamplerEncoderID, previewEncoderID])
 
-      airPath = @db.getPath(airOutputPathID)
-      previewPath = @db.getPath(previewOutputPathID)
+          airPath = @db.getPath(airOutputPathID)
+          previewPath = @db.getPath(previewOutputPathID)
 
-      airEncoderFPS = 25
+          airEncoderFPS = 25
 
-      assignWorker(@airMixerID, 'videoMixer', 'bestEffortMaster')
-      assignWorker(@previewMixerID, 'videoMixer', 'bestEffortMaster')
-      assignWorker(airEncoderID, 'videoEncoder', 'cFramerateMaster', {:fps => airEncoderFPS})
-      assignWorker(previewEncoderID, 'videoEncoder', 'cFramerateMaster', {:fps => airEncoderFPS})
-      assignWorker(airResamplerEncoderID, 'videoResampler', 'bestEffortMaster')
-      assignWorker(previewResamplerEncoderID, 'videoResampler', 'bestEffortMaster')
+          assignWorker(@airMixerID, 'videoMixer', 'bestEffortMaster')
+          assignWorker(@previewMixerID, 'videoMixer', 'bestEffortMaster')
+          assignWorker(airEncoderID, 'videoEncoder', 'cFramerateMaster', {:fps => airEncoderFPS})
+          assignWorker(previewEncoderID, 'videoEncoder', 'cFramerateMaster', {:fps => airEncoderFPS})
+          assignWorker(airResamplerEncoderID, 'videoResampler', 'bestEffortMaster')
+          assignWorker(previewResamplerEncoderID, 'videoResampler', 'bestEffortMaster')
 
-      sendRequest(configureVideoEncoder(airEncoderID, {:bitrate => 3000}))
-      sendRequest(configureVideoEncoder(previewEncoderID, {:bitrate => 3000}))
-      sendRequest(configureResampler(airResamplerEncoderID, 0, 0, {:pixelFormat => 2}))
-      sendRequest(configureResampler(previewResamplerEncoderID, 0, 0, {:pixelFormat => 2}))
+          sendRequest(configureVideoEncoder(airEncoderID, {:bitrate => 3000}))
+          sendRequest(configureVideoEncoder(previewEncoderID, {:bitrate => 3000}))
+          sendRequest(configureResampler(airResamplerEncoderID, 0, 0, {:pixelFormat => 2}))
+          sendRequest(configureResampler(previewResamplerEncoderID, 0, 0, {:pixelFormat => 2}))
 
-      @audioMixer = Random.rand(@randomSize)
-      audioEncoder =  Random.rand(@randomSize)
-      audioPathID = Random.rand(@randomSize)
-      audioMixerWorker = Random.rand(@randomSize)
-      audioEncoderWorker = Random.rand(@randomSize)
+          @audioMixer = Random.rand(@randomSize)
+          audioEncoder =  Random.rand(@randomSize)
+          audioPathID = Random.rand(@randomSize)
+          audioMixerWorker = Random.rand(@randomSize)
+          audioEncoderWorker = Random.rand(@randomSize)
 
-      createFilter(@audioMixer, 'audioMixer')
-      createFilter(audioEncoder, 'audioEncoder')
+          createFilter(@audioMixer, 'audioMixer')
+          createFilter(audioEncoder, 'audioEncoder')
 
-      createPath(audioPathID, @audioMixer, txId, [audioEncoder])
+          createPath(audioPathID, @audioMixer, txId, [audioEncoder])
 
-      audioPath = @db.getPath(audioPathID)
+          audioPath = @db.getPath(audioPathID)
 
-      assignWorker(@audioMixer, 'audioMixer', 'bestEffortMaster')
-      assignWorker(audioEncoder, 'audioEncoder', 'bestEffortMaster')
+          assignWorker(@audioMixer, 'audioMixer', 'bestEffortMaster')
+          assignWorker(audioEncoder, 'audioEncoder', 'bestEffortMaster')
 
-      #OUTPUT
+          #OUTPUT
 
-      sendRequest(@conn.addOutputSession(txId, [airPath["destinationReader"], audioPath["destinationReader"]], 'air'))
-      sendRequest(@conn.addOutputSession(txId, [previewPath["destinationReader"]], 'preview'))
-      @started = true
+          sendRequest(@conn.addOutputSession(txId, [airPath["destinationReader"], audioPath["destinationReader"]], 'air'))
+          sendRequest(@conn.addOutputSession(txId, [previewPath["destinationReader"]], 'preview'))
+          @started = true
 
-      updateDataBase
+          updateDataBase
+        else
+          puts "livemediastreamer not started...check system processes...!"
+        end
+      else
+        puts "livemediastreamer already running...ambiguous situation...!"
+      end
+    end
+
+    def run_livemediastreamer
+      return if isStarted #force only one process
+      cmd = "livemediastreamer 7777"
+      puts cmd
+      #run thread livemediastreamer (parsing std and output stdout and stderr)
+      @lmsThread = Thread.new do   # Calling a class method new
+        begin
+          puts "Starting livemediastreamer"
+          Open3.popen2e(cmd) do |stdin, stdout_err, wait_thr|
+            @lmspid = wait_thr[:pid]
+
+            while line = stdout_err.gets
+              puts "--> livemediastreamer output:  #{line}"
+            end
+
+            exit_status = wait_thr.value
+            if exit_status.success?
+              puts "#{cmd} running!"
+              @lmsStarted = true
+            else
+              puts "#{cmd} failed!!!"
+              @lmsStarted = false
+            end
+          end
+        rescue SignalException => e
+          raise e
+        rescue Exception => e
+          puts "#{cmd} failed!!!"
+          @lmsStarted = false
+        end
+        @lmsStarted = false
+      end
+      @lmsStarted = true
     end
 
     def stop
-      sendRequest(@conn.stop)
-      @db.clear
-      @started = false
+      if @lmsStarted
+        sendRequest(@conn.stop)
+        @db.clear
+        stop_livemediastreamer ? @started = false : @started = true
+      else
+        puts "livemediastreamer not running...ambiguous situation...!"
+      end
+    end
+
+    def stop_livemediastreamer
+      begin
+        puts "Stopping livemediastreamer"
+        Process.kill("TERM", @lmspid)
+        Thread.kill(@lmsThread)
+      rescue SignalException => e
+        raise e
+      rescue Exception => e
+        puts "No succes on exiting livemediastreamer...!"
+        @lmsStarted = false
+        return false
+      end
+      puts "livemediastreamer exit success"
+      @lmsStarted = false
+      return true
     end
 
     def updateDataBase
@@ -154,7 +223,7 @@ module RMixer
     end
 
     def createFilter(id, type, role = 'default')
-      begin 
+      begin
         response = sendRequest(@conn.createFilter(id, type))
         raise MixerError, response[:error] if response[:error]
       rescue
@@ -169,7 +238,7 @@ module RMixer
       dstReaderId = (options[:dstReaderId].to_i != 0) ? options[:dstReaderId].to_i : -1
       sharedQueue = (options[:sharedQueue] != nil) ? options[:sharedQueue] : false
 
-      begin 
+      begin
         response = sendRequest(@conn.createPath(id, orgFilterId, dstFilterId, orgWriterId, dstReaderId, midFiltersIds, sharedQueue))
         raise MixerError, response[:error] if response[:error]
       rescue
@@ -227,7 +296,7 @@ module RMixer
         end
       end
     end
-    
+
     def addRTPSession(medium, params, bandwidth, timeStampFrequency)
       #TODO CHECK IF PORT ALREADY OCCUPYED!!!
       #TODO first check if sourceIP already exists inside audio or video list, then give available cport
@@ -238,47 +307,47 @@ module RMixer
       sourceType = params[:sourceType]
       sourceIP = params[:sourceIP]
       codec = params[:codec]
-      
+
       case medium
       when "audio"
         mixerChannel = 0
         channels = params[:channels].to_i
         timeStampFrequency = params[:sampleRate].to_i
         case sourceType
-          when "ultragrid"
-            if @uv.uv_check_and_tx(sourceIP, port, medium, timeStampFrequency, channels)
-              receiver = @db.getFilterByType('receiver')
-              #TODO ADD OPUS SUPPORT IN ULTRAGRID, NOW ONLY PCMU
-              #TODO manage response
-              sendRequest(@conn.addRTPSession(receiver["id"], port, medium, "pcmu", bandwidth, timeStampFrequency, channels))
-
-              puts "error setting control port" if !@uv.set_controlport(sourceIP)
-              chParams = {:ip => sourceIP.to_s,
-                :medium => medium,
-                :sourceType => sourceType
-              }
-              @db.addInputChannelParams(mixerChannel, chParams) #TODO manage response
-              createAudioInputPath(port)
-              updateDataBase
-            end
-          when "other"
+        when "ultragrid"
+          if @uv.uv_check_and_tx(sourceIP, port, medium, timeStampFrequency, channels)
             receiver = @db.getFilterByType('receiver')
+            #TODO ADD OPUS SUPPORT IN ULTRAGRID, NOW ONLY PCMU
             #TODO manage response
-            sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
+            sendRequest(@conn.addRTPSession(receiver["id"], port, medium, "pcmu", bandwidth, timeStampFrequency, channels))
+
+            puts "error setting control port" if !@uv.set_controlport(sourceIP)
             chParams = {:ip => sourceIP.to_s,
               :medium => medium,
-              :sourceType => sourceType 
+              :sourceType => sourceType
             }
             @db.addInputChannelParams(mixerChannel, chParams) #TODO manage response
             createAudioInputPath(port)
             updateDataBase
-          else
-            puts "Please, select between ultragrid or other type of sources..."
           end
-          
+        when "other"
+          receiver = @db.getFilterByType('receiver')
+          #TODO manage response
+          sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
+          chParams = {:ip => sourceIP.to_s,
+            :medium => medium,
+            :sourceType => sourceType
+          }
+          @db.addInputChannelParams(mixerChannel, chParams) #TODO manage response
+          createAudioInputPath(port)
+          updateDataBase
+        else
+          puts "Please, select between ultragrid or other type of sources..."
+        end
+
       when "video"
         mixerChannel = params[:channel].to_i
-        
+
         case sourceType
         when "ultragrid"
           if @uv.uv_check_and_tx(sourceIP, port, medium, 0, 0)
@@ -312,7 +381,7 @@ module RMixer
               puts "\n\nADDING NEW ULTRAGRID CHANNEL PARAMS TO DB:"
               puts chParams
               puts "\n\n"
-              
+
               if orig_chParams[:uv_params].include?"embedded"
                 #ADD AUDIO EMBEDDED
                 receiver = @db.getFilterByType('receiver')
@@ -320,13 +389,13 @@ module RMixer
                 sendRequest(@conn.addRTPSession(receiver["id"], port+2, "audio", "pcmu", 5000, 48000, 2))
                 chParams = {:ip => sourceIP.to_s,
                   :medium => "audio",
-                  :sourceType => "ultragrid" 
+                  :sourceType => "ultragrid"
                 }
                 @db.addInputChannelParams(0, chParams) #TODO manage response
                 createAudioInputPath(port)
                 updateDataBase
               end
-              
+
               @db.addInputChannelParams(mixerChannel, chParams) #TODO manage response
 
               @db.addVideoChannelPort(mixerChannel, port)
@@ -334,7 +403,7 @@ module RMixer
               applyPreviewGrid
 
               updateDataBase
-              
+
             end
           end
         when "other"
@@ -363,25 +432,25 @@ module RMixer
 
           updateDataBase
 
-          else
-            puts "Please, select between ultragrid or other type of sources..."
-          end
+        else
+          puts "Please, select between ultragrid or other type of sources..."
+        end
       else
         puts "Error, no medium type..."
       end
     end
-    
+
     def rmRTPSession(mixerChannel, port, medium, codec, bandwidth, timeStampFrequency, channels = 0)
-#      receiver = @db.getFilterByType('receiver')
-#      @conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels)
-#
-#      if medium == 'audio'
-#      elsif medium == 'video'
-#        @db.addVideoChannelPort(mixerChannel, port)
-#        createInputPaths(port)
-#        applyPreviewGrid
-#      end
-      
+      #      receiver = @db.getFilterByType('receiver')
+      #      @conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels)
+      #
+      #      if medium == 'audio'
+      #      elsif medium == 'video'
+      #        @db.addVideoChannelPort(mixerChannel, port)
+      #        createInputPaths(port)
+      #        applyPreviewGrid
+      #      end
+
     end
 
     def addOutputSession(mixerID, sessionName)
@@ -431,16 +500,16 @@ module RMixer
           appendEvent(configureResampler(resamplerID, width, height))
 
           appendEvent(
-            setPositionSize(
-              @previewMixerID, 
-              mixerChannelId,
-              p["width"],
-              p["height"],
-              p["x"],
-              p["y"],
-              p["layer"], 
-              p["opacity"]
-            )
+          setPositionSize(
+          @previewMixerID,
+          mixerChannelId,
+          p["width"],
+          p["height"],
+          p["x"],
+          p["y"],
+          p["layer"],
+          p["opacity"]
+          )
           )
         end
       end
@@ -493,7 +562,7 @@ module RMixer
           ch["y"] = position["y"]
           ch["layer"] = position["layer"]
           ch["opacity"] = position["opacity"]
-          ch["enabled"] = true 
+          ch["enabled"] = true
 
           appendEvent(updateVideoChannel(@airMixerID, ch))
 
@@ -527,7 +596,7 @@ module RMixer
           ch["layer"] = 1
           ch["opacity"] = 1.0
           ch["enabled"] = true
-          
+
           appendEvent(updateVideoChannel(@airMixerID, ch))
 
           path = getPathByDestination(@airMixerID, ch["id"])
@@ -538,8 +607,8 @@ module RMixer
 
           appendEvent(configureResampler(resamplerID, width, height))
         else
-          ch["enabled"] = false 
-          
+          ch["enabled"] = false
+
           appendEvent(updateVideoChannel(@airMixerID, ch))
         end
       end
@@ -557,7 +626,7 @@ module RMixer
 
       intervals = (time/@videoFadeInterval)
       deltaOp = 1.0/intervals
-      
+
       mixer["channels"].each do |ch|
         if ch["layer"] >= 7
           ch["layer"] = 6
@@ -583,7 +652,7 @@ module RMixer
 
           appendEvent(updateVideoChannel(@airMixerID, ch), intervals*@videoFadeInterval)
 
-        else 
+        else
           ch["enabled"] = false
 
           appendEvent(updateVideoChannel(@airMixerID, ch), intervals*@videoFadeInterval)
@@ -652,14 +721,14 @@ module RMixer
       assignWorker(decoderID, 'videoDecoder', 'bestEffortMaster', {:processorLimit => 2})
       master = assignWorker(airResamplerID, 'videoResampler', 'bestEffortMaster', {:processorLimit => 2})
       slave = assignWorker(previewResamplerID, 'videoResampler', 'slave', {:processorLimit => 2})
-     
+
       sendRequest(addSlavesToWorker(master, [slave]))
       sendRequest(configureResampler(previewResamplerID, 0, 0))
     end
 
     def createAudioInputPath(port)
       receiver = @db.getFilterByType('receiver')
-      
+
       decoderID = Random.rand(@randomSize)
       decoderPathID = Random.rand(@randomSize)
 
@@ -678,7 +747,7 @@ module RMixer
         updateInputChannelParams(channelID, config_hash)
       end
     end
-    
+
     def updateInputChannelSize(channelID, size)
       chParams = @db.getInputChannelParams(channelID)
       config_hash = @uv.set_size(chParams["ip"], size)
@@ -688,7 +757,7 @@ module RMixer
         updateInputChannelParams(channelID, config_hash)
       end
     end
-    
+
     def updateInputChannelFPS(channelID, fps)
       chParams = @db.getInputChannelParams(channelID)
       config_hash = @uv.set_fps(chParams["ip"], fps)
@@ -698,7 +767,7 @@ module RMixer
         updateInputChannelParams(channelID, config_hash)
       end
     end
-    
+
     def updateInputChannelBitRate(channelID, br)
       chParams = @db.getInputChannelParams(channelID)
       config_hash = @uv.set_br(chParams["ip"], br)
