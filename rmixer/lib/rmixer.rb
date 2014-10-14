@@ -101,12 +101,12 @@ module RMixer
 
       airEncoderFPS = 25
 
-      assignWorker(@airMixerID, 'videoMixer', 'bestEffortMaster')
-      assignWorker(@previewMixerID, 'videoMixer', 'bestEffortMaster')
-      assignWorker(airEncoderID, 'videoEncoder', 'cFramerateMaster', {:fps => airEncoderFPS})
-      assignWorker(previewEncoderID, 'videoEncoder', 'cFramerateMaster', {:fps => airEncoderFPS})
-      assignWorker(airResamplerEncoderID, 'videoResampler', 'bestEffortMaster')
-      assignWorker(previewResamplerEncoderID, 'videoResampler', 'bestEffortMaster')
+      assignWorker(@airMixerID, 'videoMixer', 'master')
+      assignWorker(@previewMixerID, 'videoMixer', 'master')
+      assignWorker(airEncoderID, 'videoEncoder', 'master')
+      assignWorker(previewEncoderID, 'videoEncoder', 'master')
+      assignWorker(airResamplerEncoderID, 'videoResampler', 'master')
+      assignWorker(previewResamplerEncoderID, 'videoResampler', 'master')
 
       sendRequest(configureVideoEncoder(airEncoderID, {:bitrate => 3000}))
       sendRequest(configureVideoEncoder(previewEncoderID, {:bitrate => 3000}))
@@ -126,8 +126,8 @@ module RMixer
 
       audioPath = @db.getPath(audioPathID)
 
-      assignWorker(@audioMixer, 'audioMixer', 'bestEffortMaster')
-      assignWorker(audioEncoder, 'audioEncoder', 'bestEffortMaster')
+      assignWorker(@audioMixer, 'audioMixer', 'master')
+      assignWorker(audioEncoder, 'audioEncoder', 'master')
 
       #OUTPUT
 
@@ -395,9 +395,8 @@ module RMixer
 
     def assignWorker(filterId, filterType, workerType, options = {})
       processorLimit = (options[:processorLimit]) ? options[:processorLimit] : 0
-      fps = (options[:fps]) ? options[:fps] : 24
 
-      @db.getWorkerByType(workerType, filterType, fps).each do |w|
+      @db.getWorkerByType(workerType, filterType).each do |w|
         if processorLimit == 0 || processorLimit > w["processors"].size
           sendRequest(addFiltersToWorker(w["id"], [filterId]))
           @db.addProcessorToWorker(w["id"], filterId, filterType)
@@ -406,8 +405,8 @@ module RMixer
       end
 
       newWorker = Random.rand(@randomSize)
-      sendRequest(addWorker(newWorker, workerType, fps))
-      @db.addWorker(newWorker, workerType, filterType, fps)
+      sendRequest(addWorker(newWorker, workerType))
+      @db.addWorker(newWorker, workerType, filterType)
       sendRequest(addFiltersToWorker(newWorker, [filterId]))
       @db.addProcessorToWorker(newWorker, filterId, filterType)
       return newWorker
@@ -649,8 +648,8 @@ module RMixer
       createPath(airPathID, decoderID, @airMixerID, [airResamplerID], {:dstReaderId => port})
       createPath(previewPathID, decoderID, @previewMixerID, [previewResamplerID], {:dstReaderId => port, :sharedQueue => true})
 
-      assignWorker(decoderID, 'videoDecoder', 'bestEffortMaster', {:processorLimit => 2})
-      master = assignWorker(airResamplerID, 'videoResampler', 'bestEffortMaster', {:processorLimit => 2})
+      assignWorker(decoderID, 'videoDecoder', 'master', {:processorLimit => 2})
+      master = assignWorker(airResamplerID, 'videoResampler', 'master', {:processorLimit => 2})
       slave = assignWorker(previewResamplerID, 'videoResampler', 'slave', {:processorLimit => 2})
      
       sendRequest(addSlavesToWorker(master, [slave]))
@@ -666,7 +665,7 @@ module RMixer
       createFilter(decoderID, 'audioDecoder')
       createPath(decoderPathID, receiver["id"], @audioMixer, [decoderID], {:orgWriterId => port, :dstReaderId => port})
 
-      assignWorker(decoderID, 'audioDecoder', 'bestEffortMaster')
+      assignWorker(decoderID, 'audioDecoder', 'master')
     end
 
     def updateInputChannelVBCC(channelID, mode)
