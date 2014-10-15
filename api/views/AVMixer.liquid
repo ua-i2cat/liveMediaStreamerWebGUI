@@ -194,12 +194,12 @@
 			            <div class="row">
 			            
 			              <div class="col-md-6" style="margin-left:-15px;">
-			                  <form class="navbar-form" action="/app/avmixer/audio/{{stateHash.mixerID}}/channel/{{channel.id}}/mute" method="post">
+			                  <form class="navbar-form" action="/app/avmixer/audio/{{stateAudioHash.mixerID}}/channel/{{channel.id}}/mute" method="post">
 			                    <button type="submit" class="btn btn-default">Mute</button>
 			                  </form>
 			              </div>
 			              <div class="col-md-6">
-			                  <form class="navbar-form" action="/app/avmixer/audio/{{stateHash.mixerID}}/channel/{{channel.id}}/solo" method="post">
+			                  <form class="navbar-form" action="/app/avmixer/audio/{{stateAudioHash.mixerID}}/channel/{{channel.id}}/solo" method="post">
 			                    <button type="submit" class="btn btn-default">Solo</button>
 			                  </form>
 			              </div>
@@ -210,7 +210,7 @@
 			            <div class="row">&nbsp;</div>
 			            <div class="row">
 			              <div class="col-md-12 text-center">
-			                <input type="range" class="horizontal" min="0" max="1" step="0.01" orient="vertical" value={{ channel.gain }} oninput="changeChannelVolume({{stateHash.mixerID}}, {{channel.id}}, this.value)"/>
+			                <input type="range" class="horizontal" min="0" max="1" step="0.01" orient="vertical" value={{ channel.gain }} oninput="changeChannelVolume({{stateAudioHash.mixerID}}, {{channel.id}}, this.value)"/>
 			              </div>
 			            </div>
 			            <div class = "row">&nbsp;</div>
@@ -446,5 +446,20 @@
     <script src="/bs/dist/js/bootstrap.min.js"></script>
     <script src="/bs/assets/js/holder.js"></script>
     <script src="/utils.js"></script>
+        <script type="text/javascript">
+      function changeChannelVolume(audioMixerID, channelID, volume) {
+          id = channelID + "Gain"
+          uri = "/app/avmixer/audio/" + audioMixerID + "/channel/" + channelID + "/changeVolume"
+
+        document.getElementById(id).value = volume;
+
+        $.ajax({
+          type: 'POST',
+          url: uri,
+          data: "volume=" + volume,
+          async:false
+        });
+      }
+    </script>
   </body>
 </html>
