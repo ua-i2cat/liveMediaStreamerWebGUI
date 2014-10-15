@@ -82,65 +82,65 @@ module RMixer
           resetScenario
           loadGrids
 
-          @airMixerID = Random.rand(@randomSize)
-          @previewMixerID = Random.rand(@randomSize)
-          airEncoderID = Random.rand(@randomSize)
-          previewEncoderID = Random.rand(@randomSize)
-          airResamplerEncoderID = Random.rand(@randomSize)
-          previewResamplerEncoderID = Random.rand(@randomSize)
-          airOutputPathID = Random.rand(@randomSize)
-          previewOutputPathID = Random.rand(@randomSize)
+      @airMixerID = Random.rand(@randomSize)
+      @previewMixerID = Random.rand(@randomSize)
+      airEncoderID = Random.rand(@randomSize)
+      previewEncoderID = Random.rand(@randomSize)
+      airResamplerEncoderID = Random.rand(@randomSize)
+      previewResamplerEncoderID = Random.rand(@randomSize)
+      airOutputPathID = Random.rand(@randomSize)
+      previewOutputPathID = Random.rand(@randomSize)
 
-          createFilter(@airMixerID, 'videoMixer')
-          createFilter(@previewMixerID, 'videoMixer')
-          createFilter(airEncoderID, 'videoEncoder')
-          createFilter(previewEncoderID, 'videoEncoder')
-          createFilter(airResamplerEncoderID, 'videoResampler')
-          createFilter(previewResamplerEncoderID, 'videoResampler')
+      createFilter(@airMixerID, 'videoMixer')
+      createFilter(@previewMixerID, 'videoMixer')
+      createFilter(airEncoderID, 'videoEncoder')
+      createFilter(previewEncoderID, 'videoEncoder')
+      createFilter(airResamplerEncoderID, 'videoResampler')
+      createFilter(previewResamplerEncoderID, 'videoResampler')
 
-          txId = @db.getFilterByType('transmitter')["id"]
+      txId = @db.getFilterByType('transmitter')["id"]
 
-          createPath(airOutputPathID, @airMixerID, txId, [airResamplerEncoderID, airEncoderID])
-          createPath(previewOutputPathID, @previewMixerID, txId, [previewResamplerEncoderID, previewEncoderID])
+      createPath(airOutputPathID, @airMixerID, txId, [airResamplerEncoderID, airEncoderID])
+      createPath(previewOutputPathID, @previewMixerID, txId, [previewResamplerEncoderID, previewEncoderID])
 
-          airPath = @db.getPath(airOutputPathID)
-          previewPath = @db.getPath(previewOutputPathID)
+      airPath = @db.getPath(airOutputPathID)
+      previewPath = @db.getPath(previewOutputPathID)
 
-          airEncoderFPS = 25
+      airEncoderFPS = 25
 
-          assignWorker(@airMixerID, 'videoMixer', 'bestEffortMaster')
-          assignWorker(@previewMixerID, 'videoMixer', 'bestEffortMaster')
-          assignWorker(airEncoderID, 'videoEncoder', 'cFramerateMaster', {:fps => airEncoderFPS})
-          assignWorker(previewEncoderID, 'videoEncoder', 'cFramerateMaster', {:fps => airEncoderFPS})
-          assignWorker(airResamplerEncoderID, 'videoResampler', 'bestEffortMaster')
-          assignWorker(previewResamplerEncoderID, 'videoResampler', 'bestEffortMaster')
+      assignWorker(@airMixerID, 'videoMixer', 'master')
+      assignWorker(@previewMixerID, 'videoMixer', 'master')
+      assignWorker(airEncoderID, 'videoEncoder', 'master')
+      assignWorker(previewEncoderID, 'videoEncoder', 'master')
+      assignWorker(airResamplerEncoderID, 'videoResampler', 'master')
+      assignWorker(previewResamplerEncoderID, 'videoResampler', 'master')
 
-          sendRequest(configureVideoEncoder(airEncoderID, {:bitrate => 3000}))
-          sendRequest(configureVideoEncoder(previewEncoderID, {:bitrate => 3000}))
-          sendRequest(configureResampler(airResamplerEncoderID, 0, 0, {:pixelFormat => 2}))
-          sendRequest(configureResampler(previewResamplerEncoderID, 0, 0, {:pixelFormat => 2}))
+      sendRequest(configureVideoEncoder(airEncoderID, {:bitrate => 3000}))
+      sendRequest(configureVideoEncoder(previewEncoderID, {:bitrate => 3000}))
+      sendRequest(configureResampler(airResamplerEncoderID, 0, 0, {:pixelFormat => 2}))
+      sendRequest(configureResampler(previewResamplerEncoderID, 0, 0, {:pixelFormat => 2}))
 
-          @audioMixer = Random.rand(@randomSize)
-          audioEncoder =  Random.rand(@randomSize)
-          audioPathID = Random.rand(@randomSize)
-          audioMixerWorker = Random.rand(@randomSize)
-          audioEncoderWorker = Random.rand(@randomSize)
+      @audioMixer = Random.rand(@randomSize)
+      audioEncoder =  Random.rand(@randomSize)
+      audioPathID = Random.rand(@randomSize)
+      audioMixerWorker = Random.rand(@randomSize)
+      audioEncoderWorker = Random.rand(@randomSize)
 
-          createFilter(@audioMixer, 'audioMixer')
-          createFilter(audioEncoder, 'audioEncoder')
+      createFilter(@audioMixer, 'audioMixer')
+      createFilter(audioEncoder, 'audioEncoder')
 
-          createPath(audioPathID, @audioMixer, txId, [audioEncoder])
+      createPath(audioPathID, @audioMixer, txId, [audioEncoder])
 
-          audioPath = @db.getPath(audioPathID)
+      audioPath = @db.getPath(audioPathID)
 
-          assignWorker(@audioMixer, 'audioMixer', 'bestEffortMaster')
-          assignWorker(audioEncoder, 'audioEncoder', 'bestEffortMaster')
+      assignWorker(@audioMixer, 'audioMixer', 'master')
+      assignWorker(audioEncoder, 'audioEncoder', 'master')
 
-          #OUTPUT
+      #OUTPUT
 
-          sendRequest(@conn.addOutputSession(txId, [airPath["destinationReader"], audioPath["destinationReader"]], 'air'))
-          sendRequest(@conn.addOutputSession(txId, [previewPath["destinationReader"]], 'preview'))
-          @started = true
+      sendRequest(@conn.addOutputSession(txId, [airPath["destinationReader"], audioPath["destinationReader"]], 'air'))
+      sendRequest(@conn.addOutputSession(txId, [previewPath["destinationReader"]], 'preview'))
+      @started = true
 
           updateDataBase
         else
@@ -358,9 +358,8 @@ module RMixer
 
     def assignWorker(filterId, filterType, workerType, options = {})
       processorLimit = (options[:processorLimit]) ? options[:processorLimit] : 0
-      fps = (options[:fps]) ? options[:fps] : 24
 
-      @db.getWorkerByType(workerType, filterType, fps).each do |w|
+      @db.getWorkerByType(workerType, filterType).each do |w|
         if processorLimit == 0 || processorLimit > w["processors"].size
           sendRequest(addFiltersToWorker(w["id"], [filterId]))
           @db.addProcessorToWorker(w["id"], filterId, filterType)
@@ -369,8 +368,8 @@ module RMixer
       end
 
       newWorker = Random.rand(@randomSize)
-      sendRequest(addWorker(newWorker, workerType, fps))
-      @db.addWorker(newWorker, workerType, filterType, fps)
+      sendRequest(addWorker(newWorker, workerType))
+      @db.addWorker(newWorker, workerType, filterType)
       sendRequest(addFiltersToWorker(newWorker, [filterId]))
       @db.addProcessorToWorker(newWorker, filterId, filterType)
       return newWorker
@@ -610,8 +609,8 @@ module RMixer
       createPath(airPathID, decoderID, @airMixerID, [airResamplerID], {:dstReaderId => port})
       createPath(previewPathID, decoderID, @previewMixerID, [previewResamplerID], {:dstReaderId => port, :sharedQueue => true})
 
-      assignWorker(decoderID, 'videoDecoder', 'bestEffortMaster', {:processorLimit => 2})
-      master = assignWorker(airResamplerID, 'videoResampler', 'bestEffortMaster', {:processorLimit => 2})
+      assignWorker(decoderID, 'videoDecoder', 'master', {:processorLimit => 2})
+      master = assignWorker(airResamplerID, 'videoResampler', 'master', {:processorLimit => 2})
       slave = assignWorker(previewResamplerID, 'videoResampler', 'slave', {:processorLimit => 2})
 
       sendRequest(addSlavesToWorker(master, [slave]))
@@ -627,7 +626,7 @@ module RMixer
       createFilter(decoderID, 'audioDecoder')
       createPath(decoderPathID, receiver["id"], @audioMixer, [decoderID], {:orgWriterId => port, :dstReaderId => port})
 
-      assignWorker(decoderID, 'audioDecoder', 'bestEffortMaster')
+      assignWorker(decoderID, 'audioDecoder', 'master')
     end
 
     private :doApplyGrid, :updateGrid
