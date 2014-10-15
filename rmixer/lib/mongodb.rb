@@ -262,27 +262,9 @@ module RMixer
         mixer["channels"].each do |ch|
           channelPort = videoChannelPort.find(:port => ch["id"]).first
           ch["channel"] = channelPort["channel"]
-     
-          chParam = inputChannelParams.find(:channel => ch["channel"]).first
-          
-          if chParam
-            cparams = chParam["chParams"]
-            ch["ip"] = cparams["ip"]
-            ch["sourceType"] = cparams["sourceType"]
-            ch["size"] = cparams["size"]
-            ch["fps"] = cparams["fps"]
-            ch["br"] = cparams["br"]
-            ch["size_val"] = cparams["size_val"]
-            ch["fps_val"] = cparams["fps_val"]
-            ch["br_val"] = cparams["br_val"]
-            ch["vbcc"] = cparams["vbcc"]
-          end
-            
         end
         mixerHash["channels"] = mixer["channels"].sort_by {|ch| ch["channel"]}
       end
-     
-
       return mixerHash
     end
 
@@ -325,66 +307,6 @@ module RMixer
 
       path = paths.find(:id=>pathID).first
     end
-
-    
-    #CHANNEL CONFIG PARAMS
-
-    def addInputChannelParams(chID, chParams)
-      db = MongoClient.new(host, port).db(dbname)
-      inputChannelParams = db.collection('inputChannelParams')
-
-      inputChannelParam = {
-        :channel => chID,
-        :chParams => chParams
-      }
-
-      inputChannelParams.insert(inputChannelParam)
-    end
-
-    def getInputChannelParams(chID)
-      db = MongoClient.new(host, port).db(dbname)
-      inputChannelParams = db.collection('inputChannelParams')
-    
-      inputChannelParam = inputChannelParams.find(:channel => chID).first
-    
-      if inputChannelParam
-        return inputChannelParam["chParams"]
-      else
-        return 0
-      end
-    end
-
-    def updateInputChannelParams(channelID, params)
-      db = MongoClient.new(host,port).db(dbname)
-      inputChannelParams = db.collection('inputChannelParams')
-
-      chParams = inputChannelParams.find(:channel => channelID).first
-
-      if chParams
-        chParam = chParams["chParams"]
-        chParam["ip"] = chParam["ip"]
-        chParam["sourceType"] = chParam["sourceType"]
-        chParam["size"] = params[:curr_size]
-        chParam["fps"] = params[:curr_fps]
-        chParam["br"] = params[:curr_br]
-        chParam["size_val"] = params[:curr_size_value]
-        chParam["fps_val"] = params[:curr_fps_value]
-        chParam["br_val"] = params[:curr_br_value]
-        chParam["vbcc"] = params[:uv_vbcc]
-
-        updatedChannelParams = {
-          :channel => channelID,
-          :chParams => chParam
-        }  
-          
-        inputChannelParams.update({:channel => channelID}, updatedChannelParams)
-      end
-
-    end
-
-    #END CHANNEL CONFIG PARAMS
-    
-    
     
     def updateChannelVolume(id, volume)
       db = MongoClient.new(host, port).db(dbname)

@@ -205,7 +205,7 @@ module RMixer
         raise e
       rescue Exception => e
         puts "No succes on exiting livemediastreamer...!"
-        @lmsStarted = false
+        @lmsStarted = true
         return false
       end
       puts "livemediastreamer exit success"
@@ -299,13 +299,9 @@ module RMixer
 
     def addRTPSession(medium, params, bandwidth, timeStampFrequency)
       #TODO CHECK IF PORT ALREADY OCCUPYED!!!
-      #TODO first check if sourceIP already exists inside audio or video list, then give available cport
-      #then check decklink (to check inside audio if embedded or analog)
       port = params[:port].to_i
       return if port == 0
 
-      sourceType = params[:sourceType]
-      sourceIP = params[:sourceIP]
       codec = params[:codec]
 
       case medium
@@ -313,128 +309,26 @@ module RMixer
         mixerChannel = 0
         channels = params[:channels].to_i
         timeStampFrequency = params[:sampleRate].to_i
-        case sourceType
-        when "ultragrid"
-          if @uv.uv_check_and_tx(sourceIP, port, medium, timeStampFrequency, channels)
-            receiver = @db.getFilterByType('receiver')
-            #TODO ADD OPUS SUPPORT IN ULTRAGRID, NOW ONLY PCMU
-            #TODO manage response
-            sendRequest(@conn.addRTPSession(receiver["id"], port, medium, "pcmu", bandwidth, timeStampFrequency, channels))
-
-            puts "error setting control port" if !@uv.set_controlport(sourceIP)
-            chParams = {:ip => sourceIP.to_s,
-              :medium => medium,
-              :sourceType => sourceType
-            }
-            @db.addInputChannelParams(mixerChannel, chParams) #TODO manage response
-            createAudioInputPath(port)
-            updateDataBase
-          end
-        when "other"
+        
           receiver = @db.getFilterByType('receiver')
           #TODO manage response
           sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
-          chParams = {:ip => sourceIP.to_s,
-            :medium => medium,
-            :sourceType => sourceType
-          }
-          @db.addInputChannelParams(mixerChannel, chParams) #TODO manage response
           createAudioInputPath(port)
           updateDataBase
-        else
-          puts "Please, select between ultragrid or other type of sources..."
-        end
-
       when "video"
         mixerChannel = params[:channel].to_i
 
-        case sourceType
-        when "ultragrid"
-          if @uv.uv_check_and_tx(sourceIP, port, medium, 0, 0)
-            receiver = @db.getFilterByType('receiver')
-
-            #@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels)
-            #TODO manage response
-            sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
-
-            puts "error setting control port" if !@uv.set_controlport(sourceIP)
-
-            orig_chParams = @uv.getUltraGridParams(sourceIP)
-            if !orig_chParams.empty?
-
-              puts "UltraGrid has crashed... check source!"
-              orig_chParams[:o_size] = "1920x1080"
-              orig_chParams[:o_fps] = 25
-              orig_chParams[:o_br] = 12200
-              chParams = {
-                :ip => sourceIP.to_s,
-                :sourceType => sourceType,
-                :size_val => !orig_chParams.empty? ? orig_chParams[:o_size]: "",
-                :fps_val => !orig_chParams.empty? ? orig_chParams[:o_fps].to_f.round(2): "",
-                :br_val => !orig_chParams.empty? ? orig_chParams[:o_br].to_f.round(2): "",
-                :size => "H",
-                :fps => "H",
-                :br => "H",
-                :vbcc => false
-              }
-
-              puts "\n\nADDING NEW ULTRAGRID CHANNEL PARAMS TO DB:"
-              puts chParams
-              puts "\n\n"
-
-              if orig_chParams[:uv_params].include?"embedded"
-                #ADD AUDIO EMBEDDED
-                receiver = @db.getFilterByType('receiver')
-                #TODO manage response
-                sendRequest(@conn.addRTPSession(receiver["id"], port+2, "audio", "pcmu", 5000, 48000, 2))
-                chParams = {:ip => sourceIP.to_s,
-                  :medium => "audio",
-                  :sourceType => "ultragrid"
-                }
-                @db.addInputChannelParams(0, chParams) #TODO manage response
-                createAudioInputPath(port)
-                updateDataBase
-              end
-
-              @db.addInputChannelParams(mixerChannel, chParams) #TODO manage response
-
-              @db.addVideoChannelPort(mixerChannel, port)
-              createVideoInputPaths(port)
-              applyPreviewGrid
-
-              updateDataBase
-
-            end
-          end
-        when "other"
+      
           receiver = @db.getFilterByType('receiver')
 
           #TODO manage response
           sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
-
-          chParams = {
-            :ip => sourceIP.to_s,
-            :sourceType => sourceType,
-            :size => "",
-            :fps => "",
-            :br => "",
-            :size_val => "",
-            :fps_val => "",
-            :br_val => "",
-            :vbcc => false
-          }
-
-          @db.addInputChannelParams(mixerChannel, chParams) #TODO manage response
 
           @db.addVideoChannelPort(mixerChannel, port)
           createVideoInputPaths(port)
           applyPreviewGrid
 
           updateDataBase
-
-        else
-          puts "Please, select between ultragrid or other type of sources..."
-        end
       else
         puts "Error, no medium type..."
       end
@@ -698,8 +592,6 @@ module RMixer
 
     end
 
-    #NETWORKED PRODUCTION
-
     def createVideoInputPaths(port)
       receiver = @db.getFilterByType('receiver')
 
@@ -736,46 +628,6 @@ module RMixer
       createPath(decoderPathID, receiver["id"], @audioMixer, [decoderID], {:orgWriterId => port, :dstReaderId => port})
 
       assignWorker(decoderID, 'audioDecoder', 'bestEffortMaster')
-    end
-
-    def updateInputChannelVBCC(channelID, mode)
-      chParams = @db.getInputChannelParams(channelID)
-      config_hash = @uv.set_vbcc(chParams["ip"], mode)
-      if config_hash.empty?
-        #TODO manage errors
-      else
-        updateInputChannelParams(channelID, config_hash)
-      end
-    end
-
-    def updateInputChannelSize(channelID, size)
-      chParams = @db.getInputChannelParams(channelID)
-      config_hash = @uv.set_size(chParams["ip"], size)
-      if config_hash.empty?
-        #TODO manage errors
-      else
-        updateInputChannelParams(channelID, config_hash)
-      end
-    end
-
-    def updateInputChannelFPS(channelID, fps)
-      chParams = @db.getInputChannelParams(channelID)
-      config_hash = @uv.set_fps(chParams["ip"], fps)
-      if config_hash.empty?
-        #TODO manage errors
-      else
-        updateInputChannelParams(channelID, config_hash)
-      end
-    end
-
-    def updateInputChannelBitRate(channelID, br)
-      chParams = @db.getInputChannelParams(channelID)
-      config_hash = @uv.set_br(chParams["ip"], br)
-      if config_hash.empty?
-        #TODO manage errors
-      else
-        updateInputChannelParams(channelID, config_hash)
-      end
     end
 
     private :doApplyGrid, :updateGrid

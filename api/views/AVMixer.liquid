@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/bs/assets/ico/favicon.png">
+
+    <title>Video Mixer</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/bs/dist/css/bootstrap.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="/bs/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/theme.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/app/avmixer">AV Mixer</a>
+        </div>
+        <div class="navbar-collapse collapse">
+         <!--  <form class="navbar-form navbar-left">
+            <button type="submit" class="btn btn-default btn-sm">Statistics</button>
+          </form> -->
+          <form class="navbar-form navbar-right" action="/app/stop" method="post">
+            <button type="submit" class="btn btn-danger btn-sm">Stop</button>
+          </form>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          {% for channel in stateVideoHash.channels %}
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <table>
+                	<tr>
+                		<td style="width:400px;">
+                			<h3 class="panel-title text-center">
+                  				Video ch.{{ forloop.index }}
+                			</h3>
+                		</td>
+                		<td>
+                			<form class="form" action="/app/avmixer/video/{{forloop.index}}/rmSession" method="post">
+                    		<button type="submit" class="btn btn-danger btn-xs">
+                      			<span class="glyphicon glyphicon-remove"></span>
+                    		</button>
+                  		</form>
+                  	</td>
+        					</tr>
+        				</table>
+              </div>
+              <div class="panel-body">
+                <div class="col-md-12">
+				<h4 class="text-center">Port {{ channel.id }}</h4>
+				<div class = "row">&nbsp;</div>
+                <div class="row text-center">
+                  <form class="btn-group" action="/app/avmixer/video/{{channel.channel}}/commute" method="post">
+                    <button type="submit" class="btn btn-default">CUT</button>
+                  </form>
+                </div>
+                <p>
+                <div class="row text-center">
+                  <form class="btn-group" action="/app/avmixer/video/{{channel.channel}}/fade/500" method="post">
+                    <button type="submit" class="btn btn-default">FADE1</button>
+                  </form>
+                </div>
+				<p>
+                <div class="row text-center">
+                  <form class="btn-group" action="/app/avmixer/video/{{channel.channel}}/fade/1000" method="post">
+                    <button type="submit" class="btn btn-default">FADE2</button>
+                  </form>
+                 </div>
+                 <p>
+                 <div class="row text-center">
+                  <form class="btn-group" action="/app/avmixer/video/{{channel.channel}}/blend" method="post">
+                    <button type="submit" class="btn btn-default">BLEND</button>
+                  </form>
+                 </div>
+                 <p>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          {% for channel in (1..stateVideoHash.maxChannels) offset:stateVideoHash.channels.size%}
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title text-center">
+                  Video ch.{{ channel }} 
+                </h3>
+              </div>
+              <div class="panel-body">
+              	<div class="col-md-12">
+	              	<table>
+	              		<tr>
+			              	<td>
+				                <form class="form" role="form" action="/app/avmixer/video/{{channel}}/addSession" method="post">
+				                  <div class="row">
+				                    <div class="col-sm-12 text-center">
+				                      <h4>Free Channel</h4>
+				                    </div>
+				                  </div>
+				                  <div class = "row">&nbsp;</div>
+				                  <div class="row">
+				                    <div class="col-sm-12 text-center">
+				                      <input type="numeric" class="form-control input-sm text-center" name="port" placeholder="Receiver port">
+				                    </div>
+				                  </div>
+				                  <div class = "row">&nbsp;</div>
+				                  <div class="row">
+				                    <div class="col-sm-12 text-center">
+				                      <select class="form-control" name="codec">
+				                        <option value="none">Codec</option>
+				                        <option value="H264">H264</option>
+				                        <option value="VP8">VP8</option>
+				                      </select>
+				                    </div>
+				                  </div>
+				                  <div class = "row">&nbsp;</div>
+				                  <div class = "row">&nbsp;</div>
+				                  <div class = "row">&nbsp;</div>
+				                  <div class="row">
+				                    <div class="col-sm-12 text-center">
+				                      <button type="submit" class="btn btn-default">Add</button>
+				                    </div>
+				                  </div>
+				                  <div class = "row">&nbsp;</div>
+				                </form>
+			                </td>
+		                </tr>
+	                </table>		
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          {% for channel in stateAudioHash.channels %}
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <table>
+                	<tr>
+                		<td style="width:400px;">
+                			<h3 class="panel-title text-center">
+                  				Audio ch.{{ forloop.index }}
+                			</h3>
+                		</td>
+                		<td>
+                			<form class="form" action="/app/avmixer/audio/{{forloop.index}}/rmSession" method="post">
+                    		<button type="submit" class="btn btn-danger btn-xs">
+                      			<span class="glyphicon glyphicon-remove"></span>
+                    		</button>
+                  		</form>
+                  	</td>
+        					</tr>
+        				</table>
+              </div>
+              <div class="panel-body">
+				<div class="col-md-12">
+					<div class="row">
+	                <div class="col-md-12 text-center">
+							<h4 class="text-center">Port {{ channel.id }}</h4>
+					</div>
+			            <div class="row">
+			            
+			              <div class="col-md-6" style="margin-left:-15px;">
+			                  <form class="navbar-form" action="/app/avmixer/audio/{{stateHash.mixerID}}/channel/{{channel.id}}/mute" method="post">
+			                    <button type="submit" class="btn btn-default">Mute</button>
+			                  </form>
+			              </div>
+			              <div class="col-md-6">
+			                  <form class="navbar-form" action="/app/avmixer/audio/{{stateHash.mixerID}}/channel/{{channel.id}}/solo" method="post">
+			                    <button type="submit" class="btn btn-default">Solo</button>
+			                  </form>
+			              </div>
+			              
+			            </div>
+			            <div class = "row">&nbsp;</div>				                  
+			            <div class = "row">&nbsp;</div>
+			            <div class="row">&nbsp;</div>
+			            <div class="row">
+			              <div class="col-md-12 text-center">
+			                <input type="range" class="horizontal" min="0" max="1" step="0.01" orient="vertical" value={{ channel.gain }} oninput="changeChannelVolume({{stateHash.mixerID}}, {{channel.id}}, this.value)"/>
+			              </div>
+			            </div>
+			            <div class = "row">&nbsp;</div>
+			            <div class="row">
+			              <div class="col-md-12 text-center">
+			                Volume
+			              </div>
+			            </div>
+			            <div class="row">
+			              <div class="col-md-12 text-center">
+			                <input class="form-control input-md text-center" name="{{channel.id}}Gain" id="{{channel.id}}Gain" value={{ channel.gain }}>
+			              </div>
+			            </div>
+			          </div>	
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          {% for channel in (1...stateAudioHash.freeChannels) %}
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title text-center">
+                  Audio ch.{{ channel }} 
+                </h3>
+              </div>
+              <div class="panel-body">
+				<div class="col-md-12">
+	                <table>
+		                <tr>
+			              	<td>
+			              		<form class="form" role="form" action="/app/avmixer/audio/{{stateAudioHash.mixerID}}/addSession" method="post">
+					              <div class="row">
+					                <div class="col-sm-12 text-center">
+					                  <h4>Free Channel</h4>
+					                </div>
+					              </div>
+<p>					              <div class="row">
+					                <div class="col-sm-12 text-center text-center">
+					                  <input type="numeric" class="form-control input-sm text-center" name="port" id="port" placeholder="Receiver port">
+					                </div>
+					              </div>
+					              <div class = "row">&nbsp;</div>
+					              <div class="row">
+					                <div class="col-sm-12 text-center">
+					                  <select class="form-control" name="codec">
+					                    <option value="none">Codec</option>
+					                    <option value="pcm">PCM</option>
+					                    <option value="pcmu">PCMU</option>
+					                    <option value="opus">OPUS</option>
+					                    <option value="aac">AAC</option>
+					                    <option value="mp3">MP3</option>
+					                  </select>
+					                </div>
+					              </div>
+					              <div class="row">
+					                <div class="col-sm-12 text-center">
+					                  <select class="form-control" name="sampleRate">
+					                    <option value="none">Smp.Rate</option>
+					                    <option value="8000">8000</option>
+					                    <option value="44100">44100</option>
+					                    <option value="48000">48000</option>
+					                  </select>
+					                </div>
+					              </div>
+					              <div class="row">
+					                <div class="col-sm-12 text-center">
+					                  <select class="form-control" name="channels">
+					                    <option value="none">Channels</option>
+					                    <option value="1">1</option>
+					                    <option value="2">2</option>
+					                  </select>
+					                </div>
+					              </div>
+					              <div class = "row">&nbsp;</div>
+					              <div class="row">
+					                <div class="col-sm-12 text-center">
+					                  <button type="submit" class="btn btn-default">Add</button>
+					                </div>
+					              </div>
+					            </form>					
+			                </td>
+		                </tr>
+	                </table>		
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-6"> 
+    <!-- Layout control panel -->
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="col-md-9">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                  Add new RTSP input session
+                </h3>
+              </div>
+              <div class="panel-body">
+                <form class="form" role="form" action="/app/addRTSPSession" method="post">
+                  <input type="numeric" class="form-control input-sm" name="channel" placeholder="Mixer channel">
+                  <div class = "row">&nbsp;</div>
+                  <input type="text" class="form-control input-sm" name="uri" placeholder="URI">
+                  <div class = "row">&nbsp;</div>
+                  <button type="submit" class="btn btn-default">Add</button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <h4>Audio Master</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <form class="navbar-form" action="/app/avmixer/audio/{{stateAudioHash.mixerID}}/channel/master/mute" method="post">
+                  <button type="submit" class="btn btn-default btn-block">Mute</button>
+                </form>
+              </div>
+            </div>
+            <div class="row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                 <input type="range" class="vertical" min="0" max="1" step="0.1" orient="vertical" value={{stateAudioHash.masterGain}} onchange="changeChannelVolume({{stateAudioHash.mixerID}}, 'master', this.value)"/>
+              </div>
+              <div class="col-sm-6 text-center">
+                <input type="range" class="vertical" min="0" max="10" step="1" orient="vertical" />
+              </div>
+            </div>
+            <div class = "row">&nbsp;</div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                Volume
+              </div>
+              <div class="col-sm-6 text-center">
+                Delay
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 text-center">
+                <input class="form-control input-sm" name="masterGain" id="masterGain" value={{stateAudioHash.masterGain}}>
+              </div>
+              <div class="col-sm-6 text-center">
+                <input class="form-control input-sm" name="c_w" id="c_w" value={{ stateAudioHash.masterDelay }}>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <ul class="nav nav-tabs">
+          	<li><h4>Output grids:</h4></li>
+            <li><a href="grid2x2">Grid 2x2</a></li>
+            <li><a href="grid3x3">Grid 3x3</a></li>
+            <li><a href="grid4x4">Grid 4x4</a></li>
+            <li><a href="gridPiP">PiP</a></li>
+          </ul>
+          <div class = "row">&nbsp;</div>
+          <form class="navbar-form" action="/app/avmixer/video/{{stateVideoHash.grid.id}}/applyGrid" method="post">
+            <div class="row">
+              <div class="col-md-3 col-md-offset-1">
+                <div class="row">
+                  <img src="/image/{{stateVideoHash.grid.id}}grid.jpg" class="img-responsive" alt="{{stateVideoHash.grid.id}}" class="img-rounded">
+                </div>
+                <div class = "row"> &nbsp; </div>
+                <div class="row">
+                  <button type="submit" class="btn btn-default">Apply</button>
+                </div>
+              </div>
+              <div class="col-md-7 col-md-offset-1">
+              {% for position in stateVideoHash.grid.positions %}
+                <div class="row">
+                  <strong>{{ position.id }}</strong>
+                  <div class="btn-group">
+                    <label class="btn btn-default">
+                      <input type="radio" {% if position.channel == 0%} checked {% endif %} name="{{position.id}}" value="0">
+                      <strong><span class="glyphicon glyphicon-remove"></span></strong>
+                    </label>
+                    {% for channel in stateVideoHash.channels %}
+                    <label class="btn btn-default">
+                      <input type="radio" {% if position.channel == forloop.index%} checked {% endif %} name="{{position.id}}" value="{{forloop.index}}">
+                      <strong>{{forloop.index}}</strong>
+                    </label>
+                    {% endfor %}
+                    {% for channel in (1..stateVideoHash.maxChannels) offset:stateVideoHash.channels.size %}
+                    <label class="btn btn-default" disabled>
+                      <input type="radio">
+                      <strong>{{channel}}</strong>
+                    </label>
+                    {% endfor %}
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </form>
+          <div class = "row">&nbsp;</div>
+          <div class = "row">&nbsp;</div>
+          <div class = "row">&nbsp;</div>
+          <div class="row">
+           <div class="col-md-3"></div>
+           <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-body">
+              	<h4>RTSP output sessions:</h4>
+                {% for session in stateVideoHash.sessions %}
+                <h4>{{ session.id | upcase }}</h4>
+                <h5>{{ session.uri }}</h5>
+                {% endfor %}
+              </div> 
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/bs/assets/js/jquery.js"></script>
+    <script src="/bs/dist/js/bootstrap.min.js"></script>
+    <script src="/bs/assets/js/holder.js"></script>
+    <script src="/utils.js"></script>
+  </body>
+</html>

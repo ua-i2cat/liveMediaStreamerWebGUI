@@ -54,48 +54,13 @@ class MixerAPI < Sinatra::Base
     end
   end
 
-  def dashboardExtra (id = "videoMixer")
-    settings.mixer.updateDataBase
-
+  def dashboardAVMixer (grid = '2x2')
     if started
-     
-      if (id == "audioMixer")
-        mixerHash = settings.mixer.getAudioMixerState
-        liquid :audioMixer, :locals => {
-            "stateHash" => mixerHash
-          }
-      elsif (id == "videoMixer")
-        mixerHash = settings.mixer.getAudioMixerState
-        liquid :videoMixer, :locals => {
-            "stateHash" => mixerHash
-          }
-      end
-    
-    else
-      liquid :before
-    end
-
-  end
-
-  def dashboardVideo (grid = '2x2')
-
-    if started
-      mixerHash = settings.mixer.getVideoMixerState(grid)
-      liquid :videoMixer, :locals => {
-          "stateHash" => mixerHash
-        }
-    else
-      liquid :before
-    end
-  end
-
-   def dashboardAudio
-    settings.mixer.updateDataBase
-
-    if started
-      mixerHash = settings.mixer.getAudioMixerState
-      liquid :audioMixer, :locals => {
-          "stateHash" => mixerHash
+      videoMixerHash = settings.mixer.getVideoMixerState(grid)
+      audioMixerHash = settings.mixer.getAudioMixerState
+      liquid :AVMixer, :locals => {
+            "stateVideoHash" => videoMixerHash,
+            "stateAudioHash" => audioMixerHash
         }
     else
       liquid :before
@@ -109,7 +74,7 @@ class MixerAPI < Sinatra::Base
   end
 
   get '/app' do
-    redirect '/app/videomixer'
+    redirect '/app/avmixer'
   end
 
   post '/app/start' do
@@ -128,38 +93,33 @@ class MixerAPI < Sinatra::Base
     redirect '/app'
   end
 
-  get '/app/audiomixer' do
-    content_type :html
-    dashboardAudio
+#  get '/app/avmixer' do
+#    content_type :html
+#    dashboardAVMixer
+#  end
+
+  get '/app/avmixer' do
+    redirect '/app/avmixer/video/grid2x2'
   end
 
-  get '/app/videomixer' do
-    redirect '/app/videomixer/grid2x2'
+  get '/app/avmixer/video/grid2x2' do
+    content_type :html
+    dashboardAVMixer('2x2')
   end
 
-  get '/app/videomixer/grid2x2' do
+  get '/app/avmixer/video/grid3x3' do
     content_type :html
-    dashboardVideo('2x2')
+    dashboardAVMixer('3x3')
   end
 
-  get '/app/videomixer/grid3x3' do
+  get '/app/avmixer/video/grid4x4' do
     content_type :html
-    dashboardVideo('3x3')
+    dashboardAVMixer('4x4')
   end
 
-  get '/app/videomixer/grid4x4' do
+   get '/app/avmixer/video/gridPiP' do
     content_type :html
-    dashboardVideo('4x4')
-  end
-
-   get '/app/videomixer/gridPiP' do
-    content_type :html
-    dashboardVideo('PiP')
-  end
-
-   get '/app/mixer' do
-    content_type :html
-    dashboardExtra("videoMixer")
+    dashboardAVMixer('PiP')
   end
 
   post '/app/addRTSPSession' do 
@@ -167,10 +127,10 @@ class MixerAPI < Sinatra::Base
     error_html do
         settings.mixer.addRTSPSession(params[:channel].to_i, 'mixer', params[:uri])
     end
-    redirect '/app/videomixer'
+    redirect '/app/avmixer'
   end
 
-  post '/app/audiomixer/:mixerid/channel/:channelid/mute' do
+  post '/app/avmixer/audio/:mixerid/channel/:channelid/mute' do
     content_type :html
     error_html do
       if (params[:channelid] == "master")
@@ -183,20 +143,20 @@ class MixerAPI < Sinatra::Base
         )
       end
     end
-    redirect '/app/audiomixer'
+    redirect '/app/avmixer'
   end
 
-  post '/app/audiomixer/:mixerid/channel/:channelid/solo' do
+  post '/app/avmixer/audio/:mixerid/channel/:channelid/solo' do
     content_type :html
     error_html do
       settings.mixer.sendRequest(
         settings.mixer.soloChannel(params[:mixerid].to_i, params[:channelid].to_i)
       )
     end
-    redirect '/app/audiomixer'
+    redirect '/app/avmixer'
   end
 
-  post '/app/audiomixer/:mixerid/channel/:channelid/changeVolume' do
+  post '/app/avmixer/audio/:mixerid/channel/:channelid/changeVolume' do
     content_type :html
     error_html do
       if (params[:channelid] == "master")
@@ -209,10 +169,10 @@ class MixerAPI < Sinatra::Base
         )
       end
     end
-    redirect '/app/audiomixer'
+    redirect '/app/avmixer'
   end
   
-  post '/app/audiomixer/:mixer_id/:encoder_id/reconfigure' do
+  post '/app/avmixer/audio/:mixer_id/:encoder_id/reconfigure' do
     content_type :html
     error_html do
       puts params
@@ -222,26 +182,26 @@ class MixerAPI < Sinatra::Base
                                    params[:channels].to_i
                                   )
     end
-    redirect '/app/audiomixer'
+    redirect '/app/avmixer'
   end
 
-  post '/app/audiomixer/:mixerID/addSession' do
+  post '/app/avmixer/audio/:mixerID/addSession' do
     content_type :html
     error_html do
       settings.mixer.addRTPSession("audio", params, 5000, 0)
     end
-    redirect '/app/audiomixer'
+    redirect '/app/avmixer'
   end
 
-   post '/app/audiomixer/:mixerID/addOutputSession' do
+   post '/app/avmixer/audio/:mixerID/addOutputSession' do
     content_type :html
     error_html do
       settings.mixer.addOutputSession(params[:mixerID].to_i, params[:sessionName])
     end
-    redirect '/app/audiomixer'
+    redirect '/app/avmixer'
   end
 
-  post '/app/videoMixer/:grid/applyGrid' do
+  post '/app/avmixer/video/:grid/applyGrid' do
     content_type :html
     error_html do
       positions = []
@@ -258,61 +218,20 @@ class MixerAPI < Sinatra::Base
       settings.mixer.applyGrid(params[:grid], positions)
 
     end
-    redirect "/app/videomixer/grid#{params[:grid]}"
+    redirect "/app/avmixer/video/grid#{params[:grid]}"
   end
 
-  post '/app/videoMixer/:channel/addSession' do
+  post '/app/avmixer/video/:channel/addSession' do
     content_type :html
     error_html do
       settings.mixer.addRTPSession("video", params, 5000, 90000)
     end
-    redirect '/app/videomixer'
-  end
-  
-  post '/app/videoMixer/:channel/set_input_size' do
-    content_type :html
-    error_html do
-      settings.mixer.updateInputChannelSize(params[:channel].to_i,
-                                              params[:size]
-                                              )
-    end
-    redirect '/app/videomixer'
-  end
-  
-  post '/app/videoMixer/:channel/set_input_fps' do
-    content_type :html
-    error_html do
-      settings.mixer.updateInputChannelFPS(params[:channel].to_i,
-                                              params[:fps]
-                                              )
-    end
-    redirect '/app/videomixer'
-  end
-  
-  post '/app/videoMixer/:channel/set_input_br' do
-    content_type :html
-    error_html do
-      settings.mixer.updateInputChannelBitRate(params[:channel].to_i,
-                                              params[:br]
-                                              )
-    end
-    redirect '/app/videomixer'
-  end
-  
-  post '/app/videoMixer/:channel/set_input_vbcc' do
-    content_type :html
-    error_html do
-      puts params
-      settings.mixer.updateInputChannelVBCC(params[:channel].to_i,
-                                              params[:vbcc]
-                                              )
-    end
-    redirect '/app/videomixer'
+    redirect '/app/avmixer'
   end
   
   #TODO
   #gets channel index (not port) to be removed from sessions
-  post '/app/videoMixer/:channel/rmSession' do
+  post '/app/avmixer/video/:channel/rmSession' do
     content_type :html
     error_html do
       settings.mixer.rmRTPSession(params[:channel].to_i,
@@ -323,31 +242,31 @@ class MixerAPI < Sinatra::Base
                                   90000
                                   )
     end
-    redirect '/app/videomixer'
+    redirect '/app/avmixer'
   end
 
-  post '/app/videoMixer/:channel/commute' do
+  post '/app/avmixer/video/:channel/commute' do
     content_type :html
     error_html do
       settings.mixer.commute(params[:channel].to_i)
     end
-    redirect '/app/videomixer'
+    redirect '/app/avmixer'
   end
 
-  post '/app/videoMixer/:channel/fade/:time' do
+  post '/app/avmixer/video/:channel/fade/:time' do
     content_type :html
     error_html do
       settings.mixer.fade(params[:channel].to_i, params[:time].to_i)
     end
-    redirect '/app/videomixer'
+    redirect '/app/avmixer'
   end
 
-  post '/app/videoMixer/:channel/blend' do
+  post '/app/avmixer/video/:channel/blend' do
     content_type :html
     error_html do
       settings.mixer.blend(params[:channel].to_i)
     end
-    redirect '/app/videomixer'
+    redirect '/app/avmixer'
   end
 
 end
