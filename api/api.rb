@@ -56,8 +56,9 @@ class MixerAPI < Sinatra::Base
 
   def dashboardAVMixer (grid = '2x2')
     if started
-      videoMixerHash = settings.mixer.getVideoMixerState(grid)
-      audioMixerHash = settings.mixer.getAudioMixerState
+      avmstate = settings.mixer.getAVMixerState(grid)
+      videoMixerHash = avmstate[:video]
+      audioMixerHash = avmstate[:audio]
       liquid :AVMixer, :locals => {
             "stateVideoHash" => videoMixerHash,
             "stateAudioHash" => audioMixerHash

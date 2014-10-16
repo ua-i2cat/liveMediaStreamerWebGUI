@@ -63,7 +63,7 @@ module RMixer
       end
     end
     
-    def restart_livemediastreamer_if_running
+    def check_livemediastreamer_process
       if `ps aux | grep livemediastreamer | grep --invert grep` != ""
         found = `ps aux | grep livemediastreamer | grep --invert grep`
         tmpPid = `ps aux | grep livemediastreamer | grep --invert grep |awk '{ print $2 }'`
@@ -97,7 +97,7 @@ module RMixer
 
     def start
       if !@lmsStarted && check_livemediastreamer_installation
-        restart_livemediastreamer_if_running
+        check_livemediastreamer_process
         run_livemediastreamer
         sleep(1)
         if @lmsStarted
@@ -240,8 +240,12 @@ module RMixer
       @db.update(stateHash)
     end
 
-    def getVideoMixerState(grid = '2x2')
-      @db.getVideoMixerState(@airMixerID, grid)
+    def getAVMixerState(grid = '2x2')
+      updateDataBase
+      avmstate = {}
+      avmstate[:video] = @db.getVideoMixerState(@airMixerID, grid)
+      avmstate[:audio] = @db.getAudioMixerState
+      return avmstate
     end
 
     def createFilter(id, type, role = 'default')
