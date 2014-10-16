@@ -343,28 +343,19 @@
             </div>
             <div class="row">&nbsp;</div>
             <div class="row">
-              <div class="col-sm-6 text-center">
-                 <input type="range" class="vertical" min="0" max="1" step="0.1" orient="vertical" value={{stateAudioHash.masterGain}} onchange="changeChannelVolume({{stateAudioHash.mixerID}}, 'master', this.value)"/>
-              </div>
-              <div class="col-sm-6 text-center">
-                <input type="range" class="vertical" min="0" max="10" step="1" orient="vertical" />
+              <div class="col-sm-12 text-center">
+                 <input type="range" class="vertical" min="0" max="1" step="0.01" orient="vertical" value={{stateAudioHash.masterGain}} oninput="changeChannelVolume({{stateAudioHash.mixerID}}, 'master', this.value)"/>
               </div>
             </div>
             <div class = "row">&nbsp;</div>
             <div class="row">
-              <div class="col-sm-6 text-center">
+              <div class="col-sm-12 text-center">
                 Volume
-              </div>
-              <div class="col-sm-6 text-center">
-                Delay
               </div>
             </div>
             <div class="row">
-              <div class="col-sm-6 text-center">
-                <input class="form-control input-sm" name="masterGain" id="masterGain" value={{stateAudioHash.masterGain}}>
-              </div>
-              <div class="col-sm-6 text-center">
-                <input class="form-control input-sm" name="c_w" id="c_w" value={{ stateAudioHash.masterDelay }}>
+              <div class="col-sm-6 text-center col-sm-offset-3">
+                <input class="form-control input-sm text-center" name="masterGain" id="masterGain" value={{stateAudioHash.masterGain}}>
               </div>
             </div>
           </div>
