@@ -28,6 +28,7 @@ require "append"
 require "grids"
 require "ultragrid"
 require "mongodb"
+require 'mkmf'
 require 'open3'
 require 'thread'
 
@@ -52,6 +53,27 @@ module RMixer
       @videoFadeInterval = 50 #ms
     end
 
+    def check_livemediastreamer_installation
+      if !(find_executable 'livemediastreamer').nil?
+        puts "livemediastreamer already installed...going to run"
+        return true
+      else
+        puts "livemediastreamer not installed...please install on system before running GUI"
+        return false
+      end
+    end
+    
+    def restart_livemediastreamer_if_running
+      if `ps aux | grep livemediastreamer | grep --invert grep` != ""
+        found = `ps aux | grep livemediastreamer | grep --invert grep`
+        tmpPid = `ps aux | grep livemediastreamer | grep --invert grep |awk '{ print $2 }'`
+        puts "Previous livemediastreamer instance found (#{found} -> PID = #{tmpPid}): restarting..."
+        Process.kill("TERM", tmpPid.to_i)
+      else
+        puts "No previous livemediastreamer instance found: starting..."
+      end
+    end
+    
     def loadGrids
       grids = []
 
@@ -71,76 +93,76 @@ module RMixer
     def resetScenario
       @db.clear
       sendRequest(reset)
-
     end
 
     def start
-      if !@lmsStarted
+      if !@lmsStarted && check_livemediastreamer_installation
+        restart_livemediastreamer_if_running
         run_livemediastreamer
         sleep(1)
         if @lmsStarted
           resetScenario
           loadGrids
 
-      @airMixerID = Random.rand(@randomSize)
-      @previewMixerID = Random.rand(@randomSize)
-      airEncoderID = Random.rand(@randomSize)
-      previewEncoderID = Random.rand(@randomSize)
-      airResamplerEncoderID = Random.rand(@randomSize)
-      previewResamplerEncoderID = Random.rand(@randomSize)
-      airOutputPathID = Random.rand(@randomSize)
-      previewOutputPathID = Random.rand(@randomSize)
-
-      createFilter(@airMixerID, 'videoMixer')
-      createFilter(@previewMixerID, 'videoMixer')
-      createFilter(airEncoderID, 'videoEncoder')
-      createFilter(previewEncoderID, 'videoEncoder')
-      createFilter(airResamplerEncoderID, 'videoResampler')
-      createFilter(previewResamplerEncoderID, 'videoResampler')
-
-      txId = @db.getFilterByType('transmitter')["id"]
-
-      createPath(airOutputPathID, @airMixerID, txId, [airResamplerEncoderID, airEncoderID])
-      createPath(previewOutputPathID, @previewMixerID, txId, [previewResamplerEncoderID, previewEncoderID])
-
-      airPath = @db.getPath(airOutputPathID)
-      previewPath = @db.getPath(previewOutputPathID)
-
-      airEncoderFPS = 25
-
-      assignWorker(@airMixerID, 'videoMixer', 'master')
-      assignWorker(@previewMixerID, 'videoMixer', 'master')
-      assignWorker(airEncoderID, 'videoEncoder', 'master')
-      assignWorker(previewEncoderID, 'videoEncoder', 'master')
-      assignWorker(airResamplerEncoderID, 'videoResampler', 'master')
-      assignWorker(previewResamplerEncoderID, 'videoResampler', 'master')
-
-      sendRequest(configureVideoEncoder(airEncoderID, {:bitrate => 3000}))
-      sendRequest(configureVideoEncoder(previewEncoderID, {:bitrate => 3000}))
-      sendRequest(configureResampler(airResamplerEncoderID, 0, 0, {:pixelFormat => 2}))
-      sendRequest(configureResampler(previewResamplerEncoderID, 0, 0, {:pixelFormat => 2}))
-
-      @audioMixer = Random.rand(@randomSize)
-      audioEncoder =  Random.rand(@randomSize)
-      audioPathID = Random.rand(@randomSize)
-      audioMixerWorker = Random.rand(@randomSize)
-      audioEncoderWorker = Random.rand(@randomSize)
-
-      createFilter(@audioMixer, 'audioMixer')
-      createFilter(audioEncoder, 'audioEncoder')
-
-      createPath(audioPathID, @audioMixer, txId, [audioEncoder])
-
-      audioPath = @db.getPath(audioPathID)
-
-      assignWorker(@audioMixer, 'audioMixer', 'master')
-      assignWorker(audioEncoder, 'audioEncoder', 'master')
-
-      #OUTPUT
-
-      sendRequest(@conn.addOutputSession(txId, [airPath["destinationReader"], audioPath["destinationReader"]], 'air'))
-      sendRequest(@conn.addOutputSession(txId, [previewPath["destinationReader"]], 'preview'))
-      @started = true
+          @airMixerID = Random.rand(@randomSize)
+          @previewMixerID = Random.rand(@randomSize)
+          airEncoderID = Random.rand(@randomSize)
+          previewEncoderID = Random.rand(@randomSize)
+          airResamplerEncoderID = Random.rand(@randomSize)
+          previewResamplerEncoderID = Random.rand(@randomSize)
+          airOutputPathID = Random.rand(@randomSize)
+          previewOutputPathID = Random.rand(@randomSize)
+    
+          createFilter(@airMixerID, 'videoMixer')
+          createFilter(@previewMixerID, 'videoMixer')
+          createFilter(airEncoderID, 'videoEncoder')
+          createFilter(previewEncoderID, 'videoEncoder')
+          createFilter(airResamplerEncoderID, 'videoResampler')
+          createFilter(previewResamplerEncoderID, 'videoResampler')
+    
+          txId = @db.getFilterByType('transmitter')["id"]
+    
+          createPath(airOutputPathID, @airMixerID, txId, [airResamplerEncoderID, airEncoderID])
+          createPath(previewOutputPathID, @previewMixerID, txId, [previewResamplerEncoderID, previewEncoderID])
+    
+          airPath = @db.getPath(airOutputPathID)
+          previewPath = @db.getPath(previewOutputPathID)
+    
+          airEncoderFPS = 25
+    
+          assignWorker(@airMixerID, 'videoMixer', 'master')
+          assignWorker(@previewMixerID, 'videoMixer', 'master')
+          assignWorker(airEncoderID, 'videoEncoder', 'master')
+          assignWorker(previewEncoderID, 'videoEncoder', 'master')
+          assignWorker(airResamplerEncoderID, 'videoResampler', 'master')
+          assignWorker(previewResamplerEncoderID, 'videoResampler', 'master')
+    
+          sendRequest(configureVideoEncoder(airEncoderID, {:bitrate => 3000}))
+          sendRequest(configureVideoEncoder(previewEncoderID, {:bitrate => 3000}))
+          sendRequest(configureResampler(airResamplerEncoderID, 0, 0, {:pixelFormat => 2}))
+          sendRequest(configureResampler(previewResamplerEncoderID, 0, 0, {:pixelFormat => 2}))
+    
+          @audioMixer = Random.rand(@randomSize)
+          audioEncoder =  Random.rand(@randomSize)
+          audioPathID = Random.rand(@randomSize)
+          audioMixerWorker = Random.rand(@randomSize)
+          audioEncoderWorker = Random.rand(@randomSize)
+    
+          createFilter(@audioMixer, 'audioMixer')
+          createFilter(audioEncoder, 'audioEncoder')
+    
+          createPath(audioPathID, @audioMixer, txId, [audioEncoder])
+    
+          audioPath = @db.getPath(audioPathID)
+    
+          assignWorker(@audioMixer, 'audioMixer', 'master')
+          assignWorker(audioEncoder, 'audioEncoder', 'master')
+    
+          #OUTPUT
+    
+          sendRequest(@conn.addOutputSession(txId, [airPath["destinationReader"], audioPath["destinationReader"]], 'air'))
+          sendRequest(@conn.addOutputSession(txId, [previewPath["destinationReader"]], 'preview'))
+          @started = true 
 
           updateDataBase
         else
