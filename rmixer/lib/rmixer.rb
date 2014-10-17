@@ -87,6 +87,7 @@ module RMixer
           @airVideoMixerId = Random.rand(@randomSize)
           airAudioEncoderId = Random.rand(@randomSize)
           airVideoEncoderId = Random.rand(@randomSize)
+          airResamplerEncoderId = Random.rand(@randomSize)
           airAudioPathId = Random.rand(@randomSize)
           airVideoPathId = Random.rand(@randomSize)
 
@@ -94,11 +95,12 @@ module RMixer
           createFilter(airAudioEncoderId, 'audioEncoder')
           createFilter(@airVideoMixerId, 'videoMixer')
           createFilter(airVideoEncoderId, 'videoEncoder')
+	  createFilter(airResamplerEncoderId, 'videoResampler')
 
           transmitter = @db.getFilterByType('transmitter').first
 
           createPath(airAudioPathId, @airAudioMixerId, transmitter["id"], [airAudioEncoderId])
-          createPath(airVideoPathId, @airVideoMixerId, transmitter["id"], [airVideoEncoderId])
+          createPath(airVideoPathId, @airVideoMixerId, transmitter["id"], [airResamplerEncoderId, airVideoEncoderId])
 
           airAudioPath = @db.getPath(airAudioPathId)
           airVideoPath = @db.getPath(airVideoPathId)
@@ -109,12 +111,14 @@ module RMixer
 
           assignWorker(@airVideoMixerId, 'videoMixer', 'master')
           assignWorker(airVideoEncoderId, 'videoEncoder', 'master')
+	  assignWorker(airResamplerEncoderId, 'videoResampler', 'master')
 
-        #  sendRequest(@conn.addOutputSession(transmitter["id"], [@airVideoReader, airAudioPath["destinationReader"]], 'air'))
-          sendRequest(@conn.addOutputSession(transmitter["id"], [airAudioPath["destinationReader"]], 'air'))
-          @started = true
+          sendRequest(configureResampler(airResamplerEncoderId, 0, 0, {:pixelFormat => 2}))
 
-          updateDataBase
+          sendRequest(@conn.addOutputSession(transmitter["id"], [@airVideoReader, airAudioPath["destinationReader"]], 'air'))
+        #  sendRequest(@conn.addOutputSession(transmitter["id"], [airAudioPath["destinationReader"]], 'air'))
+          
+	  updateDataBase
         else
           puts "livemediastreamer not started...check system processes...!"
         end
@@ -139,8 +143,8 @@ module RMixer
       createPath(Random.rand(@randomSize), audioDecoderId, @airAudioMixerId, [], {:dstReaderId => port})
       createPath(Random.rand(@randomSize), audioMixerId, transmitter["id"], [audioEncoderId], {:dstReaderId => port})
 
-    #  sendRequest(@conn.addOutputSession(transmitter["id"], [@airVideoReader, port], 'client' + port.to_s))
-      sendRequest(@conn.addOutputSession(transmitter["id"], [port], 'client' + port.to_s))
+      sendRequest(@conn.addOutputSession(transmitter["id"], [@airVideoReader, port], 'client' + port.to_s))
+    #  sendRequest(@conn.addOutputSession(transmitter["id"], [port], 'client' + port.to_s))
 
       @db.getFilterByType('audioMixer').each do |m|
         unless m["id"] == @airAudioMixerId || m["id"] == audioMixerId
@@ -177,6 +181,36 @@ module RMixer
 
       assignWorker(decoderId, 'videoDecoder', 'master', {:processorLimit => 2})
       assignWorker(resamplerId, 'videoResampler', 'master', {:processorLimit => 2})
+
+      grid = @db.getGrid("2x2")
+      apGrid(grid)
+
+    end
+
+    def apGrid(grid)
+      mixer = getFilter(@airVideoMixerId)
+      mixer["channels"].zip(grid["positions"]).each do |ch,gr|
+          ch["width"] = gr["width"]
+          ch["height"] = gr["height"]
+          ch["x"] = gr["x"]
+          ch["y"] = gr["y"]
+          ch["layer"] = gr["layer"]
+          ch["opacity"] = gr["opacity"]
+          ch["enabled"] = true
+
+          appendEvent(updateVideoChannel(@airVideoMixerId, ch))
+
+          path = getPathByDestination(@airVideoMixerId, ch["id"])
+	  resamplerId = path["filters"][1]
+
+          width = ch["width"]*mixer["width"]
+          height = ch["height"]*mixer["height"]
+
+          appendEvent(configureResampler(resamplerId, width, height))
+        end
+
+      sendRequest
+      updateFilter(mixer)
 
     end
 
@@ -461,7 +495,6 @@ module RMixer
 
     def doApplyGrid(grid)
       mixer = getFilter(@airMixerID)
-
       mixer["channels"].each do |ch|
         position = {}
 
