@@ -122,15 +122,6 @@ module RMixer
       createEvent("addSession", params, txID)
     end
 
-    def addOutputSessionTemporal(txID, readers, sessionName)
-      params = {
-        :readers => readers,
-        :sessionName => sessionName
-      }
-
-      createEvent("addSession", params, txID)
-    end
-
     def createFilter(id, type)
       params = {
         :id => id,

@@ -78,69 +78,41 @@ module RMixer
       if !@lmsStarted
         run_livemediastreamer
         sleep(1)
+
         if @lmsStarted
           resetScenario
           loadGrids
 
-      @airMixerID = Random.rand(@randomSize)
-      @previewMixerID = Random.rand(@randomSize)
-      airEncoderID = Random.rand(@randomSize)
-      previewEncoderID = Random.rand(@randomSize)
-      airResamplerEncoderID = Random.rand(@randomSize)
-      previewResamplerEncoderID = Random.rand(@randomSize)
-      airOutputPathID = Random.rand(@randomSize)
-      previewOutputPathID = Random.rand(@randomSize)
+          @airAudioMixerId = Random.rand(@randomSize)
+          @airVideoMixerId = Random.rand(@randomSize)
+          airAudioEncoderId = Random.rand(@randomSize)
+          airVideoEncoderId = Random.rand(@randomSize)
+          airAudioPathId = Random.rand(@randomSize)
+          airVideoPathId = Random.rand(@randomSize)
 
-      createFilter(@airMixerID, 'videoMixer')
-      createFilter(@previewMixerID, 'videoMixer')
-      createFilter(airEncoderID, 'videoEncoder')
-      createFilter(previewEncoderID, 'videoEncoder')
-      createFilter(airResamplerEncoderID, 'videoResampler')
-      createFilter(previewResamplerEncoderID, 'videoResampler')
+          createFilter(@airAudioMixerId, 'audioMixer')
+          createFilter(airAudioEncoderId, 'audioEncoder')
+          createFilter(@airVideoMixerId, 'videoMixer')
+          createFilter(airVideoEncoderId, 'videoEncoder')
 
-      txId = @db.getFilterByType('transmitter')["id"]
+          transmitter = @db.getFilterByType('transmitter').first
 
-      createPath(airOutputPathID, @airMixerID, txId, [airResamplerEncoderID, airEncoderID])
-      createPath(previewOutputPathID, @previewMixerID, txId, [previewResamplerEncoderID, previewEncoderID])
+          createPath(airAudioPathId, @airAudioMixerId, transmitter["id"], [airAudioEncoderId])
+          createPath(airVideoPathId, @airVideoMixerId, transmitter["id"], [airVideoEncoderId])
 
-      airPath = @db.getPath(airOutputPathID)
-      previewPath = @db.getPath(previewOutputPathID)
+          airAudioPath = @db.getPath(airAudioPathId)
+          airVideoPath = @db.getPath(airVideoPathId)
+          @airVideoReader = airVideoPath["destinationReader"]
 
-      airEncoderFPS = 25
+          @audioMixerMasterWorkerId = assignWorker(@airAudioMixerId, 'audioMixer', 'master')
+          assignWorker(airAudioEncoderId, 'audioEncoder', 'master')
 
-      assignWorker(@airMixerID, 'videoMixer', 'master')
-      assignWorker(@previewMixerID, 'videoMixer', 'master')
-      assignWorker(airEncoderID, 'videoEncoder', 'master')
-      assignWorker(previewEncoderID, 'videoEncoder', 'master')
-      assignWorker(airResamplerEncoderID, 'videoResampler', 'master')
-      assignWorker(previewResamplerEncoderID, 'videoResampler', 'master')
+          assignWorker(@airVideoMixerId, 'videoMixer', 'master')
+          assignWorker(airVideoEncoderId, 'videoEncoder', 'master')
 
-      sendRequest(configureVideoEncoder(airEncoderID, {:bitrate => 3000}))
-      sendRequest(configureVideoEncoder(previewEncoderID, {:bitrate => 3000}))
-      sendRequest(configureResampler(airResamplerEncoderID, 0, 0, {:pixelFormat => 2}))
-      sendRequest(configureResampler(previewResamplerEncoderID, 0, 0, {:pixelFormat => 2}))
-
-      @audioMixer = Random.rand(@randomSize)
-      audioEncoder =  Random.rand(@randomSize)
-      audioPathID = Random.rand(@randomSize)
-      audioMixerWorker = Random.rand(@randomSize)
-      audioEncoderWorker = Random.rand(@randomSize)
-
-      createFilter(@audioMixer, 'audioMixer')
-      createFilter(audioEncoder, 'audioEncoder')
-
-      createPath(audioPathID, @audioMixer, txId, [audioEncoder])
-
-      audioPath = @db.getPath(audioPathID)
-
-      assignWorker(@audioMixer, 'audioMixer', 'master')
-      assignWorker(audioEncoder, 'audioEncoder', 'master')
-
-      #OUTPUT
-
-      sendRequest(@conn.addOutputSession(txId, [airPath["destinationReader"], audioPath["destinationReader"]], 'air'))
-      sendRequest(@conn.addOutputSession(txId, [previewPath["destinationReader"]], 'preview'))
-      @started = true
+        #  sendRequest(@conn.addOutputSession(transmitter["id"], [@airVideoReader, airAudioPath["destinationReader"]], 'air'))
+          sendRequest(@conn.addOutputSession(transmitter["id"], [airAudioPath["destinationReader"]], 'air'))
+          @started = true
 
           updateDataBase
         else
@@ -148,6 +120,97 @@ module RMixer
         end
       else
         puts "livemediastreamer already running...ambiguous situation...!"
+      end
+    end
+
+    def addAudioClient(port)
+      receiver = @db.getFilterByType('receiver').first
+      transmitter = @db.getFilterByType('transmitter').first
+
+      audioDecoderId = port
+      audioMixerId = Random.rand(@randomSize)
+      audioEncoderId = Random.rand(@randomSize)
+
+      createFilter(audioDecoderId, 'audioDecoder')
+      createFilter(audioMixerId, 'audioMixer')
+      createFilter(audioEncoderId, 'audioEncoder')
+
+      createPath(Random.rand(@randomSize), receiver["id"], audioDecoderId, [], {:orgWriterId => port})
+      createPath(Random.rand(@randomSize), audioDecoderId, @airAudioMixerId, [], {:dstReaderId => port})
+      createPath(Random.rand(@randomSize), audioMixerId, transmitter["id"], [audioEncoderId], {:dstReaderId => port})
+
+    #  sendRequest(@conn.addOutputSession(transmitter["id"], [@airVideoReader, port], 'client' + port.to_s))
+      sendRequest(@conn.addOutputSession(transmitter["id"], [port], 'client' + port.to_s))
+
+      @db.getFilterByType('audioMixer').each do |m|
+        unless m["id"] == @airAudioMixerId || m["id"] == audioMixerId
+          id = Random.rand(@randomSize)
+          createPath(id, audioDecoderId, m["id"], [], {:dstReaderId => port, :sharedQueue => true})
+        end
+      end
+
+      @db.getFilterByType('audioDecoder').each do |d|
+        unless d["id"] == audioDecoderId
+          id = Random.rand(@randomSize)
+          createPath(id, d["id"], audioMixerId, [], {:dstReaderId => d["id"], :sharedQueue => true})
+        end
+      end
+
+      assignWorker(audioDecoderId, 'audioDecoder', 'master')
+      mixerSlave = assignWorker(audioMixerId, 'audioMixer', 'slave')
+      assignWorker(audioEncoderId, 'audioEncoder', 'master')
+
+      sendRequest(addSlavesToWorker(@audioMixerMasterWorkerId, [mixerSlave]))
+    end
+
+    def addVideoClient(port)
+      receiver = @db.getFilterByType('receiver').first
+
+      decoderId = Random.rand(@randomSize)
+      resamplerId = Random.rand(@randomSize)
+      pathId = Random.rand(@randomSize)
+
+      createFilter(decoderId, 'videoDecoder')
+      createFilter(resamplerId, 'videoResampler')
+
+      createPath(pathId, receiver["id"], @airVideoMixerId, [decoderId, resamplerId], {:orgWriterId => port, :dstReaderId => port})
+
+      assignWorker(decoderId, 'videoDecoder', 'master', {:processorLimit => 2})
+      assignWorker(resamplerId, 'videoResampler', 'master', {:processorLimit => 2})
+
+    end
+
+    def addRTPSession(medium, params, bandwidth, timeStampFrequency)
+      port = params[:port].to_i
+      return if port == 0
+
+      codec = params[:codec]
+
+      case medium
+      when "audio"
+        mixerChannel = 0
+        channels = params[:channels].to_i
+        timeStampFrequency = params[:sampleRate].to_i
+          receiver = @db.getFilterByType('receiver').first
+          #TODO manage response
+          sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
+          addAudioClient(port)
+          updateDataBase
+
+      when "video"
+        mixerChannel = params[:channel].to_i
+        receiver = @db.getFilterByType('receiver').first
+
+        #TODO manage response
+        sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
+
+        @db.addVideoChannelPort(mixerChannel, port)
+        addVideoClient(port)
+
+        updateDataBase
+
+      else
+        puts "Error, no medium type..."
       end
     end
 
@@ -263,7 +326,7 @@ module RMixer
     end
 
     def addRTSPSession(mixerChannel, progName, uri)
-      receiver = @db.getFilterByType('receiver')
+      receiver = @db.getFilterByType('receiver').first
       id = uri.split('/').last
       sendRequest(@conn.addRTSPSession(receiver["id"], progName, uri, id))
 
@@ -297,151 +360,8 @@ module RMixer
       end
     end
 
-    def addRTPSession(medium, params, bandwidth, timeStampFrequency)
-      #TODO CHECK IF PORT ALREADY OCCUPYED!!!
-      #TODO first check if sourceIP already exists inside audio or video list, then give available cport
-      #then check decklink (to check inside audio if embedded or analog)
-      port = params[:port].to_i
-      return if port == 0
-
-      sourceType = params[:sourceType]
-      sourceIP = params[:sourceIP]
-      codec = params[:codec]
-
-      case medium
-      when "audio"
-        mixerChannel = 0
-        channels = params[:channels].to_i
-        timeStampFrequency = params[:sampleRate].to_i
-        case sourceType
-        when "ultragrid"
-          if @uv.uv_check_and_tx(sourceIP, port, medium, timeStampFrequency, channels)
-            receiver = @db.getFilterByType('receiver')
-            #TODO ADD OPUS SUPPORT IN ULTRAGRID, NOW ONLY PCMU
-            #TODO manage response
-            sendRequest(@conn.addRTPSession(receiver["id"], port, medium, "pcmu", bandwidth, timeStampFrequency, channels))
-
-            puts "error setting control port" if !@uv.set_controlport(sourceIP)
-            chParams = {:ip => sourceIP.to_s,
-              :medium => medium,
-              :sourceType => sourceType
-            }
-            @db.addInputChannelParams(mixerChannel, chParams) #TODO manage response
-            createAudioInputPath(port)
-            updateDataBase
-          end
-        when "other"
-          receiver = @db.getFilterByType('receiver')
-          #TODO manage response
-          sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
-          chParams = {:ip => sourceIP.to_s,
-            :medium => medium,
-            :sourceType => sourceType
-          }
-          @db.addInputChannelParams(mixerChannel, chParams) #TODO manage response
-          createAudioInputPath(port)
-          updateDataBase
-        else
-          puts "Please, select between ultragrid or other type of sources..."
-        end
-
-      when "video"
-        mixerChannel = params[:channel].to_i
-
-        case sourceType
-        when "ultragrid"
-          if @uv.uv_check_and_tx(sourceIP, port, medium, 0, 0)
-            receiver = @db.getFilterByType('receiver')
-
-            #@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels)
-            #TODO manage response
-            sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
-
-            puts "error setting control port" if !@uv.set_controlport(sourceIP)
-
-            orig_chParams = @uv.getUltraGridParams(sourceIP)
-            if !orig_chParams.empty?
-
-              puts "UltraGrid has crashed... check source!"
-              orig_chParams[:o_size] = "1920x1080"
-              orig_chParams[:o_fps] = 25
-              orig_chParams[:o_br] = 12200
-              chParams = {
-                :ip => sourceIP.to_s,
-                :sourceType => sourceType,
-                :size_val => !orig_chParams.empty? ? orig_chParams[:o_size]: "",
-                :fps_val => !orig_chParams.empty? ? orig_chParams[:o_fps].to_f.round(2): "",
-                :br_val => !orig_chParams.empty? ? orig_chParams[:o_br].to_f.round(2): "",
-                :size => "H",
-                :fps => "H",
-                :br => "H",
-                :vbcc => false
-              }
-
-              puts "\n\nADDING NEW ULTRAGRID CHANNEL PARAMS TO DB:"
-              puts chParams
-              puts "\n\n"
-
-              if orig_chParams[:uv_params].include?"embedded"
-                #ADD AUDIO EMBEDDED
-                receiver = @db.getFilterByType('receiver')
-                #TODO manage response
-                sendRequest(@conn.addRTPSession(receiver["id"], port+2, "audio", "pcmu", 5000, 48000, 2))
-                chParams = {:ip => sourceIP.to_s,
-                  :medium => "audio",
-                  :sourceType => "ultragrid"
-                }
-                @db.addInputChannelParams(0, chParams) #TODO manage response
-                createAudioInputPath(port)
-                updateDataBase
-              end
-
-              @db.addInputChannelParams(mixerChannel, chParams) #TODO manage response
-
-              @db.addVideoChannelPort(mixerChannel, port)
-              createVideoInputPaths(port)
-              applyPreviewGrid
-
-              updateDataBase
-
-            end
-          end
-        when "other"
-          receiver = @db.getFilterByType('receiver')
-
-          #TODO manage response
-          sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
-
-          chParams = {
-            :ip => sourceIP.to_s,
-            :sourceType => sourceType,
-            :size => "",
-            :fps => "",
-            :br => "",
-            :size_val => "",
-            :fps_val => "",
-            :br_val => "",
-            :vbcc => false
-          }
-
-          @db.addInputChannelParams(mixerChannel, chParams) #TODO manage response
-
-          @db.addVideoChannelPort(mixerChannel, port)
-          createVideoInputPaths(port)
-          applyPreviewGrid
-
-          updateDataBase
-
-        else
-          puts "Please, select between ultragrid or other type of sources..."
-        end
-      else
-        puts "Error, no medium type..."
-      end
-    end
-
     def rmRTPSession(mixerChannel, port, medium, codec, bandwidth, timeStampFrequency, channels = 0)
-      #      receiver = @db.getFilterByType('receiver')
+      #      receiver = @db.getFilterByType('receiver').first
       #      @conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels)
       #
       #      if medium == 'audio'
@@ -698,9 +618,8 @@ module RMixer
     end
 
     #NETWORKED PRODUCTION
-
     def createVideoInputPaths(port)
-      receiver = @db.getFilterByType('receiver')
+      receiver = @db.getFilterByType('receiver').first
 
       decoderID = Random.rand(@randomSize)
       airResamplerID = Random.rand(@randomSize)
@@ -726,7 +645,7 @@ module RMixer
     end
 
     def createAudioInputPath(port)
-      receiver = @db.getFilterByType('receiver')
+      receiver = @db.getFilterByType('receiver').first
 
       decoderID = Random.rand(@randomSize)
       decoderPathID = Random.rand(@randomSize)

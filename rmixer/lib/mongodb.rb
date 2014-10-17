@@ -92,18 +92,17 @@ module RMixer
       end
     end
 
-    def getWorkerByType(workerType, filterType, fps = 24)
+    def getWorkerByType(workerType, filterType)
       db = MongoClient.new(host, port).db(dbname)
       workers = db.collection('workers')
 
       workers.find({:workerType => workerType, 
-                    :filterType => filterType,
-                    :fps => fps
+                    :filterType => filterType
                     }
                   )
     end
 
-    def addWorker(id, workerType, filterType, fps = 24)
+    def addWorker(id, workerType, filterType)
       db = MongoClient.new(host, port).db(dbname)
       workers = db.collection('workers')
 
@@ -113,8 +112,7 @@ module RMixer
         :id => id,
         :workerType => workerType,
         :filterType => filterType,
-        :processors => processors,
-        :fps => fps
+        :processors => processors
       }
 
       workers.insert(w)
@@ -309,7 +307,7 @@ module RMixer
       db = MongoClient.new(host, port).db(dbname)
       filters = db.collection('filters')
 
-      filter = filters.find(:type=>type).first
+      filters.find(:type=>type)
     end
 
     def getFilter(filterID)
