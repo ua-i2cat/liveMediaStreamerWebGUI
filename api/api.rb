@@ -73,6 +73,7 @@ class MixerAPI < Sinatra::Base
   set :ip, '127.0.0.1'
   set :port, 7777
   set :mixer, RMixer::Mixer.new(settings.ip, settings.port)
+  set :scenario, ' '
 
   use LoginScreen
   
@@ -129,11 +130,33 @@ class MixerAPI < Sinatra::Base
       liquid :before
     end
   end
+  
+  def dashboardViCo (grid = '2x2')
+    if started
+      avmstate = settings.mixer.getAVMixerState(grid)
+      videoMixerHash = avmstate[:video]
+      audioMixerHash = avmstate[:audio]
+      liquid :vico, :locals => {
+            "stateVideoHash" => videoMixerHash,
+            "stateAudioHash" => audioMixerHash
+        }
+    else
+      liquid :before
+    end
+  end
 
   # Web App Methods
   # Routes
   get '/app' do
-    redirect '/app/avmixer'
+    puts settings.scenario
+    case settings.scenario
+    when "avmixer"
+      redirect '/app/avmixer'
+    when "vico"
+      redirect '/app/vico'
+    else
+      liquid :before
+    end
   end
 
   post '/app/start/avmixer' do
@@ -141,25 +164,33 @@ class MixerAPI < Sinatra::Base
     error_html do
       settings.mixer.start
     end
+    settings.scenario = 'avmixer'
     redirect '/app'
   end
   
-#  post '/app/start/vico' do
-#    content_type :html
-#    error_html do
-#      settings.mixer.start
-#    end
-#    redirect '/app'
-#  end
+  post '/app/start/vico' do
+    content_type :html
+    error_html do
+      settings.mixer.start
+    end
+    settings.scenario = 'vico'
+    redirect '/app'
+  end
   
   post '/app/stop' do
     content_type :html
     error_html do
       settings.mixer.stop
     end
+    settings.scenario = ''
     redirect '/app'
   end
 
+  get '/app/vico' do
+    content_type :html
+    dashboardViCo
+  end
+  
   get '/app/avmixer' do
     redirect '/app/avmixer/video/grid2x2'
   end
