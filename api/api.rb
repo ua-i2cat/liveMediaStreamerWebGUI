@@ -23,10 +23,50 @@
 
 require 'rubygems'
 require 'bundler/setup'
-
 require 'liquid'
 require 'sinatra/base'
 require 'rmixer'
+require 'rack/protection'
+
+class LoginScreen < Sinatra::Base
+  #enable :sessions
+  use Rack::Session::Cookie,  :key => 'rack.session',
+                              #:domain => 'localhost',
+                              :expire_after => 2592000, # In seconds
+                              :path => '/',
+                              :secret => 'livemediastreamerGUIsecret'
+  
+  #set :session_secret, 'super secret'
+  #use Rack::Protection
+  
+  #set :protection
+  #, :session => true
+  
+  get('/') do
+    if session['user_name']
+      redirect '/app'
+    else
+      liquid :login, :locals => { "message" => 'ok' }
+    end
+  end
+
+  get('/logout') do
+    session['user_name'] = nil
+    redirect '/'
+  end
+  
+  post('/') do
+    puts "LOGING..."
+    if params['user'] == 'admin' && params['password'] == 'i2cat'
+      puts "LOGIN PARAMS ARE CORRECT!"
+      session['user_name'] = params['user']
+      redirect '/app'
+    else
+      puts "WRONG LOGIN PARAMS!"
+      halt liquid :login, :locals => { "message" => 'Access denied, please go and sign in <a href="/">here</a>' }
+    end
+  end
+end
 
 class MixerAPI < Sinatra::Base
 
@@ -34,6 +74,28 @@ class MixerAPI < Sinatra::Base
   set :port, 7777
   set :mixer, RMixer::Mixer.new(settings.ip, settings.port)
 
+  use LoginScreen
+  
+  before do
+    unless session['user_name']
+      halt liquid :login, :locals => { "message" => 'Access denied, please go and sign in <a href="/">here</a>' }
+    end
+  end
+  
+  configure do
+    set :show_exceptions, false
+  end
+  
+  not_found do
+    msg = "no path to #{request.path}"
+    halt liquid :error, :locals => { "message" => msg }
+  end
+  
+  error do
+    msg = "Error is:  #{params[:captures].first.inspect}"
+    halt liquid :error, :locals => { "message" => msg }   
+  end
+  
   def error_html
     begin
       yield
@@ -69,23 +131,27 @@ class MixerAPI < Sinatra::Base
   end
 
   # Web App Methods
-
-  get '/' do
-    redirect '/app'
-  end
-
+  # Routes
   get '/app' do
     redirect '/app/avmixer'
   end
 
-  post '/app/start' do
+  post '/app/start/avmixer' do
     content_type :html
     error_html do
       settings.mixer.start
     end
     redirect '/app'
   end
-
+  
+#  post '/app/start/vico' do
+#    content_type :html
+#    error_html do
+#      settings.mixer.start
+#    end
+#    redirect '/app'
+#  end
+  
   post '/app/stop' do
     content_type :html
     error_html do
@@ -93,11 +159,6 @@ class MixerAPI < Sinatra::Base
     end
     redirect '/app'
   end
-
-#  get '/app/avmixer' do
-#    content_type :html
-#    dashboardAVMixer
-#  end
 
   get '/app/avmixer' do
     redirect '/app/avmixer/video/grid2x2'
@@ -118,7 +179,7 @@ class MixerAPI < Sinatra::Base
     dashboardAVMixer('4x4')
   end
 
-   get '/app/avmixer/video/gridPiP' do
+  get '/app/avmixer/video/gridPiP' do
     content_type :html
     dashboardAVMixer('PiP')
   end

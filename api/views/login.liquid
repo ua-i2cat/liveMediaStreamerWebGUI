@@ -6,7 +6,6 @@
     <meta name="description" content="">
     <meta name="author" content="">
 	<link rel="shortcut icon" href="http://www.i2cat.net/sites/default/files/favicon.ico">
-
     <title>livemediastreamer GUI</title>
 
     <!-- Bootstrap core CSS -->
@@ -36,25 +35,32 @@
           </button>
           <a class="navbar-brand" href="#">livemediastreamer GUI</a>
         </div>
-        <div class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right" role="form" action="/logout" method="get">
-            <button type="submit" class="btn btn-primary btn-sm pull-right btn-danger">Logout</button>
-          </form>
-          <form class="navbar-form navbar-right" role="form" action="/app/start/avmixer" method="post">
-            <button type="submit" class="btn btn-primary btn-sm pull-right btn-alert">Start AV Mixer</button>
-          </form>
-          <form class="navbar-form navbar-right" role="form" action="/app/start/vico" method="post">
-            <button type="submit" class="btn btn-primary btn-sm pull-right btn-alert">Start ViCo</button>
-          </form>
-        </div><!--/.nav-collapse -->
       </div>
     </div>
 
     <div class="container">
       <div class="row text-center col-md-12">
         <img src="/image/6.png" alt="" class="img-thumbnail pull-center">
-        <h3>Ready to start new scenario</h3>
+        <h4>Audiovisual Unit</h4>
       </div>
+      <div class="row">
+        <div class="col-sm-6 col-md-4 col-md-offset-4">
+        	{% if message == 'ok' %}
+            <h3 class="text-center login-title">Sign in to continue to livemediastreamer GUI</h3>
+            <div class="account-wall">
+                <form class="form-signin" method="post">
+                <input type="text" class="form-control" name="user" placeholder="User" required autofocus>
+                <input type="password" class="form-control" name="password" placeholder="Password" required>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">
+                    Sign in
+                </button>
+                </form>
+            </div>
+            {% else %}
+            <h3 class="text-center login-title"><em>{{ message }}</em></h3>
+            {% endif %}
+        </div>
+    </div>
     </div> <!-- /container -->
 
 
