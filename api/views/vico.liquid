@@ -47,10 +47,10 @@
       </div>
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-6">
       <div class="panel panel-default">
         <div class="panel-body">
-          {% for channel in stateVideoHash.channels %}
+          <!-- {% for channel in stateVideoHash.channels %} -->
           <div class="col-md-6">
             <div class="panel panel-default">
               <div class="panel-heading">
@@ -58,22 +58,22 @@
                 	<tr>
                 		<td style="width:400px;">
                 			<h3 class="panel-title text-center">
-                  				Video ch.{{ forloop.index }}
-                			</h3>
+<!--                   				User ch.{{ forloop.index }}
+ -->                			</h3>
                 		</td>
                 		<td>
-                			<form class="form" action="/app/avmixer/video/{{forloop.index}}/rmSession" method="post">
+                			<form class="form" action="/app/vico/{{forloop.index}}/rmSession" method="post">
                     		<button type="submit" class="btn btn-danger btn-xs">
                       			<span class="glyphicon glyphicon-remove"></span>
                     		</button>
                   		</form>
                   	</td>
         					</tr>
-        				</table>
+        	    </table>
               </div>
               <div class="panel-body">
                 <div class="col-md-12">
-				<h4 class="text-center">Port {{ channel.id }}</h4>
+				<h4 class="text-center">Video Port {{ channel.id }}</h4>
 				<div class = "row">&nbsp;</div>
                 <div class="row text-center">
                   <form class="btn-group" action="/app/avmixer/video/{{channel.channel}}/commute" method="post">
@@ -103,55 +103,81 @@
               </div><p>
             </div>
           </div>
-          {% endfor %}
-          {% for channel in (1..stateVideoHash.maxChannels) offset:stateVideoHash.channels.size%}
+<!--           {% endfor %}
+ -->          {% for channel in (1..stateVideoHash.maxChannels) offset:stateVideoHash.channels.size%}
           <div class="col-md-6">
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="panel-title text-center">
-                  Video ch.{{ channel }} 
+                  User ch.{{ channel }} 
                 </h3>
               </div>
               <div class="panel-body">
               	<div class="col-md-12">
-	              	<table>
-	              		<tr>
-			              	<td>
-				                <form class="form" role="form" action="/app/avmixer/video/{{channel}}/addSession" method="post">
-				                  <div class="row">
-				                    <div class="col-sm-12 text-center">
-				                      <h4>Free Channel</h4>
-				                    </div>
-				                  </div>
-				                  <div class = "row">&nbsp;</div>
-				                  <div class="row">
-				                    <div class="col-sm-12 text-center">
-				                      <input type="numeric" class="form-control input-sm text-center" name="port" placeholder="Receiver port">
-				                    </div>
-				                  </div>
-				                  <div class = "row">&nbsp;</div>
-				                  <div class="row">
-				                    <div class="col-sm-12 text-center">
-				                      <select class="form-control" name="codec">
-				                        <option value="none">Codec</option>
-				                        <option value="H264">H264</option>
-				                        <option value="VP8">VP8</option>
-				                      </select>
-				                    </div>
-				                  </div>
-				                  <div class = "row">&nbsp;</div>
-				                  <div class = "row">&nbsp;</div>
-				                  <div class = "row">&nbsp;</div>
-				                  <div class="row">
-				                    <div class="col-sm-12 text-center">
-				                      <button type="submit" class="btn btn-default">Add</button>
-				                    </div>
-				                  </div>
-				                  <div class = "row">&nbsp;</div>
-				                </form>
-			                </td>
-		                </tr>
-	                </table>		
+	                <form class="form" role="form" action="/app/vico/{{channel}}/addSession" method="post">
+	                  <div class="row">
+	                    <div class="col-sm-6 text-center">
+	                      <h4>Video</h4>
+	                    </div>
+	                  	<div class="col-sm-6 text-center">
+		                  <h4>Audio</h4>
+		              	</div>
+					  </div>				                  
+	                  <div class = "row">&nbsp;</div>
+	                  <div class="row">
+	                    <div class="col-sm-6 text-center">
+	                      <input type="numeric" class="form-control input-sm text-center" name="port" placeholder="Receiver port">
+	                    </div>
+	                    <div class="col-sm-6 text-center text-center">
+		                  <input type="numeric" class="form-control input-sm text-center" name="port" id="port" placeholder="Receiver port">
+		                </div>
+	                  </div>
+	                  <div class = "row">&nbsp;</div>
+	                  <div class="row">
+	                    <div class="col-sm-6 text-center">
+	                      <select class="form-control" name="codec">
+	                        <option value="none">Codec</option>
+	                        <option value="H264">H264</option>
+	                        <option value="VP8">VP8</option>
+	                      </select>
+	                    </div>
+	                    <div class="col-sm-6 text-center">
+		                  <select class="form-control" name="codec">
+		                    <option value="none">Codec</option>
+		                    <option value="pcm">PCM</option>
+		                    <option value="pcmu">PCMU</option>
+		                    <option value="opus">OPUS</option>
+		                    <option value="aac">AAC</option>
+		                    <option value="mp3">MP3</option>
+		                  </select>
+		                </div>
+	                  </div>
+	                  <div class="row">
+		                <div class="col-sm-6 text-center col-sm-offset-6">
+		                  <select class="form-control" name="sampleRate">
+		                    <option value="none">Smp.Rate</option>
+		                    <option value="8000">8000</option>
+		                    <option value="44100">44100</option>
+		                    <option value="48000">48000</option>
+		                  </select>
+		                </div>
+		              </div>
+		              <div class="row">
+		                <div class="col-sm-6 text-center col-sm-offset-6">
+		                  <select class="form-control" name="channels">
+		                    <option value="none">Channels</option>
+		                    <option value="1">1</option>
+		                    <option value="2">2</option>
+		                  </select>
+		                </div>
+		              </div>
+		              <div class = "row">&nbsp;</div>
+		              <div class="row">
+		                <div class="col-sm-12 text-center">
+		                  <button type="submit" class="btn btn-default">Add</button>
+		                </div>
+		              </div>
+	                </form>
                 </div>
                 
               </div>
@@ -161,7 +187,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-3">
+    <!-- <div class="col-md-3">
       <div class="panel panel-default">
         <div class="panel-body">
           {% for channel in stateAudioHash.channels %}
@@ -303,7 +329,7 @@
           {% endfor %}
         </div>
       </div>
-    </div>
+    </div> -->
     
     <div class="col-md-6"> 
     <!-- Layout control panel -->
