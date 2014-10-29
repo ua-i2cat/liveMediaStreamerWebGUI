@@ -206,14 +206,13 @@ module RMixer
       createEvent("addFiltersToWorker", params)
     end
 
-    #AUDIO METHODS
+    #################
+    # AUDIO METHODS #
+    #################
 
-    def changeChannelVolume(filterID, id, volume) 
-      params = {
-        :id => id,
-        :volume => volume
-      }
-      createEvent("changeChannelVolume", params, filterID)
+    def muteMaster(filterID) 
+      params = {}
+      createEvent("muteMaster", params, filterID)
     end
 
     def muteChannel(filterID, id) 
@@ -236,33 +235,18 @@ module RMixer
       }
       createEvent("changeMasterVolume", params, filterID)
     end
-
-    def muteMaster(filterID) 
-      params = {}
-      createEvent("muteMaster", params, filterID)
-    end
-
-    def configAudioEncoder(filterID, sampleRate, channels)
+    
+    def changeChannelVolume(filterID, id, volume) 
       params = {
-        :sampleRate => sampleRate,
-        :channels => channels
+        :id => id,
+        :volume => volume
       }
-
-      createEvent("configure", params, filterID)
+      createEvent("changeChannelVolume", params, filterID)
     end
 
-    def reconfigAudioEncoder(encoderID, codec, sampleRate, channels)
-      params = {
-        :encoderID => encoderID,
-        :codec => codec,
-        :sampleRate => sampleRate,
-        :channels => channels
-      }
-      
-      createEvent("reconfigAudioEncoder", params)
-    end
-
-    #VIDEO METHODS
+    #################
+    # VIDEO METHODS #
+    #################
 
     def setPositionSize(mixerID, id, width, height, x, y, layer, opacity, enabled = true)
       params = {

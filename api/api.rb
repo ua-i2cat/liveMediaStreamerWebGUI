@@ -223,62 +223,43 @@ class MixerAPI < Sinatra::Base
     redirect '/app/avmixer'
   end
 
-  post '/app/avmixer/audio/:mixerid/channel/:channelid/mute' do
+  #################
+  # AUDIO METHODS #
+  #################
+
+  post '/app/avmixer/audio/:channel/mute' do
     content_type :html
     error_html do
-      if (params[:channelid] == "master")
-        settings.mixer.sendRequest(
-          settings.mixer.muteMaster(params[:mixerid].to_i)
-        )
+      if (params[:channel] == "master")
+        settings.mixer.muteMaster
       else
-        settings.mixer.sendRequest(
-          settings.mixer.muteChannel(params[:mixerid].to_i, params[:channelid].to_i)
-        )
+        settings.mixer.muteChannel(params[:channel].to_i)
       end
     end
     redirect '/app/avmixer'
   end
 
-  post '/app/avmixer/audio/:mixerid/channel/:channelid/solo' do
+  post '/app/avmixer/audio/:channel/solo' do
     content_type :html
     error_html do
-      settings.mixer.sendRequest(
-        settings.mixer.soloChannel(params[:mixerid].to_i, params[:channelid].to_i)
-      )
+      settings.mixer.soloChannel(params[:channel].to_i)
     end
     redirect '/app/avmixer'
   end
 
-  post '/app/avmixer/audio/:mixerid/channel/:channelid/changeVolume' do
+  post '/app/avmixer/audio/:channel/changeVolume' do
     content_type :html
     error_html do
-      if (params[:channelid] == "master")
-        settings.mixer.sendRequest(
-          settings.mixer.changeMasterVolume(params[:mixerid].to_i, params[:volume].to_f)
-        )
+      if (params[:channel] == "master")
+        settings.mixer.changeMasterVolume(params[:volume].to_f)
       else
-        settings.mixer.sendRequest(
-          settings.mixer.changeChannelVolume(params[:mixerid].to_i, params[:channelid].to_i, params[:volume].to_f)
-        )
+        settings.mixer.changeChannelVolume(params[:channel].to_i, params[:volume].to_f)
       end
     end
     redirect '/app/avmixer'
   end
   
-  post '/app/avmixer/audio/:mixer_id/:encoder_id/reconfigure' do
-    content_type :html
-    error_html do
-      puts params
-      settings.mixer.configEncoder(params[:encoder_id].to_i, 
-                                   params[:codec], 
-                                   params[:sampleRate].to_i, 
-                                   params[:channels].to_i
-                                  )
-    end
-    redirect '/app/avmixer'
-  end
-
-  post '/app/avmixer/audio/:mixerID/addSession' do
+  post '/app/avmixer/audio/:channel/addSession' do
     content_type :html
     error_html do
       settings.mixer.addRTPSession("audio", params, 5000, 0)
@@ -286,13 +267,9 @@ class MixerAPI < Sinatra::Base
     redirect '/app/avmixer'
   end
 
-   post '/app/avmixer/audio/:mixerID/addOutputSession' do
-    content_type :html
-    error_html do
-      settings.mixer.addOutputSession(params[:mixerID].to_i, params[:sessionName])
-    end
-    redirect '/app/avmixer'
-  end
+  #################
+  # VIDEO METHODS #
+  #################
 
   post '/app/avmixer/video/:grid/applyGrid' do
     content_type :html
