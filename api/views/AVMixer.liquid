@@ -47,7 +47,7 @@
           	<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#masterVolume"><span class="glyphicon glyphicon-volume-up"></span> Master</button>
           </div>
           <div class="navbar-form navbar-right">
-          	<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#outputGrids"><span class="glyphicon glyphicon-th-large"></span> Output Grids</button>
+          	<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#outputURIs"><span class="glyphicon glyphicon-th-large"></span> Output URIs</button>
           </div>
           <div class="navbar-form navbar-right">
           	<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addRTSPModal"><span class="glyphicon glyphicon-plus"></span> Add RTSP input</button>
@@ -192,66 +192,24 @@
 	</div>
 	
 	<!-- Modal window - form: output grids -->
-	<div class="modal fade" id="outputGrids" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="outputURIs" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	    <div class="modal-dialog">
 	        <div class="modal-content">
 	            <div class="modal-header">
 	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	                <h4 class="modal-title">Output grids</h4>
+	                <h4 class="modal-title">RTSP output sessions</h4>
 	            </div>
 	
 	            <div class="modal-body">
 	                <!-- The form is placed inside the body of modal -->
 				  	<div class="panel panel-default">
-				        <div class="panel-body">
-				          <ul class="nav nav-tabs">
-				          	<li><h4>Output grids:</h4></li>
-				            <li><a href="grid2x2">Grid 2x2</a></li>
-				            <li><a href="grid3x3">Grid 3x3</a></li>
-				            <li><a href="grid4x4">Grid 4x4</a></li>
-				            <li><a href="gridPiP">PiP</a></li>
-				          </ul>
-				          <div class = "row">&nbsp;</div>
-				          <form class="navbar-form" action="/app/avmixer/video/{{stateVideoHash.grid.id}}/applyGrid" method="post">
-				            <div class="row">
-				              <div class="col-md-3 col-md-offset-1">
-				                <div class="row">
-				                  <img src="/image/{{stateVideoHash.grid.id}}grid.jpg" class="img-responsive" alt="{{stateVideoHash.grid.id}}" class="img-rounded">
-				                </div>
-				                <div class = "row"> &nbsp; </div>
-				                <div class="row">
-				                  <button type="submit" class="btn btn-default">Apply</button>
-				                </div>
-				              </div>
-				              <div class="col-md-7 col-md-offset-1">
-				              {% for position in stateVideoHash.grid.positions %}
-				                <div class="row">
-				                  <strong>{{ position.id }}</strong>
-				                  <div class="btn-group">
-				                    <label class="btn btn-default">
-				                      <input type="radio" {% if position.channel == 0%} checked {% endif %} name="{{position.id}}" value="0">
-				                      <strong><span class="glyphicon glyphicon-remove"></span></strong>
-				                    </label>
-				                    {% for channel in stateVideoHash.channels %}
-				                    <label class="btn btn-default">
-				                      <input type="radio" {% if position.channel == forloop.index%} checked {% endif %} name="{{position.id}}" value="{{forloop.index}}">
-				                      <strong>{{forloop.index}}</strong>
-				                    </label>
-				                    {% endfor %}
-				                    {% for channel in (1..stateVideoHash.maxChannels) offset:stateVideoHash.channels.size %}
-				                    <label class="btn btn-default" disabled>
-				                      <input type="radio">
-				                      <strong>{{channel}}</strong>
-				                    </label>
-				                    {% endfor %}
-				                  </div>
-				                </div>
-				                {% endfor %}
-				              </div>
-				            </div>
-				          </form>
-				        </div>
-				      </div>
+		             <div class="panel-body">
+		               {% for session in stateVideoHash.sessions %}
+		               <h4>{{ session.id | upcase }}</h4>
+		               <h5>{{ session.uri }}</h5>
+		               {% endfor %}
+		             </div> 
+		           </div>
 	            </div>
 	        </div>
 	    </div>
@@ -300,6 +258,7 @@
 	<!-- Layout -->
 	<div class="row">
          <div class="col-md-7">
+          <div class="row">
             <div class="panel panel-default">
              	<div class="panel-heading">
 			<h4 class="text-center">Video channels</h4>
@@ -386,109 +345,124 @@
                 <p>
                 </div>
             </div>
-         </div>
-         <div class="col-md-5">
-           <div class="panel panel-default">
-             <div class="panel-body">
-             	<h4>RTSP output sessions:</h4>
-               {% for session in stateVideoHash.sessions %}
-               <h4>{{ session.id | upcase }}</h4>
-               <h5>{{ session.uri }}</h5>
-               {% endfor %}
-             </div> 
+           </div> 
+           
+           <div class="row">
+              <div class="panel panel-default">
+		        <div class="panel-heading">
+		          <h4 class="text-center">
+		            Audio Channels
+		          </h4>
+		        </div>
+		        <div class="panel-body">
+		          {% for channel in stateAudioHash.channels %}
+		          <div class="row">
+			          <div class="col-sm-2 text-center">
+			              <h5>Port {{ channel.id }}</h5>
+			          </div>
+		              <div class="col-sm-1 text-center">
+		                  <form class="form" action="/app/audiomixer/{{stateAudioHash.mixerID}}/channel/{{channel.id}}/mute" method="post">
+		                    <button type="submit" class="btn btn-default">Mute</button>
+		                  </form>
+		              </div>
+		              <div class="col-sm-1 text-center">
+		                  <form class="form" action="/app/audiomixer/{{stateAudioHash.mixerID}}/channel/{{channel.id}}/solo" method="post">
+		                    <button type="submit" class="btn btn-default">Solo</button>
+		                  </form>
+		              </div>
+			          <div class="col-sm-4 text-center">
+			             Volume &nbsp;<strong><span class="glyphicon glyphicon-minus"></span></strong>&nbsp;
+			              	<input type="range" class="horizontal" style="padding-top:-10px;" min="0" max="1" step="0.01" orient="horizontal" value={{ channel.gain }} oninput="changeChannelVolume({{stateAudioHash.mixerID}}, {{channel.id}}, this.value)"/>
+			          	  &nbsp;<strong><span class="glyphicon glyphicon-plus"></span></strong>
+			          </div>
+			          <div class="col-sm-2 text-center">
+			              <input class="form-control input-sm text-center" name="{{channel.id}}Gain" id="{{channel.id}}Gain" value={{ channel.gain }}>
+			          </div>
+		          </div>
+		          {% endfor %}
+		          {% for channel in (1...stateAudioHash.freeChannels) %}
+		          <div class="row is-disabled">
+			          <div class="col-sm-2 text-center">
+			                <h5>Port </h5>
+			          </div>
+		              <div class="col-sm-1 text-center">
+		                  <form class="form" action="/app/audiomixer/{{stateAudioHash.mixerID}}/channel/{{channel.id}}/mute" method="post">
+		                    <button type="submit" class="btn btn-default">Mute</button>
+		                  </form>
+		              </div>
+		              <div class="col-sm-1 text-center">
+		                  <form class="form" action="/app/audiomixer/{{stateAudioHash.mixerID}}/channel/{{channel.id}}/solo" method="post">
+		                    <button type="submit" class="btn btn-default">Solo</button>
+		                  </form>
+		              </div>
+			          <div class="col-sm-4 text-center">
+			            <input type="range" class="horizontal" min="0" max="1" step="0.01" orient="vertical" value={{ channel.gain }} oninput="changeChannelVolume({{stateAudioHash.mixerID}}, {{channel.id}}, this.value)"/>
+			          </div>
+			          <div class="col-sm-2 text-center">
+			                <input class="form-control input-sm" name="{{channel.id}}Gain" id="{{channel.id}}Gain" value={{ channel.gain }}>
+			          </div>
+		          </div>
+		          {% endfor %}
+		        </div>
+		      </div>
            </div>
          </div>
-	</div>
-	<div class="row">
-		<div class="panel panel-default">
-	        <div class="panel-heading">
-	          <h4 class="text-center">
-	            Audio Channels
-	          </h4>
-	        </div>
+
+		<div class="col-sm-5">
+		   <div class="panel panel-default">
 	        <div class="panel-body">
-	        <div class="row">
-			  <div class="col-sm-2"></div>		        
-	          {% for channel in stateAudioHash.channels %}
-	          <div class="col-sm-1">
+	          <ul class="nav nav-tabs">
+	          	<li><h4>Output grids:</h4></li>
+	            <li><a href="grid2x2">Grid 2x2</a></li>
+	            <li><a href="grid3x3">Grid 3x3</a></li>
+	            <li><a href="grid4x4">Grid 4x4</a></li>
+	            <li><a href="gridPiP">PiP</a></li>
+	          </ul>
+	          <div class = "row">&nbsp;</div>
+	          <form class="navbar-form" action="/app/avmixer/video/{{stateVideoHash.grid.id}}/applyGrid" method="post">
 	            <div class="row">
-	              <div class="col-sm-12 text-center">
-	                <h4>Port {{ channel.id }}</h4>
-	              </div>
-	            </div>
-	            <div class="row">
-	              <div class="col-sm-12 text-center">
-	                <div class="btn-group btn-group-sm">
-	                  <form class="form" action="/app/audiomixer/{{stateAudioHash.mixerID}}/channel/{{channel.id}}/mute" method="post">
-	                    <button type="submit" class="btn btn-default">Mute</button>
-	                  </form>
-	                  <form class="form" action="/app/audiomixer/{{stateAudioHash.mixerID}}/channel/{{channel.id}}/solo" method="post">
-	                    <button type="submit" class="btn btn-default">Solo</button>
-	                  </form>
+	              <div class="col-md-3 col-md-offset-1">
+	                <div class="row">
+	                  <img src="/image/{{stateVideoHash.grid.id}}grid.jpg" class="img-responsive" alt="{{stateVideoHash.grid.id}}" class="img-rounded">
+	                </div>
+	                <div class = "row"> &nbsp; </div>
+	                <div class="row">
+	                  <button type="submit" class="btn btn-default">Apply</button>
 	                </div>
 	              </div>
-	            </div>
-	            <div class="row">&nbsp;</div>
-	            <div class="row">
-	              <div class="col-sm-12 text-center">
-	                <input type="range" class="vertical" min="0" max="1" step="0.01" orient="vertical" value={{ channel.gain }} oninput="changeChannelVolume({{stateAudioHash.mixerID}}, {{channel.id}}, this.value)"/>
-	              </div>
-	            </div>
-	            <div class = "row">&nbsp;</div>
-	            <div class="row">
-	              <div class="col-sm-12 text-center">
-	                Volume
-	              </div>
-	            </div>
-	            <div class="row">
-	              <div class="col-sm-12 text-center">
-	                <input class="form-control input-sm" name="{{channel.id}}Gain" id="{{channel.id}}Gain" value={{ channel.gain }}>
-	              </div>
-	            </div>
-	          </div>
-	          {% endfor %}
-	          {% for channel in (1...stateAudioHash.freeChannels) %}
-	          <div class="col-sm-1 is-disabled">
-	            <div class="row">
-	              <div class="col-sm-12 text-center">
-	                <h4>Port {{ channel.id }}</h4>
-	              </div>
-	            </div>
-	            <div class="row">
-	              <div class="col-sm-12 text-center">
-	                <div class="btn-group btn-group-sm">
-	                  <form class="form" action="/app/audiomixer/{{stateAudioHash.mixerID}}/channel/{{channel.id}}/mute" method="post">
-	                    <button type="submit" class="btn btn-default">Mute</button>
-	                  </form>
-	                  <form class="form" action="/app/audiomixer/{{stateAudioHash.mixerID}}/channel/{{channel.id}}/solo" method="post">
-	                    <button type="submit" class="btn btn-default">Solo</button>
-	                  </form>
+	              <div class="col-md-7 col-md-offset-1">
+	              {% for position in stateVideoHash.grid.positions %}
+	                <div class="row">
+	                  <strong>{{ position.id }}</strong>
+	                  <div class="btn-group">
+	                    <label class="btn btn-default">
+	                      <input type="radio" {% if position.channel == 0%} checked {% endif %} name="{{position.id}}" value="0">
+	                      <strong><span class="glyphicon glyphicon-remove"></span></strong>
+	                    </label>
+	                    {% for channel in stateVideoHash.channels %}
+	                    <label class="btn btn-default">
+	                      <input type="radio" {% if position.channel == forloop.index%} checked {% endif %} name="{{position.id}}" value="{{forloop.index}}">
+	                      <strong>{{forloop.index}}</strong>
+	                    </label>
+	                    {% endfor %}
+	                    {% for channel in (1..stateVideoHash.maxChannels) offset:stateVideoHash.channels.size %}
+	                    <label class="btn btn-default" disabled>
+	                      <input type="radio">
+	                      <strong>{{channel}}</strong>
+	                    </label>
+	                    {% endfor %}
+	                  </div>
 	                </div>
+	                {% endfor %}
 	              </div>
 	            </div>
-	            <div class="row">&nbsp;</div>
-	            <div class="row">
-	              <div class="col-sm-12 text-center">
-	                <input type="range" class="vertical" min="0" max="1" step="0.01" orient="vertical" value={{ channel.gain }} oninput="changeChannelVolume({{stateAudioHash.mixerID}}, {{channel.id}}, this.value)"/>
-	              </div>
-	            </div>
-	            <div class = "row">&nbsp;</div>
-	            <div class="row">
-	              <div class="col-sm-12 text-center">
-	                Volume
-	              </div>
-	            </div>
-	            <div class="row">
-	              <div class="col-sm-12 text-center">
-	                <input class="form-control input-sm" name="{{channel.id}}Gain" id="{{channel.id}}Gain" value={{ channel.gain }}>
-	              </div>
-	            </div>
-	          </div>
-	          {% endfor %}
-	          </div>
+	          </form>
 	        </div>
 	      </div>
+		 </div>
+
 	</div>
+
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
