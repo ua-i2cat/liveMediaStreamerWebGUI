@@ -43,87 +43,41 @@
           <form class="navbar-form navbar-right" action="/app/stop" method="post">
             <button type="submit" class="btn btn-danger btn-sm">Stop</button>
           </form>
+          <div class="navbar-form navbar-right">
+          	<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#masterVolume"><span class="glyphicon glyphicon-volume-up"></span> Master</button>
+          </div>
+          <div class="navbar-form navbar-right">
+          	<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#outputGrids"><span class="glyphicon glyphicon-th-large"></span> Output Grids</button>
+          </div>
+          <div class="navbar-form navbar-right">
+          	<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addRTSPModal"><span class="glyphicon glyphicon-plus"></span> Add RTSP input</button>
+          </div>
+          <div class="navbar-form navbar-right">
+          	<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addRTPModal"><span class="glyphicon glyphicon-plus"></span> Add RTP input</button>
+          </div>
         </div><!--/.nav-collapse -->
       </div>
     </div>
 
-    <div class="col-md-3">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          {% for channel in stateVideoHash.channels %}
-          <div class="col-md-6">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <table>
-                	<tr>
-                		<td style="width:400px;">
-                			<h3 class="panel-title text-center">
-                  				Video ch.{{ forloop.index }}
-                			</h3>
-                		</td>
-                		<td>
-                			<form class="form" action="/app/avmixer/video/{{forloop.index}}/rmSession" method="post">
-                    		<button type="submit" class="btn btn-danger btn-xs">
-                      			<span class="glyphicon glyphicon-remove"></span>
-                    		</button>
-                  		</form>
-                  	</td>
-        					</tr>
-        				</table>
-              </div>
-              <div class="panel-body">
-                <div class="col-md-12">
-				<h4 class="text-center">Port {{ channel.id }}</h4>
-				<div class = "row">&nbsp;</div>
-                <div class="row text-center">
-                  <form class="btn-group" action="/app/avmixer/video/{{channel.channel}}/commute" method="post">
-                    <button type="submit" class="btn btn-default">CUT</button>
-                  </form>
-                </div>
-                <p>
-                <div class="row text-center">
-                  <form class="btn-group" action="/app/avmixer/video/{{channel.channel}}/fade/500" method="post">
-                    <button type="submit" class="btn btn-default">FADE1</button>
-                  </form>
-                </div>
-				<p>
-                <div class="row text-center">
-                  <form class="btn-group" action="/app/avmixer/video/{{channel.channel}}/fade/1000" method="post">
-                    <button type="submit" class="btn btn-default">FADE2</button>
-                  </form>
-                 </div>
-                 <p>
-                 <div class="row text-center">
-                  <form class="btn-group" action="/app/avmixer/video/{{channel.channel}}/blend" method="post">
-                    <button type="submit" class="btn btn-default">BLEND</button>
-                  </form>
-                 </div>
-                 <p>
-                </div>
-              </div><p>
-            </div>
-          </div>
-          {% endfor %}
-          {% for channel in (1..stateVideoHash.maxChannels) offset:stateVideoHash.channels.size%}
-          <div class="col-md-6">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title text-center">
-                  Video ch.{{ channel }} 
-                </h3>
-              </div>
-              <div class="panel-body">
-              	<div class="col-md-12">
-	              	<table>
-	              		<tr>
-			              	<td>
-				                <form class="form" role="form" action="/app/avmixer/video/{{channel}}/addSession" method="post">
+	<!-- Modal window - form: addRTPInput -->
+	<div class="modal fade" id="addRTPModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	                <h4 class="modal-title">Add media</h4>
+	            </div>
+	
+	            <div class="modal-body">
+	                <!-- The form is placed inside the body of modal -->
+                  	<div class="row">
+	                    <div class="col-sm-6">
+				                <form id="addVideoForm" class="form-horizontal" role="form" action="/app/avmixer/video/{{stateVideoHash.channels.size}}/addSession" method="post">
 				                  <div class="row">
 				                    <div class="col-sm-12 text-center">
-				                      <h4>Free Channel</h4>
+				                      <h4>Add video</h4>
 				                    </div>
 				                  </div>
-				                  <div class = "row">&nbsp;</div>
 				                  <div class="row">
 				                    <div class="col-sm-12 text-center">
 				                      <input type="numeric" class="form-control input-sm text-center" name="port" placeholder="Receiver port">
@@ -142,6 +96,7 @@
 				                  <div class = "row">&nbsp;</div>
 				                  <div class = "row">&nbsp;</div>
 				                  <div class = "row">&nbsp;</div>
+				                  <div class = "row">&nbsp;</div><p>
 				                  <div class="row">
 				                    <div class="col-sm-12 text-center">
 				                      <button type="submit" class="btn btn-default">Add</button>
@@ -149,106 +104,14 @@
 				                  </div>
 				                  <div class = "row">&nbsp;</div>
 				                </form>
-			                </td>
-		                </tr>
-	                </table>		
-                </div>
-                
-              </div>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          {% for channel in stateAudioHash.channels %}
-          <div class="col-md-6">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <table>
-                	<tr>
-                		<td style="width:400px;">
-                			<h3 class="panel-title text-center">
-                  				Audio ch.{{ forloop.index }}
-                			</h3>
-                		</td>
-                		<td>
-                			<form class="form" action="/app/avmixer/audio/{{forloop.index}}/rmSession" method="post">
-                    		<button type="submit" class="btn btn-danger btn-xs">
-                      			<span class="glyphicon glyphicon-remove"></span>
-                    		</button>
-                  		</form>
-                  	</td>
-        					</tr>
-        				</table>
-              </div>
-              <div class="panel-body">
-				<div class="col-md-12">
-					<div class="row">
-	                <div class="col-md-12 text-center">
-							<h4 class="text-center">Port {{ channel.id }}</h4>
-					</div>
-			            <div class="row">
-			            
-			              <div class="col-md-6" style="margin-left:-15px;">
-			                  <form class="navbar-form" action="/app/avmixer/audio/{{stateAudioHash.mixerID}}/channel/{{channel.id}}/mute" method="post">
-			                    <button type="submit" class="btn btn-default">Mute</button>
-			                  </form>
-			              </div>
-			              <div class="col-md-6">
-			                  <form class="navbar-form" action="/app/avmixer/audio/{{stateAudioHash.mixerID}}/channel/{{channel.id}}/solo" method="post">
-			                    <button type="submit" class="btn btn-default">Solo</button>
-			                  </form>
-			              </div>
-			              
-			            </div>
-			            <div class = "row">&nbsp;</div>				                  
-			            <div class = "row">&nbsp;</div>
-			            <div class="row">&nbsp;</div>
-			            <div class="row">
-			              <div class="col-md-12 text-center">
-			                <input type="range" class="horizontal" min="0" max="1" step="0.01" orient="vertical" value={{ channel.gain }} oninput="changeChannelVolume({{stateAudioHash.mixerID}}, {{channel.id}}, this.value)"/>
-			              </div>
-			            </div>
-			            <div class = "row">&nbsp;</div>
-			            <div class="row">
-			              <div class="col-md-12 text-center">
-			                Volume
-			              </div>
-			            </div>
-			            <div class="row">
-			              <div class="col-md-12 text-center">
-			                <input class="form-control input-md text-center" name="{{channel.id}}Gain" id="{{channel.id}}Gain" value={{ channel.gain }}>
-			              </div>
-			            </div>
-			          </div>	
-                </div>
-              </div>
-            </div>
-          </div>
-          {% endfor %}
-          {% for channel in (1...stateAudioHash.freeChannels) %}
-          <div class="col-md-6">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title text-center">
-                  Audio ch.{{ channel }} 
-                </h3>
-              </div>
-              <div class="panel-body">
-				<div class="col-md-12">
-	                <table>
-		                <tr>
-			              	<td>
-			              		<form class="form" role="form" action="/app/avmixer/audio/{{stateAudioHash.mixerID}}/addSession" method="post">
+	                	</div>
+	                	<div class="col-sm-6">
+				                <form id="addAudioForm" class="form-horizontal" role="form" action="/app/avmixer/audio/{{stateAudioHash.mixerID}}/addSession" method="post">
 					              <div class="row">
 					                <div class="col-sm-12 text-center">
-					                  <h4>Free Channel</h4>
+					                  <h4>Add audio</h4>
 					                </div>
-					              </div><p>
+					              </div>
 					              <div class="row">
 					                <div class="col-sm-12 text-center text-center">
 					                  <input type="numeric" class="form-control input-sm text-center" name="port" id="port" placeholder="Receiver port">
@@ -292,144 +155,340 @@
 					                  <button type="submit" class="btn btn-default">Add</button>
 					                </div>
 					              </div>
-					            </form>					
-			                </td>
-		                </tr>
-	                </table>		
-                </div>
-              </div>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-    
-    <div class="col-md-6"> 
-    <!-- Layout control panel -->
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <div class="col-md-9">
+					            </form>		
+	                	</div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	
+	<!-- Modal window - form: addRTSPInput -->
+	<div class="modal fade" id="addRTSPModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	                <h4 class="modal-title">Add new RTSP input session</h4>
+	            </div>
+	
+	            <div class="modal-body">
+	                <!-- The form is placed inside the body of modal -->
+                  	<div class="row">
+	                    <div class="col-sm-12">
+			                <form id="addRTSPForm" class="form" role="form" action="/app/addRTSPSession" method="post">
+			                  <input type="numeric" class="form-control input-sm" name="channel" placeholder="Mixer channel">
+			                  <div class = "row">&nbsp;</div>
+			                  <input type="text" class="form-control input-sm" name="uri" placeholder="URI">
+			                  <div class = "row">&nbsp;</div>
+			                  <button type="submit" class="btn btn-default">Add</button>
+			                </form>
+	                	</div>
+	                	
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	
+	<!-- Modal window - form: output grids -->
+	<div class="modal fade" id="outputGrids" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	                <h4 class="modal-title">Output grids</h4>
+	            </div>
+	
+	            <div class="modal-body">
+	                <!-- The form is placed inside the body of modal -->
+				  	<div class="panel panel-default">
+				        <div class="panel-body">
+				          <ul class="nav nav-tabs">
+				          	<li><h4>Output grids:</h4></li>
+				            <li><a href="grid2x2">Grid 2x2</a></li>
+				            <li><a href="grid3x3">Grid 3x3</a></li>
+				            <li><a href="grid4x4">Grid 4x4</a></li>
+				            <li><a href="gridPiP">PiP</a></li>
+				          </ul>
+				          <div class = "row">&nbsp;</div>
+				          <form class="navbar-form" action="/app/avmixer/video/{{stateVideoHash.grid.id}}/applyGrid" method="post">
+				            <div class="row">
+				              <div class="col-md-3 col-md-offset-1">
+				                <div class="row">
+				                  <img src="/image/{{stateVideoHash.grid.id}}grid.jpg" class="img-responsive" alt="{{stateVideoHash.grid.id}}" class="img-rounded">
+				                </div>
+				                <div class = "row"> &nbsp; </div>
+				                <div class="row">
+				                  <button type="submit" class="btn btn-default">Apply</button>
+				                </div>
+				              </div>
+				              <div class="col-md-7 col-md-offset-1">
+				              {% for position in stateVideoHash.grid.positions %}
+				                <div class="row">
+				                  <strong>{{ position.id }}</strong>
+				                  <div class="btn-group">
+				                    <label class="btn btn-default">
+				                      <input type="radio" {% if position.channel == 0%} checked {% endif %} name="{{position.id}}" value="0">
+				                      <strong><span class="glyphicon glyphicon-remove"></span></strong>
+				                    </label>
+				                    {% for channel in stateVideoHash.channels %}
+				                    <label class="btn btn-default">
+				                      <input type="radio" {% if position.channel == forloop.index%} checked {% endif %} name="{{position.id}}" value="{{forloop.index}}">
+				                      <strong>{{forloop.index}}</strong>
+				                    </label>
+				                    {% endfor %}
+				                    {% for channel in (1..stateVideoHash.maxChannels) offset:stateVideoHash.channels.size %}
+				                    <label class="btn btn-default" disabled>
+				                      <input type="radio">
+				                      <strong>{{channel}}</strong>
+				                    </label>
+				                    {% endfor %}
+				                  </div>
+				                </div>
+				                {% endfor %}
+				              </div>
+				            </div>
+				          </form>
+				        </div>
+				      </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	
+	<!-- Modal window - form: master volume -->
+	<div class="modal fade" id="masterVolume" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog modal-master">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	                <h4 class="modal-title">Audio Master</h4>
+	            </div>
+	
+	            <div class="modal-body">
+	                <!-- The form is placed inside the body of modal -->
+			      <div class="row">
+			        <div class="col-sm-12 text-center">
+			          <form class="navbar-form" action="/app/avmixer/audio/{{stateAudioHash.mixerID}}/channel/master/mute" method="post">
+			            <button type="submit" class="btn btn-default btn-block">Mute</button>
+			          </form>
+			        </div>
+			      </div>
+			      <div class="row">&nbsp;</div>
+			      <div class="row">
+			        <div class="col-sm-12 text-center">
+			           <input type="range" class="vertical" min="0" max="1" step="0.01" orient="vertical" value={{stateAudioHash.masterGain}} oninput="changeChannelVolume({{stateAudioHash.mixerID}}, 'master', this.value)"/>
+			        </div>
+			      </div>
+			      <div class = "row">&nbsp;</div>
+			      <div class="row">
+			        <div class="col-sm-12 text-center">
+			          Volume
+			        </div>
+			      </div>
+			      <div class="row">
+			        <div class="col-sm-12 text-center">
+			          <input class="form-control input-sm text-center" name="masterGain" id="masterGain" value={{stateAudioHash.masterGain}}>
+			        </div>
+			      </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	
+	<!-- Layout -->
+	<div class="row">
+         <div class="col-md-7">
             <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">
-                  Add new RTSP input session
-                </h3>
-              </div>
-              <div class="panel-body">
-                <form class="form" role="form" action="/app/addRTSPSession" method="post">
-                  <input type="numeric" class="form-control input-sm" name="channel" placeholder="Mixer channel">
-                  <div class = "row">&nbsp;</div>
-                  <input type="text" class="form-control input-sm" name="uri" placeholder="URI">
-                  <div class = "row">&nbsp;</div>
-                  <button type="submit" class="btn btn-default">Add</button>
-                </form>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-3">
-            <div class="row">
-              <div class="col-sm-12 text-center">
-                <h4>Audio Master</h4>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12 text-center">
-                <form class="navbar-form" action="/app/avmixer/audio/{{stateAudioHash.mixerID}}/channel/master/mute" method="post">
-                  <button type="submit" class="btn btn-default btn-block">Mute</button>
-                </form>
-              </div>
-            </div>
-            <div class="row">&nbsp;</div>
-            <div class="row">
-              <div class="col-sm-12 text-center">
-                 <input type="range" class="vertical" min="0" max="1" step="0.01" orient="vertical" value={{stateAudioHash.masterGain}} oninput="changeChannelVolume({{stateAudioHash.mixerID}}, 'master', this.value)"/>
-              </div>
-            </div>
-            <div class = "row">&nbsp;</div>
-            <div class="row">
-              <div class="col-sm-12 text-center">
-                Volume
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6 text-center col-sm-offset-3">
-                <input class="form-control input-sm text-center" name="masterGain" id="masterGain" value={{stateAudioHash.masterGain}}>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <ul class="nav nav-tabs">
-          	<li><h4>Output grids:</h4></li>
-            <li><a href="grid2x2">Grid 2x2</a></li>
-            <li><a href="grid3x3">Grid 3x3</a></li>
-            <li><a href="grid4x4">Grid 4x4</a></li>
-            <li><a href="gridPiP">PiP</a></li>
-          </ul>
-          <div class = "row">&nbsp;</div>
-          <form class="navbar-form" action="/app/avmixer/video/{{stateVideoHash.grid.id}}/applyGrid" method="post">
-            <div class="row">
-              <div class="col-md-3 col-md-offset-1">
-                <div class="row">
-                  <img src="/image/{{stateVideoHash.grid.id}}grid.jpg" class="img-responsive" alt="{{stateVideoHash.grid.id}}" class="img-rounded">
+             	<div class="panel-heading">
+			<h4 class="text-center">Video channels</h4>
+			</div>
+             	<div class="panel-body">
+				<table>	
+					<tr>
+						<td>	         
+                    		<h3 style="margin-top:3px;margin-right:10px;"><span class="label label-warning">&nbsp;&nbsp;CUT&nbsp;&nbsp;</span></h3>
+						</td>
+						{% for channel in stateVideoHash.channels %}
+						<td>
+							<form class="btn-group" action="/app/avmixer/video/{{channel.channel}}/commute" method="post">
+							  <button type="submit" class="btn btn-default">ch.{{channel.channel}}</button>
+							</form>
+						</td>
+						{% endfor %}
+         					{% for channel in (1..stateVideoHash.maxChannels) offset:stateVideoHash.channels.size%}
+						<td>
+							<form class="btn-group is-disabled" action="/app/avmixer/video/{{ channel }}/commute" method="post">
+							  <button type="submit" class="btn btn-default">ch.{{ channel }}</button>
+							</form>
+						</td>
+				        {% endfor %}
+					</tr>
+					<tr>
+						<td>	         
+                    		<h3 style="margin-top:3px;margin-right:10px;"><span class="label label-warning"> FADE1 </span></h3>
+						</td>
+						{% for channel in stateVideoHash.channels %}
+						<td>
+							<form class="btn-group" action="/app/avmixer/video/{{channel.channel}}/fade/500" method="post">
+							  <button type="submit" class="btn btn-default">ch.{{channel.channel}}</button>
+							</form>
+						</td>
+						{% endfor %}
+         					{% for channel in (1..stateVideoHash.maxChannels) offset:stateVideoHash.channels.size%}
+						<td>
+							<form class="btn-group is-disabled" action="/app/avmixer/video/{{ channel }}/fade/500" method="post">
+							  <button type="submit" class="btn btn-default">ch.{{ channel }}</button>
+							</form>
+						</td>
+				        {% endfor %}
+					</tr>
+					<tr>
+						<td>	         
+                    		<h3 style="margin-top:3px;margin-right:10px;"><span class="label label-warning"> FADE2 </span></h3>
+						</td>
+													{% for channel in stateVideoHash.channels %}
+						<td>
+							<form class="btn-group" action="/app/avmixer/video/{{channel.channel}}/fade/1000" method="post">
+							  <button type="submit" class="btn btn-default">ch.{{channel.channel}}</button>
+							</form>
+						</td>
+						{% endfor %}
+         					{% for channel in (1..stateVideoHash.maxChannels) offset:stateVideoHash.channels.size%}
+						<td>
+							<form class="btn-group is-disabled" action="/app/avmixer/video/{{ channel }}/fade/1000" method="post">
+							  <button type="submit" class="btn btn-default">ch.{{ channel }}</button>
+							</form>
+						</td>
+				        {% endfor %}
+					</tr>
+					<tr>
+						<td>	         
+                    		<h3 style="margin-top:3px;margin-right:10px;"><span class="label label-warning"> BLEND </span></h3>
+						</td>
+						{% for channel in stateVideoHash.channels %}
+						<td>
+							<form class="btn-group" action="/app/avmixer/video/{{channel.channel}}/blend" method="post">
+							  <button type="submit" class="btn btn-default">ch.{{channel.channel}}</button>
+							</form>
+						</td>
+						{% endfor %}
+         					{% for channel in (1..stateVideoHash.maxChannels) offset:stateVideoHash.channels.size%}
+						<td>
+							<form class="btn-group is-disabled" action="/app/avmixer/video/{{ channel }}/blend" method="post">
+							  <button type="submit" class="btn btn-default">ch.{{ channel }}</button>
+							</form>
+						</td>
+				        {% endfor %}
+					</tr>
+				</table>
+                <p>
                 </div>
-                <div class = "row"> &nbsp; </div>
-                <div class="row">
-                  <button type="submit" class="btn btn-default">Apply</button>
-                </div>
-              </div>
-              <div class="col-md-7 col-md-offset-1">
-              {% for position in stateVideoHash.grid.positions %}
-                <div class="row">
-                  <strong>{{ position.id }}</strong>
-                  <div class="btn-group">
-                    <label class="btn btn-default">
-                      <input type="radio" {% if position.channel == 0%} checked {% endif %} name="{{position.id}}" value="0">
-                      <strong><span class="glyphicon glyphicon-remove"></span></strong>
-                    </label>
-                    {% for channel in stateVideoHash.channels %}
-                    <label class="btn btn-default">
-                      <input type="radio" {% if position.channel == forloop.index%} checked {% endif %} name="{{position.id}}" value="{{forloop.index}}">
-                      <strong>{{forloop.index}}</strong>
-                    </label>
-                    {% endfor %}
-                    {% for channel in (1..stateVideoHash.maxChannels) offset:stateVideoHash.channels.size %}
-                    <label class="btn btn-default" disabled>
-                      <input type="radio">
-                      <strong>{{channel}}</strong>
-                    </label>
-                    {% endfor %}
-                  </div>
-                </div>
-                {% endfor %}
-              </div>
             </div>
-          </form>
-          <div class = "row">&nbsp;</div>
-          <div class = "row">&nbsp;</div>
-          <div class = "row">&nbsp;</div>
-          <div class="row">
-           <div class="col-md-3"></div>
-           <div class="col-md-6">
-            <div class="panel panel-default">
-              <div class="panel-body">
-              	<h4>RTSP output sessions:</h4>
-                {% for session in stateVideoHash.sessions %}
-                <h4>{{ session.id | upcase }}</h4>
-                <h5>{{ session.uri }}</h5>
-                {% endfor %}
-              </div> 
-            </div>
-          </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
+         </div>
+         <div class="col-md-5">
+           <div class="panel panel-default">
+             <div class="panel-body">
+             	<h4>RTSP output sessions:</h4>
+               {% for session in stateVideoHash.sessions %}
+               <h4>{{ session.id | upcase }}</h4>
+               <h5>{{ session.uri }}</h5>
+               {% endfor %}
+             </div> 
+           </div>
+         </div>
+	</div>
+	<div class="row">
+		<div class="panel panel-default">
+	        <div class="panel-heading">
+	          <h4 class="text-center">
+	            Audio Channels
+	          </h4>
+	        </div>
+	        <div class="panel-body">
+	        <div class="row">
+			  <div class="col-sm-2"></div>		        
+	          {% for channel in stateAudioHash.channels %}
+	          <div class="col-sm-1">
+	            <div class="row">
+	              <div class="col-sm-12 text-center">
+	                <h4>Port {{ channel.id }}</h4>
+	              </div>
+	            </div>
+	            <div class="row">
+	              <div class="col-sm-12 text-center">
+	                <div class="btn-group btn-group-sm">
+	                  <form class="form" action="/app/audiomixer/{{stateAudioHash.mixerID}}/channel/{{channel.id}}/mute" method="post">
+	                    <button type="submit" class="btn btn-default">Mute</button>
+	                  </form>
+	                  <form class="form" action="/app/audiomixer/{{stateAudioHash.mixerID}}/channel/{{channel.id}}/solo" method="post">
+	                    <button type="submit" class="btn btn-default">Solo</button>
+	                  </form>
+	                </div>
+	              </div>
+	            </div>
+	            <div class="row">&nbsp;</div>
+	            <div class="row">
+	              <div class="col-sm-12 text-center">
+	                <input type="range" class="vertical" min="0" max="1" step="0.01" orient="vertical" value={{ channel.gain }} oninput="changeChannelVolume({{stateAudioHash.mixerID}}, {{channel.id}}, this.value)"/>
+	              </div>
+	            </div>
+	            <div class = "row">&nbsp;</div>
+	            <div class="row">
+	              <div class="col-sm-12 text-center">
+	                Volume
+	              </div>
+	            </div>
+	            <div class="row">
+	              <div class="col-sm-12 text-center">
+	                <input class="form-control input-sm" name="{{channel.id}}Gain" id="{{channel.id}}Gain" value={{ channel.gain }}>
+	              </div>
+	            </div>
+	          </div>
+	          {% endfor %}
+	          {% for channel in (1...stateAudioHash.freeChannels) %}
+	          <div class="col-sm-1 is-disabled">
+	            <div class="row">
+	              <div class="col-sm-12 text-center">
+	                <h4>Port {{ channel.id }}</h4>
+	              </div>
+	            </div>
+	            <div class="row">
+	              <div class="col-sm-12 text-center">
+	                <div class="btn-group btn-group-sm">
+	                  <form class="form" action="/app/audiomixer/{{stateAudioHash.mixerID}}/channel/{{channel.id}}/mute" method="post">
+	                    <button type="submit" class="btn btn-default">Mute</button>
+	                  </form>
+	                  <form class="form" action="/app/audiomixer/{{stateAudioHash.mixerID}}/channel/{{channel.id}}/solo" method="post">
+	                    <button type="submit" class="btn btn-default">Solo</button>
+	                  </form>
+	                </div>
+	              </div>
+	            </div>
+	            <div class="row">&nbsp;</div>
+	            <div class="row">
+	              <div class="col-sm-12 text-center">
+	                <input type="range" class="vertical" min="0" max="1" step="0.01" orient="vertical" value={{ channel.gain }} oninput="changeChannelVolume({{stateAudioHash.mixerID}}, {{channel.id}}, this.value)"/>
+	              </div>
+	            </div>
+	            <div class = "row">&nbsp;</div>
+	            <div class="row">
+	              <div class="col-sm-12 text-center">
+	                Volume
+	              </div>
+	            </div>
+	            <div class="row">
+	              <div class="col-sm-12 text-center">
+	                <input class="form-control input-sm" name="{{channel.id}}Gain" id="{{channel.id}}Gain" value={{ channel.gain }}>
+	              </div>
+	            </div>
+	          </div>
+	          {% endfor %}
+	          </div>
+	        </div>
+	      </div>
+	</div>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -437,20 +496,110 @@
     <script src="/bs/dist/js/bootstrap.min.js"></script>
     <script src="/bs/assets/js/holder.js"></script>
     <script src="/utils.js"></script>
-        <script type="text/javascript">
-      function changeChannelVolume(audioMixerID, channelID, volume) {
-          id = channelID + "Gain"
-          uri = "/app/avmixer/audio/" + audioMixerID + "/channel/" + channelID + "/changeVolume"
+    <script type="text/javascript">
+    function changeChannelVolume(audioMixerID, channelID, volume) {
+         id = channelID + "Gain"
+         uri = "/app/avmixer/audio/" + audioMixerID + "/channel/" + channelID + "/changeVolume"
 
-        document.getElementById(id).value = volume;
+       document.getElementById(id).value = volume;
 
-        $.ajax({
-          type: 'POST',
-          url: uri,
-          data: "volume=" + volume,
-          async:false
-        });
-      }
-    </script>
+       $.ajax({
+         type: 'POST',
+         url: uri,
+         data: "volume=" + volume,
+         async:false
+       });
+    }
+	$('#addVideoForm').bootstrapValidator({
+	    feedbackIcons: {
+	        valid: 'glyphicon glyphicon-ok',
+	        invalid: 'glyphicon glyphicon-remove',
+	        validating: 'glyphicon glyphicon-refresh'
+	    },
+	    fields: {
+	        port: {
+	            validators: {
+	                notEmpty: {
+	                    message: 'Please, type port number'
+	                }
+	            }
+	        },
+	        codec: {
+	            validators: {
+	                notEmpty: {
+	                    message: 'Please, type video codec'
+	                }
+	            }
+	        }
+	    }
+	});
+	$('#addAudioForm').bootstrapValidator({
+	    feedbackIcons: {
+	        valid: 'glyphicon glyphicon-ok',
+	        invalid: 'glyphicon glyphicon-remove',
+	        validating: 'glyphicon glyphicon-refresh'
+	    },
+	    fields: {
+	        port: {
+	            validators: {
+	                notEmpty: {
+	                    message: 'Please, type port number'
+	                }
+	            }
+	        },
+	        codec: {
+	            validators: {
+	                notEmpty: {
+	                    message: 'Please, type audio codec'
+	                }
+	            }
+	        },
+	     	sampleRate: {
+	            validators: {
+	                notEmpty: {
+	                    message: 'Please, type audio sample rate'
+	                }
+	            }
+	        },
+	        channels: {
+	            validators: {
+	                notEmpty: {
+	                    message: 'Please, type number of channels'
+	                }
+	            }
+	        }
+	    }
+   	});
+	$('#addRTSPForm').bootstrapValidator({
+	    feedbackIcons: {
+	        valid: 'glyphicon glyphicon-ok',
+	        invalid: 'glyphicon glyphicon-remove',
+	        validating: 'glyphicon glyphicon-refresh'
+	    },
+	    fields: {
+	        channel: {
+	            validators: {
+	                notEmpty: {
+	                    message: 'Please, type channel number'
+	                }
+	            }
+	        },
+	        uri: {
+	            validators: {
+	                notEmpty: {
+	                    message: 'Please, type uri'
+	                }
+	            }
+	        }
+	    }
+	});
+    $('#addRTPModal').on('shown.bs.modal', function() {
+   	    $('#addVideoForm').bootstrapValidator('resetForm', true);
+   	    $('#addAudioForm').bootstrapValidator('resetForm', true);
+   	});
+    $('#addRTSPModal').on('shown.bs.modal', function() {
+   	    $('#addRTSPForm').bootstrapValidator('resetForm', true);
+   	});
+   </script>
   </body>
 </html>

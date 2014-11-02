@@ -336,25 +336,24 @@ module RMixer
         channels = params[:channels].to_i
         timeStampFrequency = params[:sampleRate].to_i
         
-          receiver = @db.getFilterByType('receiver')
-          #TODO manage response
-          sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
-          createAudioInputPath(port)
-          updateDataBase
+        receiver = @db.getFilterByType('receiver')
+        #TODO manage response
+        sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
+        createAudioInputPath(port)
+        updateDataBase
       when "video"
-        mixerChannel = params[:channel].to_i
-
+        mixerChannel = params[:channel].to_i + 1 
       
-          receiver = @db.getFilterByType('receiver')
+        receiver = @db.getFilterByType('receiver')
 
-          #TODO manage response
-          sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
+        #TODO manage response
+        sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
 
-          @db.addVideoChannelPort(mixerChannel, port)
-          createVideoInputPaths(port)
-          applyPreviewGrid
+        @db.addVideoChannelPort(mixerChannel, port)
+        createVideoInputPaths(port)
+        applyPreviewGrid
 
-          updateDataBase
+        updateDataBase
       else
         puts "Error, no medium type..."
       end

@@ -46,6 +46,12 @@ input[type=range].vertical_zoom
     margin: 0 auto;
 }
 
+@media screen and (min-width: 768px) {
+    .modal-master {
+        width: 20%; /* either % (e.g. 60%) or px (400px) */
+    }
+}
+
 .is-disabled {
     opacity: .5;
     pointer-events: none;
