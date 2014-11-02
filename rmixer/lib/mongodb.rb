@@ -172,6 +172,18 @@ module RMixer
       }
     end
 
+    def addVideoChannelPort(chID, chPort)
+      db = MongoClient.new(host, port).db(dbname)
+      videoChannelPort = db.collection('videoChannelPort')
+
+      channelPort = {
+        :channel => chID,
+        :port => chPort
+      }
+
+      videoChannelPort.insert(channelPort)
+    end
+
     def getVideoChannelPort(chID)
       db = MongoClient.new(host, port).db(dbname)
       videoChannelPort = db.collection('videoChannelPort')
@@ -185,58 +197,49 @@ module RMixer
       end
     end
 
-    def addVideoChannelPort(chID, chPort)
+    def addAudioChannelPort(channel, chPort)
       db = MongoClient.new(host, port).db(dbname)
-      videoChannelPort = db.collection('videoChannelPort')
+      audioChannelPort = db.collection('audioChannelPort')
 
       channelPort = {
-        :channel => chID,
+        :channel => channel,
         :port => chPort
       }
 
-      videoChannelPort.insert(channelPort)
+      audioChannelPort.insert(channelPort)
+    end
+
+    def getAudioChannelPort(channel)
+      db = MongoClient.new(host, port).db(dbname)
+      audioChannelPort = db.collection('audioChannelPort')
+
+      channelPort = audioChannelPort.find(:channel => channel).first
+
+      if channelPort
+        return channelPort["port"]
+      end
     end
 
     def getAudioMixerState
       db = MongoClient.new(host, port).db(dbname)
       filters = db.collection('filters')
       paths = db.collection('paths')
-      outputSessions = db.collection('outputSessions')
+      audioChannelPort = db.collection('audioChannelPort')
 
       mixer = filters.find(:type=>"audioMixer").first
-      transmitter = filters.find(:type=>"transmitter").first
-      encoderPath = paths.find(:originFilter=>mixer["id"]).first
-      encoder = filters.find(:id=>encoderPath["filters"].first).first
 
-      gains = []
       mixerHash = {}
-      encoderHash = {}
-      session = {}
 
       if mixer["gains"]
         mixer["gains"].each do |g|
-          gains << k2s[g]
+          channelPort = audioChannelPort.find(:port => g["id"]).first
+          g["channel"] = channelPort["channel"]
         end
       end
 
-      if transmitter["sessions"]
-        transmitter["sessions"].each do |s|
-          s["readers"].each do |r|
-            if r == encoderPath["destinationReader"]
-              session["id"] = s["id"]
-              session["uri"] = s["uri"]
-            end
-          end
-        end
-      end
-      
-      mixerHash["channels"] = gains
-      mixerHash["freeChannels"] = 8 - gains.size
-      mixerHash["mixerID"] = mixer["id"]
+      mixerHash["maxChannels"] = 8
+      mixerHash["channels"] = mixer["gains"].sort_by {|ch| ch["channel"]}
       mixerHash["masterGain"] = mixer["masterGain"]
-      mixerHash["masterDelay"] = mixer["masterDelay"]
-      mixerHash["encoder"] = encoder
-      mixerHash["session"] = session
 
       return mixerHash
     end
@@ -246,7 +249,6 @@ module RMixer
       grids = db.collection('grids')
       filters = db.collection('filters')
       videoChannelPort = db.collection('videoChannelPort')
-      inputChannelParams = db.collection('inputChannelParams')
 
       grid = grids.find(:id => grid).first
       mixer = filters.find(:id => mixerID).first

@@ -274,20 +274,6 @@ module RMixer
       updateDataBase
     end
 
-    def updateChannelVolume(id, volume)
-      @db.updateChannelVolume
-    end
-
-    def configEncoder(encoderID, codec, sampleRate, channels)
-      encoder = @db.getFilter(encoderID)
-
-      if encoder["codec"] == codec
-        configAudioEncoder(encoderID, sampleRate, channels)
-      else
-        reconfigAudioEncoder(encoderID, codec, sampleRate, channels)
-      end
-    end
-
     def addRTSPSession(mixerChannel, progName, uri)
       receiver = @db.getFilterByType('receiver')
       id = uri.split('/').last
@@ -332,17 +318,20 @@ module RMixer
 
       case medium
       when "audio"
-        mixerChannel = 0
+        mixerChannel = params[:channel].to_i + 1 #avoid 0 value
         channels = params[:channels].to_i
-        timeStampFrequency = params[:sampleRate].to_i
+        timeStampFrequency = params[:sampleRate].to_i 
         
         receiver = @db.getFilterByType('receiver')
+
         #TODO manage response
         sendRequest(@conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels))
+
+        @db.addAudioChannelPort(mixerChannel, port)
         createAudioInputPath(port)
         updateDataBase
       when "video"
-        mixerChannel = params[:channel].to_i + 1 
+        mixerChannel = params[:channel].to_i + 1 #avoid 0 value
       
         receiver = @db.getFilterByType('receiver')
 
@@ -372,15 +361,6 @@ module RMixer
 
     end
 
-    def addOutputSession(mixerID, sessionName)
-      path = @db.getOutputPathFromFilter(mixerID)
-      readers = []
-      readers << path["destinationReader"]
-      sendRequest(@conn.addOutputSession(path["destinationFilter"], readers, sessionName))
-
-      updateDataBase
-    end
-
     def assignWorker(filterId, filterType, workerType, options = {})
       processorLimit = (options[:processorLimit]) ? options[:processorLimit] : 0
 
@@ -400,7 +380,43 @@ module RMixer
       return newWorker
     end
 
-    # Video methods
+    #################
+    # AUDIO METHODS #
+    #################
+
+    def muteMaster
+      sendRequest(@conn.muteMaster(@audioMixer))
+    end
+
+    def muteChannel(channel)
+      port = @db.getAudioChannelPort(channel)
+      if port
+        sendRequest(@conn.muteChannel(@audioMixer, port))
+      end 
+    end
+
+    def soloChannel(channel)
+      port = @db.getAudioChannelPort(channel)
+      if port
+        sendRequest(@conn.soloChannel(@audioMixer, port))
+      end 
+    end
+
+    def changeMasterVolume(volume)
+      sendRequest(@conn.changeMasterVolume(@audioMixer, volume))
+    end
+
+    def changeChannelVolume(channel, volume)
+      port = @db.getAudioChannelPort(channel)
+      if port
+        sendRequest(@conn.changeChannelVolume(@audioMixer, port, volume))
+      end
+    end
+
+    #################
+    # VIDEO METHODS #
+    #################
+    
     def applyPreviewGrid
       grid = @db.getGrid('preview')
       mixer = getFilter(@previewMixerID)
