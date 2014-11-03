@@ -348,7 +348,8 @@
 		            		<h5>NO AUDIO INPUTS YET</h5>
 		           </div>
 		        {% endif%}
-		        <!--   {% for channel in (1...stateAudioHash.maxChannels) offset:stateAudioHash.channels.size%}
+		        <!--   
+		        {% for channel in (1...stateAudioHash.maxChannels) offset:stateAudioHash.channels.size%}
 		          <div class="col-sm-1 text-center is-disabled"  style="min-width:75px;">
 			          <div class="row">
 			                <h5>Port </h5>
@@ -371,7 +372,8 @@
 			                <input class="form-control input-sm" name="{{channel.id}}Gain" id="{{channel.id}}Gain" value={{ channel.gain }}>
 			          </div>
 		          </div>
-		          {% endfor %} -->
+		        {% endfor %} 
+		        -->
 		        </div>
 		      </div>
            </div>
@@ -430,43 +432,13 @@
 	                </div>
 	              </div>
 	              <div class="col-md-7 col-md-offset-1">
-	              
-	              <!-- TODO: SET NAME/POS AND VALUE/CH THROUGH JAVASCRIPTING...OR TRHOUGH BASIC DROPDOWN SELECTION PUSH JAVASCRIPT PARAMS... 
-	              
-	              {"1"=>"1", "2"=>"0", "3"=>"0", "4"=>"2", "splat"=>[], "captures"=>["2x2"], "grid"=>"2x2"}
-	              
-	              -->
-	              
-	              {% for position in stateVideoHash.grid.positions %}
-					 <select id="cd-dropdown-grid-position" class="btn btn-default cd-select" style="min-width:100px;">
-						<option class="btn btn-default" value="0" {% if position.channel == 0 %} selected {% endif %} name="{{position.id}}">Position {{ position.id }}</option>
+	              	{% for position in stateVideoHash.grid.positions %}
+					 <select id="cd-dropdown-grid-position" class="btn btn-default cd-select" style="min-width:100px;" name="{{position.id}}">
+						<option class="btn btn-default" value="0" {% if position.channel == 0 %} selected {% endif %}>Position {{ position.id }}</option>
 					  	{% for channel in stateVideoHash.channels %}
-							<option class="btn btn-default" value="{{forloop.index}}" {% if position.channel == forloop.index %} selected {% endif %} name="{{position.id}}">Pos.{{ position.id }} ch.{{forloop.index}}</option>
+							<option class="btn btn-default" value="{{forloop.index}}" {% if position.channel == forloop.index %} selected {% endif %}>Pos.{{ position.id }} ch.{{forloop.index}}</option>
 					  	{% endfor %}
-					  </select>
-	             
-	              <!-- 
-	                <div class="row">
-	                  <strong>{{ position.id }}</strong>
-	                  <div class="btn-group">
-	                    <label class="btn btn-default">
-	                      <input type="radio" {% if position.channel == 0%} checked {% endif %} name="{{position.id}}" value="0">
-	                      <strong><span class="glyphicon glyphicon-remove"></span></strong>
-	                    </label>
-	                    {% for channel in stateVideoHash.channels %}
-	                    <label class="btn btn-default">
-	                      <input type="radio" {% if position.channel == forloop.index%} checked {% endif %} name="{{position.id}}" value="{{forloop.index}}">
-	                      <strong>{{forloop.index}}</strong>
-	                    </label>
-	                    {% endfor %}
-	                    {% for channel in (1..stateVideoHash.maxChannels) offset:stateVideoHash.channels.size %}
-	                    <label class="btn btn-default" disabled>
-	                      <input type="radio">
-	                      <strong>{{channel}}</strong>
-	                    </label>
-	                    {% endfor %}
-	                  </div>
-	                </div> -->
+					 </select>
 	                {% endfor %}
 	              </div>
 	            </div>
