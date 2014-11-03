@@ -44,9 +44,6 @@
             <button type="submit" class="btn btn-danger btn-sm">Stop</button>
           </form>
           <div class="navbar-form navbar-right">
-          	<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#masterVolume"><span class="glyphicon glyphicon-volume-up"></span> Master</button>
-          </div>
-          <div class="navbar-form navbar-right">
           	<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#outputURIs"><span class="glyphicon glyphicon-th-large"></span> Output URIs</button>
           </div>
           <div class="navbar-form navbar-right">
@@ -215,46 +212,6 @@
 	    </div>
 	</div>
 	
-	<!-- Modal window - form: master volume -->
-	<div class="modal fade" id="masterVolume" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	    <div class="modal-dialog modal-master">
-	        <div class="modal-content">
-	            <div class="modal-header">
-	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	                <h4 class="modal-title">Audio Master</h4>
-	            </div>
-	
-	            <div class="modal-body">
-	                <!-- The form is placed inside the body of modal -->
-			      <div class="row">
-			        <div class="col-sm-12 text-center">
-			          <form class="navbar-form" action="/app/avmixer/audio/master/mute" method="post">
-			            <button type="submit" class="btn btn-default btn-block">Mute</button>
-			          </form>
-			        </div>
-			      </div>
-			      <div class="row">&nbsp;</div>
-			      <div class="row">
-			        <div class="col-sm-12 text-center">
-			           <input type="range" class="vertical" min="0" max="1" step="0.01" orient="vertical" value={{stateAudioHash.masterGain}} oninput="changeChannelVolume('master', this.value)"/>
-			        </div>
-			      </div>
-			      <div class = "row">&nbsp;</div>
-			      <div class="row">
-			        <div class="col-sm-12 text-center">
-			          Volume
-			        </div>
-			      </div>
-			      <div class="row">
-			        <div class="col-sm-12 text-center">
-			          <input class="form-control input-sm text-center" name="masterGain" id="masterGain" value={{stateAudioHash.masterGain}}>
-			        </div>
-			      </div>
-	            </div>
-	        </div>
-	    </div>
-	</div>
-	
 	<!-- Layout -->
 	<div class="row">
          <div class="col-md-7">
@@ -351,6 +308,8 @@
            
            <div class="row">
             <div class="col-sm-12">
+            <div class="row">
+            <div class="col-md-10 scrollable">
               <div class="panel panel-default">
 		        <div class="panel-heading">
 		          <h4 class="text-center">
@@ -359,55 +318,87 @@
 		        </div>
 		        <div class="panel-body">
 		          {% for channel in stateAudioHash.channels %}
-		          <div class="row">
-			          <div class="col-sm-2 text-center">
+		          <div class="col-sm-2 text-center">
+			          <div class="row">
 			              <h5>Port {{ channel.id }}</h5>
 			          </div>
-		              <div class="col-sm-1 text-center">
+		              <div class="row">
 		                  <form class="form" action="/app/avmixer/audio/{{channel.id}}/mute" method="post">
 		                    <button type="submit" class="btn btn-default">Mute</button>
 		                  </form>
 		              </div>
-		              <div class="col-sm-1 text-center">
+		              <div class="row">
 		                  <form class="form" action="/app/avmixer/audio/{{channel.id}}/solo" method="post">
 		                    <button type="submit" class="btn btn-default">Solo</button>
 		                  </form>
 		              </div>
-			          <div class="col-sm-4 text-center">
+			          <div class="row">
 			             Volume &nbsp;<strong><span class="glyphicon glyphicon-minus"></span></strong>&nbsp;
-			              	<input type="range" class="horizontal" style="padding-top:-10px;" min="0" max="1" step="0.01" orient="horizontal" value={{ channel.gain }} oninput="changeChannelVolume({{channel.id}}, this.value)"/>
+			              	<input type="range" class="vertical" style="padding-top:-10px;" min="0" max="1" step="0.01" orient="vertical" value={{ channel.gain }} oninput="changeChannelVolume({{channel.id}}, this.value)"/>
 			          	  &nbsp;<strong><span class="glyphicon glyphicon-plus"></span></strong>
 			          </div>
-			          <div class="col-sm-2 text-center">
+			          <div class="row">
 			              <input class="form-control input-sm text-center" name="{{channel.id}}Gain" id="{{channel.id}}Gain" value={{ channel.gain }}>
 			          </div>
 		          </div>
 		          {% endfor %}
 		          {% for channel in (1...stateAudioHash.maxChannels) offset:stateAudioHash.channels.size%}
-		          <div class="row is-disabled">
-			          <div class="col-sm-2 text-center">
+		          <div class="col-sm-2 text-center is-disabled">
+			          <div class="row">
 			                <h5>Port </h5>
 			          </div>
-		              <div class="col-sm-1 text-center">
+		              <div class="row">
 		                  <form class="form" action="/app/avmixer/audio/{{channel.id}}/mute" method="post">
 		                    <button type="submit" class="btn btn-default">Mute</button>
 		                  </form>
 		              </div>
-		              <div class="col-sm-1 text-center">
+		              <div class="row">
 		                  <form class="form" action="/app/avmixer/audio/{{channel.id}}/solo" method="post">
 		                    <button type="submit" class="btn btn-default">Solo</button>
 		                  </form>
 		              </div>
-			          <div class="col-sm-4 text-center">
-			            <input type="range" class="horizontal" min="0" max="1" step="0.01" orient="vertical" value={{ channel.gain }} oninput="changeChannelVolume({{channel.id}}, this.value)"/>
+			          <div class="row">
+			            <input type="range" class="vertical" min="0" max="1" step="0.01" orient="vertical" value={{ channel.gain }} oninput="changeChannelVolume({{channel.id}}, this.value)"/>
 			          </div>
-			          <div class="col-sm-2 text-center">
+			          <div class="row">
 			                <input class="form-control input-sm" name="{{channel.id}}Gain" id="{{channel.id}}Gain" value={{ channel.gain }}>
 			          </div>
 		          </div>
 		          {% endfor %}
 		        </div>
 		      </div>
+           </div>
+           <div class="col-md-2">
+              <div class="panel panel-default">
+		        <div class="panel-heading">
+		          <h4 class="text-center">
+		            Master
+		          </h4>
+		        </div>
+		        <div class="panel-body">
+	           		<div class="row">
+				        <div class="col-sm-12 text-center">
+				          <form class="navbar-form" action="/app/avmixer/audio/master/mute" method="post">
+				            <button type="submit" class="btn btn-default btn-block">Mute</button>
+				          </form>
+				        </div>
+				      </div>
+				      <div class="row">&nbsp;</div>
+				      <div class="row">
+				        <div class="col-sm-12 text-center">
+				           <input type="range" class="vertical" min="0" max="1" step="0.01" orient="vertical" value={{stateAudioHash.masterGain}} oninput="changeChannelVolume('master', this.value)"/>
+				        </div>
+				      </div>
+				      <div class = "row">&nbsp;</div>
+				      <div class="row">
+				        <div class="col-sm-12 text-center">
+				          <input class="form-control input-sm text-center" name="masterGain" id="masterGain" value={{stateAudioHash.masterGain}}>
+				        </div>
+				      </div>
+			   </div>
+			</div>
+           </div>
+           </div>
            </div>
            </div>
          </div>
@@ -578,6 +569,13 @@
     $('#addRTSPModal').on('shown.bs.modal', function() {
    	    $('#addRTSPForm').bootstrapValidator('resetForm', true);
    	});
-   </script>
+    </script>
+
+    <script type="text/javascript">
+    $(document).ready(function() {
+        var h=$(window).height();
+        $('.scrollable').height(h+'px');
+    });
+    </script>
   </body>
 </html>
