@@ -319,61 +319,35 @@
 		        <div class="panel-body">
 		        {% if stateAudioHash.channels %}
 		          {% for channel in stateAudioHash.channels %}
-			          <div class="col-sm-1 text-center"  style="min-width:75px;">
-				          <div class="row">
-				              <h5>Port {{ channel.id }}</h5>
-				          </div>
-			              <div class="row">
-			                  <form class="form" action="/app/avmixer/audio/{{channel.id}}/mute" method="post">
-			                    <button type="submit" class="btn btn-default">Mute</button>
-			                  </form>
-			              </div><p></p>
-			              <div class="row">
-			                  <form class="form" action="/app/avmixer/audio/{{channel.id}}/solo" method="post">
-			                    <button type="submit" class="btn btn-default">Solo</button>
-			                  </form>
-			              </div>
-		                  <div class = "row">&nbsp;</div>
-				          <div class="row">
-				              	<input type="range" class="vertical" style="padding-top:-10px;" min="0" max="1" step="0.01" orient="vertical" value={{ channel.gain }} oninput="changeChannelVolume({{channel.id}}, this.value)"/>
-				          </div>
-				          <div class="row">
-				              <input class="form-control input-sm text-center" name="{{channel.id}}Gain" id="{{channel.id}}Gain" value={{ channel.gain }}>
-				          </div>
+			        <div class="col-sm-1 text-center"  style="min-width:75px;">
+				      <div class="row">
+				        <h5>Ch. {{ channel.channel }}</h5>
+				      </div>
+			          <div class="row">
+			            <form class="form" action="/app/avmixer/audio/{{channel.channel}}/mute" method="post">
+			              <button type="submit" class="btn btn-default">Mute</button>
+			            </form>
+			            </div><p></p>
+			            <div class="row">
+			              <form class="form" action="/app/avmixer/audio/{{channel.channel}}/solo" method="post">
+			                <button type="submit" class="btn btn-default">Solo</button>
+			              </form>
+			            </div>
+		                <div class = "row">&nbsp;</div>
+				        <div class="row">
+				          <input type="range" class="vertical" style="padding-top:-10px;" min="0" max="1" step="0.01" orient="vertical" value={{ channel.gain }} oninput="changeChannelVolume({{channel.channel}}, this.value)"/>
+				        </div>
+				        <div class="row">
+				            <input class="form-control input-sm text-center" name="{{channel.channel}}Gain" id="{{channel.channel}}Gain" value={{ channel.gain }}>
+				        </div>
 			          </div>
 		          {% endfor %}
 		        {% endif %}
 		        {% if stateAudioHash.channels.size == 0 %}
-		          <div class="col-sm-12 text-center"">
-		            		<h5>NO AUDIO INPUTS YET</h5>
-		           </div>
-		        {% endif%}
-		        <!--   
-		        {% for channel in (1...stateAudioHash.maxChannels) offset:stateAudioHash.channels.size%}
-		          <div class="col-sm-1 text-center is-disabled"  style="min-width:75px;">
-			          <div class="row">
-			                <h5>Port </h5>
-			          </div>
-		              <div class="row">
-		                  <form class="form" action="/app/avmixer/audio/{{channel.id}}/mute" method="post">
-		                    <button type="submit" class="btn btn-default">Mute</button>
-		                  </form>
-		              </div><p></p>
-		              <div class="row">
-		                  <form class="form" action="/app/avmixer/audio/{{channel.id}}/solo" method="post">
-		                    <button type="submit" class="btn btn-default">Solo</button>
-		                  </form>
-		              </div>
-					  <div class = "row">&nbsp;</div>
-			          <div class="row">
-			            <input type="range" class="vertical" min="0" max="1" step="0.01" orient="vertical" value={{ channel.gain }} oninput="changeChannelVolume({{channel.id}}, this.value)"/>
-			          </div>
-			          <div class="row">
-			                <input class="form-control input-sm" name="{{channel.id}}Gain" id="{{channel.id}}Gain" value={{ channel.gain }}>
-			          </div>
+		          <div class="col-sm-12 text-center">
+		            <h5>NO AUDIO INPUTS YET</h5>
 		          </div>
-		        {% endfor %} 
-		        -->
+		        {% endif%}
 		        </div>
 		      </div>
            </div>
