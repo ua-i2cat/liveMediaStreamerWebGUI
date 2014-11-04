@@ -219,7 +219,11 @@ class MixerAPI < Sinatra::Base
   post '/app/addRTSPSession' do 
     content_type :html
     error_html do
-        settings.mixer.addRTSPSession(params[:channel].to_i, 'mixer', params[:uri])
+        settings.mixer.addRTSPSession(params[:vChannel].to_i, 
+                                      params[:aChannel].to_i, 
+                                      'mixer', 
+                                      params[:uri]
+                                     )
     end
     redirect '/app/avmixer'
   end

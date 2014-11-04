@@ -274,7 +274,7 @@ module RMixer
       updateDataBase
     end
 
-    def addRTSPSession(mixerChannel, progName, uri)
+    def addRTSPSession(vChannel, aChannel, progName, uri)
       receiver = @db.getFilterByType('receiver')
       id = uri.split('/').last
       sendRequest(@conn.addRTSPSession(receiver["id"], progName, uri, id))
@@ -296,15 +296,18 @@ module RMixer
         end
       end while session.empty?
 
-      chCount = 0
+      vChCount = 0
+      aChCount = 0
       session[:subsessions].each do |s|
         if s[:medium] == 'audio'
+          @db.addAudioChannelPort(aChannel + aChCount, s[:port])
           createAudioInputPath(s[:port])
+          aChCount += 1
         elsif s[:medium] == 'video'
-          @db.addVideoChannelPort(mixerChannel + chCount, s[:port])
+          @db.addVideoChannelPort(vChannel + vChCount, s[:port])
           createVideoInputPaths(s[:port])
           applyPreviewGrid
-          chCount += 1
+          vChCount += 1
         end
       end
     end
