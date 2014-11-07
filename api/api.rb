@@ -264,7 +264,7 @@ class MixerAPI < Sinatra::Base
     redirect '/app/avmixer'
   end
   
-  post '/app/avmixer/audio/:channel/addSession' do
+  post '/app/avmixer/audio/addSession' do
     content_type :html
     error_html do
       settings.mixer.addRTPSession("audio", params, 5000, 0)
@@ -296,7 +296,7 @@ class MixerAPI < Sinatra::Base
     redirect "/app/avmixer/video/grid#{params[:grid]}"
   end
 
-  post '/app/avmixer/video/:channel/addSession' do
+  post '/app/avmixer/video/addSession' do
     content_type :html
     error_html do
       settings.mixer.addRTPSession("video", params, 5000, 90000)

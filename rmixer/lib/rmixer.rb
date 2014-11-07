@@ -321,7 +321,7 @@ module RMixer
 
       case medium
       when "audio"
-        mixerChannel = params[:channel].to_i + 1 #avoid 0 value
+        mixerChannel = params[:channel].to_i
         channels = params[:channels].to_i
         timeStampFrequency = params[:sampleRate].to_i 
         
@@ -334,7 +334,7 @@ module RMixer
         createAudioInputPath(port)
         updateDataBase
       when "video"
-        mixerChannel = params[:channel].to_i + 1 #avoid 0 value
+        mixerChannel = params[:channel].to_i
       
         receiver = @db.getFilterByType('receiver')
 

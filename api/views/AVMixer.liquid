@@ -69,14 +69,17 @@
 	                <!-- The form is placed inside the body of modal -->
                   	<div class="row">
 	                    <div class="col-sm-6">
-			                <form id="addVideoForm" class="form-horizontal" role="form" action="/app/avmixer/video/{{stateVideoHash.channels.size}}/addSession" method="post">
+			                <form id="addVideoForm" class="form-horizontal" role="form" action="/app/avmixer/video/addSession" method="post">
 			                  <div class="row">
 			                    <div class="col-sm-12 text-center">
 			                      <h4>Add video</h4>
 			                    </div>
 			                  </div>
 			                  <div class="row">
-			                    <div class="col-sm-12 text-center">
+			                    <div class="col-sm-6 text-center">
+			                      <input type="numeric" class="form-control input-sm text-center" name="channel" placeholder="Mixer ch.">
+			                    </div>
+			                    <div class="col-sm-6 text-center">
 			                      <input type="numeric" class="form-control input-sm text-center" name="port" placeholder="Receiver port">
 			                    </div>
 			                  </div>
@@ -103,14 +106,17 @@
 			                </form>
 	                	</div>
 	                	<div class="col-sm-6">
-			                <form id="addAudioForm" class="form-horizontal" role="form" action="/app/avmixer/audio/{{stateAudioHash.channels.size}}/addSession" method="post">
+			                <form id="addAudioForm" class="form-horizontal" role="form" action="/app/avmixer/audio/addSession" method="post">
 				              <div class="row">
 				                <div class="col-sm-12 text-center">
 				                  <h4>Add audio</h4>
 				                </div>
 				              </div>
 				              <div class="row">
-				                <div class="col-sm-12 text-center text-center">
+				                <div class="col-sm-6 text-center text-center">
+				                  <input type="numeric" class="form-control input-sm text-center" name="channel" id="channel" placeholder="Mixer ch.">
+				                </div>
+				                <div class="col-sm-6 text-center text-center">
 				                  <input type="numeric" class="form-control input-sm text-center" name="port" id="port" placeholder="Receiver port">
 				                </div>
 				              </div>
@@ -412,7 +418,7 @@
 					 <select id="cd-dropdown-grid-position" class="btn btn-default cd-select" style="min-width:100px;" name="{{position.id}}">
 						<option class="btn btn-default" value="0" {% if position.channel == 0 %} selected {% endif %}>Position {{ position.id }}</option>
 					  	{% for channel in stateVideoHash.channels %}
-							<option class="btn btn-default" value="{{forloop.index}}" {% if position.channel == forloop.index %} selected {% endif %}>Pos.{{ position.id }} ch.{{forloop.index}}</option>
+							<option class="btn btn-default" value="{{forloop.index}}" {% if position.channel == forloop.index %} selected {% endif %}>Channel {{forloop.index}}</option>
 					  	{% endfor %}
 					 </select>
 	                {% endfor %}
