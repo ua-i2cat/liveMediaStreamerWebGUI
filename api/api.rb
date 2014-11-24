@@ -216,14 +216,29 @@ class MixerAPI < Sinatra::Base
     dashboardAVMixer('PiP')
   end
 
-  post '/app/addRTSPSession' do 
+
+  ###################
+  # GENERAL METHODS #
+  ###################
+  
+  post '/app/avmixer/addRTSPSession' do 
     content_type :html
     error_html do
         settings.mixer.addRTSPSession(params[:vChannel].to_i, 
                                       params[:aChannel].to_i, 
                                       'mixer', 
-                                      params[:uri]
-                                     )
+                                      params[:uri])
+    end
+    redirect '/app/avmixer'
+  end
+
+  post '/app/avmixer/addOutputRTPtx' do 
+    content_type :html
+    error_html do
+        settings.mixer.addOutputRTPtx(params[:output], 
+                                      params[:txFormat],
+                                      params[:ip],
+                                      params[:port].to_i)
     end
     redirect '/app/avmixer'
   end

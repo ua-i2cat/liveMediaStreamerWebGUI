@@ -52,173 +52,233 @@
           <div class="navbar-form navbar-right">
           	<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addRTPModal"><span class="glyphicon glyphicon-plus"></span> Add RTP input</button>
           </div>
+          <div class="navbar-form navbar-right">
+            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addOutputRTPModal"><span class="glyphicon glyphicon-plus"></span> Add RTP output</button>
+          </div>
         </div><!--/.nav-collapse -->
       </div>
     </div>
 
-	<!-- Modal window - form: addRTPInput -->
-	<div class="modal fade" id="addRTPModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <!-- Modal window - form: addRTPInput -->
+	  <div class="modal fade" id="addRTPModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	    <div class="modal-dialog">
-	        <div class="modal-content">
-	            <div class="modal-header">
-	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	                <h4 class="modal-title">Add media</h4>
-	            </div>
-	
-	            <div class="modal-body">
-	                <!-- The form is placed inside the body of modal -->
-                  	<div class="row">
-	                    <div class="col-sm-6">
-			                <form id="addVideoForm" class="form-horizontal" role="form" action="/app/avmixer/video/addSession" method="post">
-			                  <div class="row">
-			                    <div class="col-sm-12 text-center">
-			                      <h4>Add video</h4>
-			                    </div>
-			                  </div>
-			                  <div class="row">
-			                    <div class="col-sm-6 text-center">
-			                      <input type="numeric" class="form-control input-sm text-center" name="channel" placeholder="Mixer ch.">
-			                    </div>
-			                    <div class="col-sm-6 text-center">
-			                      <input type="numeric" class="form-control input-sm text-center" name="port" placeholder="Receiver port">
-			                    </div>
-			                  </div>
-			                  <div class = "row">&nbsp;</div>
-			                  <div class="row">
-			                    <div class="col-sm-12 text-center">
-			                      <select class="form-control" name="codec">
-			                        <option value="none">Codec</option>
-			                        <option value="H264">H264</option>
-			                        <option value="VP8">VP8</option>
-			                      </select>
-			                    </div>
-			                  </div>
-			                  <div class = "row">&nbsp;</div>
-			                  <div class = "row">&nbsp;</div>
-			                  <div class = "row">&nbsp;</div>
-			                  <div class = "row">&nbsp;</div><p>
-			                  <div class="row">
-			                    <div class="col-sm-12 text-center">
-			                      <button type="submit" class="btn btn-default">Add</button>
-			                    </div>
-			                  </div>
-			                  <div class = "row">&nbsp;</div>
-			                </form>
-	                	</div>
-	                	<div class="col-sm-6">
-			                <form id="addAudioForm" class="form-horizontal" role="form" action="/app/avmixer/audio/addSession" method="post">
-				              <div class="row">
-				                <div class="col-sm-12 text-center">
-				                  <h4>Add audio</h4>
-				                </div>
-				              </div>
-				              <div class="row">
-				                <div class="col-sm-6 text-center text-center">
-				                  <input type="numeric" class="form-control input-sm text-center" name="channel" id="channel" placeholder="Mixer ch.">
-				                </div>
-				                <div class="col-sm-6 text-center text-center">
-				                  <input type="numeric" class="form-control input-sm text-center" name="port" id="port" placeholder="Receiver port">
-				                </div>
-				              </div>
-				              <div class = "row">&nbsp;</div>
-				              <div class="row">
-				                  <div class="col-sm-12 text-center">
-				                    <select class="form-control" name="codec">
-				                      <option value="none">Codec</option>
-				                      <option value="pcm">PCM</option>
-				                      <option value="pcmu">PCMU</option>
-				                      <option value="opus">OPUS</option>
-				                      <option value="aac">AAC</option>
-				                      <option value="mp3">MP3</option>
-				                    </select>
-				                  </div>
-				              </div>
-				              <div class="row">
-				                  <div class="col-sm-12 text-center">
-				                    <select class="form-control" name="sampleRate">
-				                      <option value="none">Smp.Rate</option>
-				                      <option value="8000">8000</option>
-				                      <option value="44100">44100</option>
-				                      <option value="48000">48000</option>
-				                    </select>
-				                  </div>
-				              </div>
-				              <div class="row">
-				                  <div class="col-sm-12 text-center">
-				                    <select class="form-control" name="channels">
-				                      <option value="none">Channels</option>
-				                      <option value="1">1</option>
-				                      <option value="2">2</option>
-				                    </select>
-				                  </div>
-				              </div>
-				              <div class = "row">&nbsp;</div>
-				              <div class="row">
-				                  <div class="col-sm-12 text-center">
-				                    <button type="submit" class="btn btn-default">Add</button>
-				                  </div>
-				              </div>
-				            </form>		
-	                	</div>
-	                </div>
-	            </div>
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	          <h4 class="modal-title">Add media</h4>
 	        </div>
-	    </div>
-	</div>
 	
-	<!-- Modal window - form: addRTSPInput -->
-	<div class="modal fade" id="addRTSPModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	    <div class="modal-dialog">
-	        <div class="modal-content">
-	            <div class="modal-header">
-	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	                <h4 class="modal-title">Add new RTSP input session</h4>
+	        <div class="modal-body">
+	        <!-- The form is placed inside the body of modal -->
+           	<div class="row">
+	            <div class="col-sm-6">
+			          <form id="addVideoForm" class="form-horizontal" role="form" action="/app/avmixer/video/addSession" method="post">
+			            <div class="row">
+			              <div class="col-sm-12 text-center">
+			                <h4>Add video</h4>
+			              </div>
+			            </div>
+			            <div class="row">
+			              <div class="col-sm-6 text-center">
+			                <input type="numeric" class="form-control input-sm text-center" name="channel" placeholder="Mixer ch.">
+			              </div>
+			              <div class="col-sm-6 text-center">
+			                <input type="numeric" class="form-control input-sm text-center" name="port" placeholder="Receiver port">
+			              </div>
+			            </div>
+			            <div class = "row">&nbsp;</div>
+			            <div class="row">
+			              <div class="col-sm-12 text-center">
+			                <select class="form-control" name="codec">
+			                  <option value="none">Codec</option>
+			                  <option value="H264">H264</option>
+			                  <option value="VP8">VP8</option>
+			                </select>
+			              </div>
+			            </div>
+			            <div class = "row">&nbsp;</div>
+			            <div class = "row">&nbsp;</div>
+			            <div class = "row">&nbsp;</div>
+			            <div class = "row">&nbsp;</div><p>
+			            <div class="row">
+			              <div class="col-sm-12 text-center">
+			                <button type="submit" class="btn btn-default">Add</button>
+			              </div>
+			            </div>
+			            <div class = "row">&nbsp;</div>
+			          </form>
 	            </div>
-	
-	            <div class="modal-body">
-	                <!-- The form is placed inside the body of modal -->
-                  	<div class="row">
-	                    <div class="col-sm-12">
-			                <form id="addRTSPForm" class="form" role="form" action="/app/addRTSPSession" method="post">
-                              <input type="numeric" class="form-control input-sm" name="vChannel" placeholder="VideoMixer channel">
-                              <div class = "row">&nbsp;</div>
-                              <input type="numeric" class="form-control input-sm" name="aChannel" placeholder="AudioMixer channel">
-                              <div class = "row">&nbsp;</div>
-			                  <input type="text" class="form-control input-sm" name="uri" placeholder="URI">
-			                  <div class = "row">&nbsp;</div>
-			                  <button type="submit" class="btn btn-default">Add</button>
-			                </form>
-	                	</div>
-	                	
-	                </div>
+	            <div class="col-sm-6">
+			          <form id="addAudioForm" class="form-horizontal" role="form" action="/app/avmixer/audio/addSession" method="post">
+				          <div class="row">
+				            <div class="col-sm-12 text-center">
+				              <h4>Add audio</h4>
+				            </div>
+				          </div>
+				          <div class="row">
+				            <div class="col-sm-6 text-center text-center">
+				              <input type="numeric" class="form-control input-sm text-center" name="channel" id="channel" placeholder="Mixer ch.">
+				            </div>
+				            <div class="col-sm-6 text-center text-center">
+				              <input type="numeric" class="form-control input-sm text-center" name="port" id="port" placeholder="Receiver port">
+				            </div>
+				          </div>
+				          <div class = "row">&nbsp;</div>
+				          <div class="row">
+				            <div class="col-sm-12 text-center">
+				              <select class="form-control" name="codec">
+				                <option value="none">Codec</option>
+				                <option value="pcm">PCM</option>
+				                <option value="pcmu">PCMU</option>
+				                <option value="opus">OPUS</option>
+				                <option value="aac">AAC</option>
+				                <option value="mp3">MP3</option>
+				              </select>
+				            </div>
+				          </div>
+				          <div class="row">
+				            <div class="col-sm-12 text-center">
+				              <select class="form-control" name="sampleRate">
+				                <option value="none">Smp.Rate</option>
+				                <option value="8000">8000</option>
+				                <option value="44100">44100</option>
+				                <option value="48000">48000</option>
+				              </select>
+				            </div>
+				          </div>
+				          <div class="row">
+				            <div class="col-sm-12 text-center">
+				              <select class="form-control" name="channels">
+				                <option value="none">Channels</option>
+				                <option value="1">1</option>
+				                <option value="2">2</option>
+				              </select>
+				            </div>
+				          </div>
+				          <div class = "row">&nbsp;</div>
+				          <div class="row">
+				            <div class="col-sm-12 text-center">
+				              <button type="submit" class="btn btn-default">Add</button>
+				            </div>
+				          </div>
+				        </form>		
 	            </div>
+	          </div>
 	        </div>
+	      </div>
 	    </div>
-	</div>
+	  </div>
 	
-	<!-- Modal window - form: output grids -->
-	<div class="modal fade" id="outputURIs" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <!-- Modal window - form: addRTSPInput -->
+	  <div class="modal fade" id="addRTSPModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	    <div class="modal-dialog">
-	        <div class="modal-content">
-	            <div class="modal-header">
-	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	                <h4 class="modal-title">RTSP output sessions</h4>
-	            </div>
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	          <h4 class="modal-title">Add new RTSP input session</h4>
+	        </div>
 	
-	            <div class="modal-body">
-	                <!-- The form is placed inside the body of modal -->
+	        <div class="modal-body">
+	        <!-- The form is placed inside the body of modal -->
+          	<div class="row">
+	            <div class="col-sm-12">
+			          <form id="addRTSPForm" class="form" role="form" action="/app/avmixer/addRTSPSession" method="post">
+                  <input type="numeric" class="form-control input-sm" name="vChannel" placeholder="VideoMixer channel">
+                  <div class = "row">&nbsp;</div>
+                  <input type="numeric" class="form-control input-sm" name="aChannel" placeholder="AudioMixer channel">
+                  <div class = "row">&nbsp;</div>
+			            <input type="text" class="form-control input-sm" name="uri" placeholder="URI">
+			            <div class = "row">&nbsp;</div>
+			            <button type="submit" class="btn btn-default">Add</button>
+			          </form>
+	            </div>
+            </div>
+          </div>
+        </div>
+	    </div>
+	  </div>
+	
+	  <!-- Modal window - form: output grids -->
+	  <div class="modal fade" id="outputURIs" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	          <h4 class="modal-title">RTSP output sessions</h4>
+	        </div>
+	
+	        <div class="modal-body">
+	        <!-- The form is placed inside the body of modal -->
 				  	<div class="panel panel-default">
-		             <div class="panel-body">
-		               {% for session in stateVideoHash.sessions %}
-		               <h4>{{ session.id | upcase }}</h4>
-		               <h5>{{ session.uri }}</h5>
-		               {% endfor %}
-		             </div> 
-		           </div>
-	            </div>
+		          <div class="panel-body">
+		          {% for session in stateVideoHash.sessions %}
+		            <h4>{{ session.id | upcase }}</h4>
+		            <h5>{{ session.uri }}</h5>
+		          {% endfor %}
+		          </div> 
+		        </div>
 	        </div>
+	      </div>
 	    </div>
-	</div>
+	  </div>
+
+    <!-- Modal window - form: addRTPInput -->
+    <div class="modal fade" id="addOutputRTPModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Add RTP output</h4>
+          </div>
+          <div class="modal-body">
+            <form id="addOutputRTPForm" class="form-horizontal" role="form" action="/app/avmixer/addOutputRTPtx" method="post">
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="row">
+                    <div class="col-sm-12 text-center">
+                      <select class="form-control" name="output">
+                        <option value="none">Output</option>
+                        <option value="air">Air (video+audio)</option>
+                        <option value="preview">Preview (video)</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class = "row">&nbsp;</div>
+                  <div class="row">
+                    <div class="col-sm-12 text-center">
+                      <select class="form-control" name="txFormat">
+                        <option value="none">Tx Format</option>
+                        <option value="std">Standard</option>
+                        <option value="ultragrid">Ultragrid</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="row">
+                    <div class="col-sm-12 text-center text-center">
+                      <input type="numeric" class="form-control input-md text-center" name="ip" id="ip" placeholder="Destination IP">
+                    </div>
+                  </div>
+                  <div class = "row">&nbsp;</div>
+                  <div class="row">
+                    <div class="col-sm-12 text-center text-center">
+                      <input type="numeric" class="form-control input-md text-center" name="port" id="port" placeholder="Destination port">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class = "row">&nbsp;</div>
+              <div class="row">
+                <div class="col-sm-12 text-center">
+                  <button type="submit" class="btn btn-default">Add</button>
+                </div>
+              </div>
+            </form>   
+          </div>
+        </div>
+      </div>
+    </div>
 	
 	<!-- Layout -->
 	<div class="row">

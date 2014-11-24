@@ -396,29 +396,31 @@ module RMixer
         if txFormat == "mpegts"
           # TODO
         else
-          sendRequest(
-            @conn.addOutputRTPtx(txId, [videoPath["destinationReader"]], 
+          response = sendRequest(
+                      @conn.addOutputRTPtx(txId, [videoPath["destinationReader"]], 
                                  videoId, ip, port, txFormat)
-            )
+                      )
 
-          sendRequest(
-            @conn.addOutputRTPtx(txId, [audioPath["destinationReader"]], 
+          response = sendRequest(
+                      @conn.addOutputRTPtx(txId, [audioPath["destinationReader"]], 
                                  audioId, ip, port+2, txFormat)
-            )
+                     )
         end
 
       when "preview"
         videoPath = getOutputPathFromFilter(@previewMixerID)
         videoId = Random.rand(@randomSize)
 
-        sendRequest(
-            @conn.addOutputRTPtx(txId, [videoPath["destinationReader"]], 
+        response = sendRequest(
+                    @conn.addOutputRTPtx(txId, [videoPath["destinationReader"]], 
                                  videoId, ip, port, txFormat)
-            )
+                   )
 
       else
         raise MixerError, "Error, wrong RTP output option"
       end
+
+      raise MixerError, response[:error] if response[:error]
     end
 
     #################
