@@ -92,16 +92,9 @@ module RMixer
       end
     end
 
-    def getWorkerByType(workerType, filterType, fps = 24)
-      db = MongoClient.new(host, port).db(dbname)
-      workers = db.collection('workers')
-
-      workers.find({:workerType => workerType, 
-                    :filterType => filterType,
-                    :fps => fps
-                    }
-                  )
-    end
+#   ===================
+#    Worker management
+#   ===================
 
     def addWorker(id, workerType, filterType, fps = 24)
       db = MongoClient.new(host, port).db(dbname)
@@ -120,6 +113,17 @@ module RMixer
       workers.insert(w)
     end
 
+    def getWorkerByType(workerType, filterType, fps = 24)
+      db = MongoClient.new(host, port).db(dbname)
+      workers = db.collection('workers')
+
+      workers.find({:workerType => workerType, 
+                    :filterType => filterType,
+                    :fps => fps
+                    }
+                  )
+    end
+
     def addProcessorToWorker(workerId, filterId, filterType)
       db = MongoClient.new(host, port).db(dbname)
       workers = db.collection('workers')
@@ -131,12 +135,34 @@ module RMixer
       workers.update({:id => workerId}, w)
     end
 
+#   ===================
+#    Filter management
+#   ===================
+
+    def getFilterByType(type)
+      db = MongoClient.new(host, port).db(dbname)
+      filters = db.collection('filters')
+
+      filter = filters.find(:type=>type).first
+    end
+
+    def getFilter(filterID)
+      db = MongoClient.new(host, port).db(dbname)
+      filters = db.collection('filters')
+
+      filter = filters.find(:id=>filterID).first
+    end
+
     def updateFilter(filter)
       db = MongoClient.new(host, port).db(dbname)
       filters = db.collection('filters')
 
       filters.update({:id => filter["id"]}, filter)
     end
+
+#   ==================
+#    Grids management
+#   ==================
 
     def loadGrids(gridsArray)
       db = MongoClient.new(host, port).db(dbname)
@@ -171,6 +197,10 @@ module RMixer
         end
       }
     end
+
+#   ==================
+#    Mixer management
+#   ==================
 
     def addVideoChannelPort(chID, chPort)
       db = MongoClient.new(host, port).db(dbname)
@@ -217,6 +247,21 @@ module RMixer
 
       if channelPort
         return channelPort["port"]
+      end
+    end
+
+    def updateChannelVolume(id, volume)
+      db = MongoClient.new(host, port).db(dbname)
+      filters = db.collection('filters')
+
+      mixer = filters.find(:type=>"audioMixer").first
+
+      if mixer["gains"]
+        mixer["gains"].each do |g|
+          if g["id"] == id 
+            g["volume"] = volume
+          end
+        end
       end
     end
 
@@ -270,16 +315,17 @@ module RMixer
       return mixerHash
     end
 
-    def getOutputPathFromFilter(mixerID, writer = 0)
+#   ==================
+#    Paths management
+#   ==================
+
+    def getOutputPathFromFilter(mixerId, writer = 0)
       db = MongoClient.new(host, port).db(dbname)
       paths = db.collection('paths')
 
       if writer == 0
-        path = paths.find(:originFilter=>mixerID).first
+        path = paths.find(:originFilter=>mixerId).first
       end
-      
-      return path
-
     end
 
     def getPathByDestination(filter, reader = 1)
@@ -289,40 +335,11 @@ module RMixer
       path = paths.find({:destinationFilter=>filter,:destinationReader=>reader}).first
     end
 
-    def getFilterByType(type)
-      db = MongoClient.new(host, port).db(dbname)
-      filters = db.collection('filters')
-
-      filter = filters.find(:type=>type).first
-    end
-
-    def getFilter(filterID)
-      db = MongoClient.new(host, port).db(dbname)
-      filters = db.collection('filters')
-
-      filter = filters.find(:id=>filterID).first
-    end
-
     def getPath(pathID)
       db = MongoClient.new(host,port).db(dbname)
       paths = db.collection('paths')
 
       path = paths.find(:id=>pathID).first
-    end
-    
-    def updateChannelVolume(id, volume)
-      db = MongoClient.new(host, port).db(dbname)
-      filters = db.collection('filters')
-
-      mixer = filters.find(:type=>"audioMixer").first
-
-      if mixer["gains"]
-        mixer["gains"].each do |g|
-          if g["id"] == id 
-            g["volume"] = volume
-          end
-        end
-      end
     end
 
   end
