@@ -466,8 +466,6 @@ module RMixer
 
       grid["positions"].each do |p|
         mixerChannelId = @db.getVideoChannelPort(p["id"])
-        puts "HEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
-        puts mixerChannelId
 
         unless mixerChannelId == 0
           path = getPathByDestination(@previewMixerID, mixerChannelId)
