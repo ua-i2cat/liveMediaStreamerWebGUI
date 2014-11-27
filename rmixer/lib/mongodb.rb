@@ -282,7 +282,7 @@ module RMixer
         end
       end
 
-      mixerHash["maxChannels"] = 8
+      mixerHash["maxChannels"] = mixer["maxChannels"]
       mixerHash["channels"] = mixer["gains"].sort_by {|ch| ch["channel"]}
       mixerHash["masterGain"] = mixer["masterGain"]
 
@@ -300,7 +300,7 @@ module RMixer
       transmitter = filters.find(:type=>"transmitter").first
       
       mixerHash = {"grid" => grid}
-      mixerHash["maxChannels"] = 8
+      mixerHash["maxChannels"] = mixer["maxChannels"]
       if transmitter["sessions"]
         mixerHash["sessions"] = transmitter["sessions"]
       end

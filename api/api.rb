@@ -71,6 +71,10 @@ class MixerAPI < Sinatra::Base
   
   # Web App Methods
   # Routes
+  get '/' do
+      redirect '/app'
+  end
+  
   get '/app' do
       redirect '/app/avmixer'
   end

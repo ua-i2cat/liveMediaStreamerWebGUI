@@ -605,8 +605,8 @@ module RMixer
       deltaOp = 1.0/intervals
 
       mixer["channels"].each do |ch|
-        if ch["layer"] >= 7
-          ch["layer"] = 6
+        if ch["layer"] >= mixer["maxChannels"] - 1
+          ch["layer"] = mixer["maxChannels"] - 2
           appendEvent(updateVideoChannel(@airMixerID, ch))
         end
       end
@@ -614,7 +614,7 @@ module RMixer
       appendEvent(configureResampler(resamplerID, mixer["width"], mixer["height"]))
 
       intervals.times do |d|
-        appendEvent(setPositionSize(@airMixerID, port, 1, 1, 0, 0, 7, d*deltaOp), d*@videoFadeInterval)
+        appendEvent(setPositionSize(@airMixerID, port, 1, 1, 0, 0, mixer["maxChannels"] - 1, d*deltaOp), d*@videoFadeInterval)
       end
 
       mixer["channels"].each do |ch|
@@ -623,7 +623,7 @@ module RMixer
           ch["height"] = 1
           ch["x"] = 0
           ch["y"] = 0
-          ch["layer"] = 7
+          ch["layer"] = mixer["maxChannels"] - 1
           ch["opacity"] = 1.0
           ch["enabled"] = true
 
@@ -648,8 +648,8 @@ module RMixer
       resamplerID = path["filters"].first
 
       mixer["channels"].each do |ch|
-        if ch["layer"] >= 7
-          ch["layer"] = 6
+        if ch["layer"] >= mixer["maxChannels"] - 1
+          ch["layer"] = mixer["maxChannels"] - 2
           appendEvent(updateVideoChannel(@airMixerID, ch))
         end
       end
@@ -662,7 +662,7 @@ module RMixer
           ch["height"] = 1
           ch["x"] = 0
           ch["y"] = 0
-          ch["layer"] = 7
+          ch["layer"] = mixer["maxChannels"] - 1
           ch["opacity"] = 0.5
           ch["enabled"] = true
 
