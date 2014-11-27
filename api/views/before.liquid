@@ -34,27 +34,18 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">livemediastreamer GUI</a>
+          <a class="navbar-brand" href="#">AV Mixer</a>
         </div>
-        <div class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right" role="form" action="/logout" method="get">
-            <button type="submit" class="btn btn-primary btn-sm pull-right btn-danger">Logout</button>
-          </form>
-
-        </div><!--/.nav-collapse -->
       </div>
     </div>
 
     <div class="container">
       <div class="row text-center col-md-12">
         <img src="/image/6.png" alt="" class="img-thumbnail pull-center">
-        <h3>Select scenario to initialize</h3><br>
+        <div class = "row">&nbsp;</div>
         <div class="row text-center">
-           <form class="btn-group" action="/app/start/avmixer" method="post">
-            <button type="submit" class="btn btn-primary btn-md pull-right btn-alert">AV Mixer</button>
-           </form>
-           <form class="btn-group" action="/app/start/vico" method="post">
-            <button type="submit" class="btn btn-primary btn-md pull-right btn-alert">ViCo</button>
+           <form class="btn-group" action="/app/start" method="post">
+            <button type="submit" class="btn btn-primary btn-lg pull-right btn-alert">Start</button>
            </form>
         </div>
       </div>
