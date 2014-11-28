@@ -85,6 +85,10 @@ class MixerAPI < Sinatra::Base
   
   # Web App Methods
   # Routes
+  get '/' do
+    redirect '/app'
+  end
+  
   get '/app' do
     redirect '/app/avmixer'
   end
@@ -129,7 +133,12 @@ class MixerAPI < Sinatra::Base
     dashboardAVMixer('PiP')
   end
 
-  post '/app/addRTSPSession' do 
+
+  ###################
+  # GENERAL METHODS #
+  ###################
+  
+  post '/app/avmixer/addRTSPSession' do 
     content_type :html
     error_html do
         settings.mixer.addRTSPSession(params[:vChannel].to_i, 
