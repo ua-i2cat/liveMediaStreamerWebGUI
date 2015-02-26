@@ -8,5 +8,5 @@ LMS WebGUI is licensed under GPL
 
 Information about setup, deployment, usage and features can be checked in our [Wiki](http://github.com/ua-i2cat/liveMediaStreamerWebGUI/wiki)
 
-Thank you for downloading Live Media Streamer. For any doubt, question or suggestion please can contact to: xavier(dot)carol(at)i2cat(dot)net
+Thank you for downloading Live Media Streamer. For any doubt, question or suggestion please can contact to: support.ua@i2cat.net
 
