@@ -1,5 +1,5 @@
 #
-#  RUBYMIXER - A management ruby interface for MIXER 
+#  RUBYMIXER - A management ruby interface for MIXER
 #  Copyright (C) 2013  Fundació i2CAT, Internet i Innovació digital a Catalunya
 #
 #  This file is part of thin RUBYMIXER.
@@ -19,7 +19,7 @@
 #
 #  Authors:  Marc Palau <marc.palau@i2cat.net>,
 #            Ignacio Contreras <ignacio.contreras@i2cat.net>
-#   
+#
 
 require 'mongo'
 
@@ -29,7 +29,7 @@ module RMixer
 
   # ==== Overview
   # Class that manages MongoDB access
-  
+
   class MongoMngr
 
     # Database server host
@@ -92,18 +92,19 @@ module RMixer
       end
     end
 
-    def getWorkerByType(workerType, filterType, fps = 24)
+    def getWorkerByType(workerType, filterRole, filterType, fps = 24)
       db = MongoClient.new(host, port).db(dbname)
       workers = db.collection('workers')
 
-      workers.find({:workerType => workerType, 
+      workers.find({:workerType => workerType,
+                    :filterRole => filterRole,
                     :filterType => filterType,
                     :fps => fps
                     }
                   )
     end
 
-    def addWorker(id, workerType, filterType, fps = 24)
+    def addWorker(id, workerType, filterRole, filterType, fps = 24)
       db = MongoClient.new(host, port).db(dbname)
       workers = db.collection('workers')
 
@@ -112,6 +113,7 @@ module RMixer
       w = {
         :id => id,
         :workerType => workerType,
+        :filterRole => filterRole,
         :filterType => filterType,
         :processors => processors,
         :fps => fps
@@ -120,13 +122,13 @@ module RMixer
       workers.insert(w)
     end
 
-    def addProcessorToWorker(workerId, filterId, filterType)
+    def addProcessorToWorker(workerId, filterId, filterRole, filterType)
       db = MongoClient.new(host, port).db(dbname)
       workers = db.collection('workers')
 
-      w = workers.find({:id => workerId, :filterType => filterType}).first
+      w = workers.find({:id => workerId, :filterRole => filterRole, :filterType => filterType}).first
 
-      w["processors"] << {"id" => filterId, "type" => filterType}
+      w["processors"] << {"id" => filterId, "filterRole" => filterRole, "type" => filterType}
 
       workers.update({:id => workerId}, w)
     end
@@ -165,7 +167,7 @@ module RMixer
       db = MongoClient.new(host, port).db(dbname)
       grids = db.collection('grids')
 
-      grids.find.each { |g| 
+      grids.find.each { |g|
         g["positions"].each do |p|
           p["channel"] = 0
         end
@@ -253,7 +255,7 @@ module RMixer
       grid = grids.find(:id => grid).first
       mixer = filters.find(:id => mixerID).first
       transmitter = filters.find(:type=>"transmitter").first
-      
+
       mixerHash = {"grid" => grid}
       mixerHash["maxChannels"] = mixer["maxChannels"]
       if transmitter["sessions"]
@@ -277,7 +279,7 @@ module RMixer
       if writer == 0
         path = paths.find(:originFilter=>mixerID).first
       end
-      
+
       return path
 
     end
@@ -309,7 +311,7 @@ module RMixer
 
       path = paths.find(:id=>pathID).first
     end
-    
+
     def updateChannelVolume(id, volume)
       db = MongoClient.new(host, port).db(dbname)
       filters = db.collection('filters')
@@ -318,7 +320,7 @@ module RMixer
 
       if mixer["gains"]
         mixer["gains"].each do |g|
-          if g["id"] == id 
+          if g["id"] == id
             g["volume"] = volume
           end
         end

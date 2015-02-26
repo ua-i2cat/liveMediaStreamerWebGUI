@@ -1,5 +1,5 @@
 #
-#  RUBYMIXER - A management ruby interface for MIXER 
+#  RUBYMIXER - A management ruby interface for MIXER
 #  Copyright (C) 2013  Fundació i2CAT, Internet i Innovació digital a Catalunya
 #
 #  This file is part of thin RUBYMIXER.
@@ -19,7 +19,7 @@
 #
 #  Authors:  Marc Palau <marc.palau@i2cat.net>,
 #            Ignacio Contreras <ignacio.contreras@i2cat.net>
-#   
+#
 
 require 'socket'
 require 'json'
@@ -100,41 +100,45 @@ module RMixer
       createEvent("addSession", params, filterID)
     end
 
-    def addOutputSession(filterID, readers)
-      if readers.length > 0
-        params = {
-          :readers => readers
-        }
-        createEvent("addSession", params, filterID)
-      end
-    end
+#    def addRTSPOutputSession(filterID, readers)
+#      if readers.length > 0
+#        params = {
+#          :readers => readers
+#        }
+#        createEvent("addSession", params, filterID)
+#      end
+#    end
 
     def getState
       createEvent("getState")
     end
 
-    def addOutputSession(txID, readers, sessionName)
+    def addRTSPOutputSession(txID, sessionID, readers, name, txFormat)
       params = {
+        :id => sessionID,
         :readers => readers,
-        :sessionName => sessionName
+        :name => name,
+        :txFormat => txFormat
       }
 
-      createEvent("addSession", params, txID)
+      createEvent("addRTSPConnection", params, txID)
     end
 
-    def addOutputSessionTemporal(txID, readers, sessionName)
-      params = {
-        :readers => readers,
-        :sessionName => sessionName
-      }
+#    def addOutputSessionTemporal(txID, readers, sessionName)
+#      params = {
+#        :readers => readers,
+#        :sessionName => sessionName
+#      }
+#
+#      createEvent("addSession", params, txID)
+#    end
 
-      createEvent("addSession", params, txID)
-    end
-
-    def createFilter(id, type)
+    def createFilter(id, type, role, sharedFrames = true)
       params = {
         :id => id,
         :type => type,
+        :role => role,
+        :sharedFrames => sharedFrames
       }
 
       createEvent("createFilter", params)
@@ -148,7 +152,7 @@ module RMixer
       createEvent("removeFilter", params)
     end
 
-    def createPath(id, orgFilterId, dstFilterId, orgWriterId, dstReaderId, midFiltersIds, sharedQueue = false)
+    def createPath(id, orgFilterId, dstFilterId, orgWriterId, dstReaderId, midFiltersIds)
       params = {
         :id => id,
         :orgFilterId => orgFilterId,
@@ -156,7 +160,6 @@ module RMixer
         :orgWriterId => orgWriterId,
         :dstReaderId => dstReaderId,
         :midFiltersIds => midFiltersIds,
-        :sharedQueue => sharedQueue
       }
 
       createEvent("createPath", params)
@@ -188,13 +191,13 @@ module RMixer
       createEvent("removeWorker", params)
     end
 
-    def addSlavesToWorker(master, slaves)
+    def addSlavesToFilter(master, slaves)
       params = {
         :master => master,
         :slaves => slaves
       }
 
-      createEvent("addSlavesToWorker", params)
+      createEvent("addSlavesToFilter", params)
     end
 
     def addFiltersToWorker(worker, filters)
@@ -210,33 +213,33 @@ module RMixer
     # AUDIO METHODS #
     #################
 
-    def muteMaster(filterID) 
+    def muteMaster(filterID)
       params = {}
       createEvent("muteMaster", params, filterID)
     end
 
-    def muteChannel(filterID, id) 
+    def muteChannel(filterID, id)
       params = {
         :id => id
       }
       createEvent("muteChannel", params, filterID)
     end
 
-    def soloChannel(filterID, id) 
+    def soloChannel(filterID, id)
       params = {
         :id => id
       }
       createEvent("soloChannel", params, filterID)
     end
 
-    def changeMasterVolume(filterID, volume) 
+    def changeMasterVolume(filterID, volume)
       params = {
         :volume => volume
       }
       createEvent("changeMasterVolume", params, filterID)
     end
-    
-    def changeChannelVolume(filterID, id, volume) 
+
+    def changeChannelVolume(filterID, id, volume)
       params = {
         :id => id,
         :volume => volume
@@ -259,7 +262,7 @@ module RMixer
         :opacity => opacity,
         :enabled => enabled
       }
-      
+
       createEvent("configChannel", params, mixerID)
     end
 
@@ -321,6 +324,23 @@ module RMixer
       createEvent("configure", params, encoderId)
     end
 
+    def configureAudioEncoder(encoderId, options = {})
+      params = {}
+
+      if options[:channels]
+        params[:channels] = options[:channels]
+      end
+
+      if options[:sampleRate]
+        params[:sampleRate] = options[:sampleRate]
+      end
+
+      if options[:codec]
+        params[:codec] = options[:codec]
+      end
+
+      createEvent("configure", params, encoderId)
+    end
 
     # Method that composes the JSON request and sends it over TCP to the
     # targetted remote mixer instance.
@@ -328,7 +348,7 @@ module RMixer
     # Returns the Mixer's JSON response converted to a hash unless the
     # RMixer::Mixer was initialized with <tt>testing = :request</tt> option.
     #
-    # ==== Testing 
+    # ==== Testing
     #
     # If <tt>@testing == :request</tt>, this method returns the hash that should
     # be sent over TCP without actually sending it.
@@ -339,14 +359,14 @@ module RMixer
     # it's useful for debugging.
     #
     # ==== Attributes
-    # 
+    #
     # * +action+ - The action to be sent
     # * +params+ - Optional hash containing the parameters to be sent
     #
     # ==== Examples
-    #   
+    #
     #   mixer = RMixer::Mixer.new "localhost", 7777
-    #   mixer.get_response("start_mixer", { :width => 1280, :height => 720 })   
+    #   mixer.get_response("start_mixer", { :width => 1280, :height => 720 })
     #
 
     def createEvent(action, params = {}, filterID = 0)
