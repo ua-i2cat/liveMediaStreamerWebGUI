@@ -70,7 +70,45 @@
 
     });
 
+    $( "#cd-dropdown-fps" ).change(function () {
 
+        console.log( $('#cd-dropdown-fps').find(":selected").val());
+
+        $.ajax({
+            type : 'POST',
+            url : "/app/demo/fps",
+            data : "fps=" + $('#cd-dropdown-fps').find(":selected").val(),
+            async : false,
+            success : function(msg) {
+                console.log(msg);
+                state = msg;
+            },
+            error : function(xhr, msg) {
+                console.log('ERROR: ' + msg + '\n' + xhr.responseText);
+            }
+        });
+
+    });
+
+    $( "#cd-dropdown-size" ).change(function () {
+
+        console.log( $('#cd-dropdown-size').find(":selected").val());
+
+        $.ajax({
+            type : 'POST',
+            url : "/app/demo/size",
+            data : "size=" + $('#cd-dropdown-size').find(":selected").val(),
+            async : false,
+            success : function(msg) {
+                console.log(msg);
+                state = msg;
+            },
+            error : function(xhr, msg) {
+                console.log('ERROR: ' + msg + '\n' + xhr.responseText);
+            }
+        });
+
+    });
 
     </script>
 
