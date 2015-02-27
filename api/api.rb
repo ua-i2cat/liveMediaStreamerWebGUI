@@ -1,5 +1,5 @@
 #
-#  RUBYMIXER - A management ruby interface for MIXER 
+#  RUBYMIXER - A management ruby interface for MIXER
 #  Copyright (C) 2013  Fundació i2CAT, Internet i Innovació digital a Catalunya
 #
 #  This file is part of thin RUBYMIXER.
@@ -20,250 +20,111 @@
 #  Authors:  Marc Palau <marc.palau@i2cat.net>,
 #            Ignacio Contreras <ignacio.contreras@i2cat.net>
 #            Gerard Castillo <gerard.castillo@i2cat.net>
-#   
+#
 
 require 'rubygems'
 require 'bundler/setup'
-require 'liquid'
 require 'sinatra/base'
-require 'rmixer'
 require 'rack/protection'
+require 'socket'
+require 'json'
 
-class MixerAPI < Sinatra::Base
+class MITSUdemoAPI < Sinatra::Base
 
-  set :ip, '127.0.0.1'
-  set :port, 7777
-  set :mixer, RMixer::Mixer.new(settings.ip, settings.port)
-
-  configure do
+    configure do
     set :show_exceptions, false
-  end
-  
-  not_found do
-    msg = "no path to #{request.path}"
-    halt liquid :error, :locals => { "message" => msg }
-  end
-  
-  error do
-    msg = "Error is:  #{params[:captures].first.inspect}"
-    halt liquid :error, :locals => { "message" => msg }   
-  end
-  
-  def error_html
-    begin
-      yield
-    rescue Errno::ECONNREFUSED, RMixer::MixerError => e
-      status 500
-      halt liquid :error, :locals => { "message" => e.message }
     end
-  end
 
-  helpers do
-    def started
-      error_html do
-        settings.mixer.isStarted
-      end
+    not_found do
+    content_type :json
+    msg = "no path to #{request.path}"
+    { :msg => msg }.to_json
     end
+
+    error do
+    content_type :json
+    msg = "Error is:  #{params[:captures].first.inspect}"
+    { :msg => msg }.to_json
+    end
+
+    helpers do
     def isNumber?(object)
       true if Float(object) rescue false
     end
-  end
+    end
 
-  def dashboardAVMixer (grid = '2x2')
-    if started
-      avmstate = settings.mixer.getAVMixerState(grid)
-      videoMixerHash = avmstate[:video]
-      audioMixerHash = avmstate[:audio]
-      liquid :AVMixer, :locals => {
-            "stateVideoHash" => videoMixerHash,
-            "stateAudioHash" => audioMixerHash
+    # Web App Methods
+    # Routes
+    get '/' do
+        redirect '/app'
+    end
+
+    get '/app' do
+        redirect '/app/demo'
+    end
+
+    get '/app/demo' do
+        send_file 'demo.html'
+    end
+
+    ###################
+    # GENERAL METHODS #
+    ###################
+
+    post '/app/demo/bitrate' do
+        content_type :json
+        config = {
+            :bitrate => params[:bitrate].to_i
         }
-    else
-      liquid :before
+        puts "received new bitrate config"
+        puts config
+        sendRequest(createEvent("configure", config, 1000))
     end
-  end
-  
-  # Web App Methods
-  # Routes
-  get '/' do
-    redirect '/app'
-  end
-  
-  get '/app' do
-    redirect '/app/avmixer'
-  end
 
-  post '/app/start' do
-    content_type :html
-    error_html do
-      settings.mixer.start
+    post '/app/demo/size' do
+        content_type :json
+        config = {
+            :width => params[:width].to_i,
+            :height => params[:height].to_i
+        }
+        puts "received new size config"
+        puts config
+        sendRequest(createEvent("configure", config, 2000))
     end
-    redirect '/app'
-  end
-  
-  post '/app/stop' do
-    content_type :html
-    error_html do
-      settings.mixer.stop
+
+    post '/app/demo/fps' do
+        content_type :json
+        config = {
+            :fps => params[:fps].to_i
+        }
+        puts "received new fps config"
+        puts config
+        sendRequest(createEvent("configure", config, 1000))
     end
-    redirect '/app'
-  end
 
-  get '/app/avmixer' do
-    redirect '/app/avmixer/video/grid2x2'
-  end
-
-  get '/app/avmixer/video/grid2x2' do
-    content_type :html
-    dashboardAVMixer('2x2')
-  end
-
-  get '/app/avmixer/video/grid3x3' do
-    content_type :html
-    dashboardAVMixer('3x3')
-  end
-
-  get '/app/avmixer/video/grid4x4' do
-    content_type :html
-    dashboardAVMixer('4x4')
-  end
-
-  get '/app/avmixer/video/gridPiP' do
-    content_type :html
-    dashboardAVMixer('PiP')
-  end
-
-
-  ###################
-  # GENERAL METHODS #
-  ###################
-  
-  post '/app/avmixer/addRTSPSession' do 
-    content_type :html
-    error_html do
-        settings.mixer.addRTSPSession(params[:vChannel].to_i, 
-                                      params[:aChannel].to_i, 
-                                      'mixer', 
-                                      params[:uri]
-                                     )
+    def createEvent(action, params, filterID)
+        event = {
+            :action => action,
+            :params => params,
+            :filterID => filterID
+        }
     end
-    redirect '/app/avmixer'
-  end
 
-  #################
-  # AUDIO METHODS #
-  #################
-
-  post '/app/avmixer/audio/:channel/mute' do
-    content_type :html
-    error_html do
-      if (params[:channel] == "master")
-        settings.mixer.muteMaster
-      else
-        settings.mixer.muteChannel(params[:channel].to_i)
-      end
+    def sendRequest(events)
+        request = {
+        :events => events
+        }
+        puts "sending msg socket"
+        s = TCPSocket.open('127.0.0.1', 7777)
+        s.print(request.to_json)
+        puts request
+        response = s.recv(4096*4) # TODO: max_len ?
+        puts
+        puts response
+        puts
+        s.close
+        return response
     end
-    redirect '/app/avmixer'
-  end
 
-  post '/app/avmixer/audio/:channel/solo' do
-    content_type :html
-    error_html do
-      settings.mixer.soloChannel(params[:channel].to_i)
-    end
-    redirect '/app/avmixer'
-  end
-
-  post '/app/avmixer/audio/:channel/changeVolume' do
-    content_type :html
-    error_html do
-      if (params[:channel] == "master")
-        settings.mixer.changeMasterVolume(params[:volume].to_f)
-      else
-        settings.mixer.changeChannelVolume(params[:channel].to_i, params[:volume].to_f)
-      end
-    end
-    redirect '/app/avmixer'
-  end
-  
-  post '/app/avmixer/audio/addSession' do
-    content_type :html
-    error_html do
-      settings.mixer.addRTPSession("audio", params, 5000, 0)
-    end
-    redirect '/app/avmixer'
-  end
-
-  #################
-  # VIDEO METHODS #
-  #################
-
-  post '/app/avmixer/video/:grid/applyGrid' do
-    content_type :html
-    error_html do
-      positions = []
-      params.each do |k,v|
-        if isNumber?(k)
-          pos = {
-            :pos => k.to_i,
-            :ch => v.to_i
-          }
-          positions << pos
-        end
-      end
-
-      settings.mixer.applyGrid(params[:grid], positions)
-
-    end
-    redirect "/app/avmixer/video/grid#{params[:grid]}"
-  end
-
-  post '/app/avmixer/video/addSession' do
-    content_type :html
-    error_html do
-      settings.mixer.addRTPSession("video", params, 5000, 90000)
-    end
-    redirect '/app/avmixer'
-  end
-  
-  #TODO
-  #gets channel index (not port) to be removed from sessions
-  post '/app/avmixer/video/:channel/rmSession' do
-    content_type :html
-    error_html do
-      settings.mixer.rmRTPSession(params[:channel].to_i,
-                                  params[:port].to_i,
-                                  "video",
-                                  params[:codec],
-                                  5000,
-                                  90000
-                                  )
-    end
-    redirect '/app/avmixer'
-  end
-
-  post '/app/avmixer/video/:channel/commute' do
-    content_type :html
-    error_html do
-      settings.mixer.commute(params[:channel].to_i)
-    end
-    redirect '/app/avmixer'
-  end
-
-  post '/app/avmixer/video/:channel/fade/:time' do
-    content_type :html
-    error_html do
-      settings.mixer.fade(params[:channel].to_i, params[:time].to_i)
-    end
-    redirect '/app/avmixer'
-  end
-
-  post '/app/avmixer/video/:channel/blend' do
-    content_type :html
-    error_html do
-      settings.mixer.blend(params[:channel].to_i)
-    end
-    redirect '/app/avmixer'
-  end
 
 end

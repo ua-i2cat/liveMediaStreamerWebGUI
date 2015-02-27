@@ -4,4 +4,4 @@ require 'bundler'
 Bundler.require
 
 require './api'
-run MixerAPI
+run MITSUdemoAPI
