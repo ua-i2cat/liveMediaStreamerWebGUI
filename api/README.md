@@ -1,5 +1,5 @@
-Mixer Web API / Sinatra
-=======================
+MTR DEMO MITSU REST API/Sinatra with basic web interface
+========================================================
 
 Installation
 ------------
@@ -14,7 +14,7 @@ Running
     $ rackup
 
 - With unicorn: configure the application with `unicorn.rb`. To run locally:
-    
+
     $ mkdir tmp
     $ mkdir tmp/pids tmp/sockets
     $ mkdir log
