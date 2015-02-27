@@ -64,7 +64,7 @@ class MITSUdemoAPI < Sinatra::Base
     end
 
     get '/app/demo' do
-        send_file 'demo.html'
+        send_file 'public/demo.html'
     end
 
     ###################
