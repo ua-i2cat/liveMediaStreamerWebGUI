@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="shortcut icon" href="http://www.i2cat.net/sites/default/files/favicon.ico">
+        <title>MTR DEMO MITSU</title>
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+        <script src="../../assets/js/html5shiv.js"></script>
+        <script src="../../assets/js/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+
+        <form>
+            <select id="cd-dropdown-bitrate" class="cd-select">
+                <option value="4000000" selected="selected">4 Mbps</option>
+                <option value="2000000">2 Mbps</option>
+                <option value="1000000">1 Mbps</option>
+                <option value="500000">500 kbps</option>
+            </select>
+        </form>
+
+        <form>
+            <select id="cd-dropdown-fps" class="cd-select">
+                <option value="25" selected="selected">25 fps</option>
+                <option value="20">20 fps</option>
+                <option value="10">10 fps</option>
+                <option value="1">1 fps</option>
+            </select>
+        </form>
+
+        <form>
+            <select id="cd-dropdown-size" class="cd-select">
+                <option value="1920x1080" selected="selected">FHD</option>
+                <option value="1280x720">HD</option>
+                <option value="720x480">SD</option>
+                <option value="360x280">CIF</option>
+            </select>
+        </form>
+
+
+
+    ==================================================
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/bs/assets/js/jquery.js"></script>
+    <script type="text/javascript" src="/js/jquery.dropdown.js"></script>
+
+    <script type="text/javascript">
+    $( "#cd-dropdown-bitrate" ).change(function () {
+
+        console.log( $('#cd-dropdown-bitrate').find(":selected").val());
+
+        $.ajax({
+            type : 'POST',
+            url : "/app/demo/bitrate",
+            data : "bitrate=" + $('#cd-dropdown-bitrate').find(":selected").val(),
+            async : false,
+            success : function(msg) {
+                console.log(msg);
+                state = msg;
+            },
+            error : function(xhr, msg) {
+                console.log('ERROR: ' + msg + '\n' + xhr.responseText);
+            }
+        });
+
+    });
+
+
+
+    </script>
+
+    </body>
+</html>
