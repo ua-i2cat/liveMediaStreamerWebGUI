@@ -1,5 +1,5 @@
-MTR DEMO MITSU REST API/Sinatra with basic web interface
-========================================================
+MTR DEMO MITSU REST API/Sinatra & WEB GUI
+=========================================
 
 Installation
 ------------

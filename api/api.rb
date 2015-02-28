@@ -1,8 +1,8 @@
 #
-#  RUBYMIXER - A management ruby interface for MIXER
+#  MTR DEMO MITSU - A management ruby interface for MTR DEMO MITSU
 #  Copyright (C) 2013  Fundació i2CAT, Internet i Innovació digital a Catalunya
 #
-#  This file is part of thin RUBYMIXER.
+#  This file is part of thin MTR DEMO MITSU project.
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -17,9 +17,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#  Authors:  Marc Palau <marc.palau@i2cat.net>,
-#            Ignacio Contreras <ignacio.contreras@i2cat.net>
-#            Gerard Castillo <gerard.castillo@i2cat.net>
+#  Authors:  Gerard Castillo <gerard.castillo@i2cat.net>
 #
 
 require 'rubygems'
@@ -31,30 +29,36 @@ require 'json'
 
 class MITSUdemoAPI < Sinatra::Base
 
+    ###################
+    # GENERAL CONFIG. #
+    ###################
+
     configure do
-    set :show_exceptions, false
+        set :show_exceptions, false
     end
 
     not_found do
-    content_type :json
-    msg = "no path to #{request.path}"
-    { :msg => msg }.to_json
+        content_type :json
+        msg = "no path to #{request.path}"
+        { :msg => msg }.to_json
     end
 
     error do
-    content_type :json
-    msg = "Error is:  #{params[:captures].first.inspect}"
-    { :msg => msg }.to_json
+        content_type :json
+        msg = "Error is:  #{params[:captures].first.inspect}"
+        { :msg => msg }.to_json
     end
 
     helpers do
-    def isNumber?(object)
-      true if Float(object) rescue false
-    end
+        def isNumber?(object)
+          true if Float(object) rescue false
+        end
     end
 
-    # Web App Methods
-    # Routes
+    ##############
+    # WEB ROUTES #
+    ##############
+
     get '/' do
         redirect '/app'
     end
@@ -67,9 +71,9 @@ class MITSUdemoAPI < Sinatra::Base
         send_file 'public/demo.html'
     end
 
-    ###################
-    # GENERAL METHODS #
-    ###################
+    ############
+    # API REST #
+    ############
 
     post '/app/demo/bitrate' do
         content_type :json
@@ -102,6 +106,10 @@ class MITSUdemoAPI < Sinatra::Base
         sendRequest(createEvent("configure", config, 1000))
     end
 
+    ###############
+    # MSG SOCKETS #
+    ###############
+
     def createEvent(action, params, filterID)
         event = {
             :action => action,
@@ -125,6 +133,5 @@ class MITSUdemoAPI < Sinatra::Base
         s.close
         return response
     end
-
 
 end

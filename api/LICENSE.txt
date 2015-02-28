@@ -1,4 +1,4 @@
-DEMO MITSU - A management ruby interface for the MTR DEMO MITSU
+MTR DEMO MITSU - A management ruby interface for the MTR DEMO MITSU
 Copyright (C) 2015  Fundació i2CAT, Internet i Innovació digital a Catalunya
 
 This program is free software: you can redistribute it and/or modify

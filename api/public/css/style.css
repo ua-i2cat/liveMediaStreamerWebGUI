@@ -1,0 +1,48 @@
+body {
+    margin-top: 35px;
+    padding-bottom: 20px;
+    background-color: #ffffff;
+}
+div.content{
+    min-height:100%;
+    position:relative;
+    width:100%;
+    text-align:center;
+}
+div.single-form {
+    float:left;
+}
+div.line2 {
+    padding:10px;
+    padding-bottom:60px;   /* Height of the footer */
+    display: inline-block;
+    clear:both;
+}
+div.footer {
+    margin: 0 auto;
+    text-align:center;
+    clear:both;
+    bottom:0;
+    width:100%;
+}
+select, option {
+    width: 100px;
+    text-align: center;
+}
+.theme-dropdown .dropdown-menu {
+    margin-bottom: 1px;
+    display: block;
+    position:absolute;
+}
+.theme-showcase>p>.btn {
+    margin: 1px 0;
+    width:  100px;
+}
+.is-disabled {
+    opacity: .5;
+    pointer-events: none;
+}
+.is-enabled {
+    opacity: 1;
+    pointer-events: all;
+}

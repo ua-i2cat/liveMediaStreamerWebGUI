@@ -3,9 +3,15 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <link rel="shortcut icon" href="http://www.i2cat.net/sites/default/files/favicon.ico">
+        <meta name="description" content="WEB GUI for the MTR DEMO MITSU">
+        <meta name="author" content="gerard.castillo@i2cat.net">
+
+        <link rel="shortcut icon" href="/img/favicon.ico">
+
+        <link rel="stylesheet" type="text/css" href="/css/dropdown.css">
+        <!-- Custom styles for this template -->
+        <link rel="stylesheet" type="text/css" href="/css/style.css">
+
         <title>MTR DEMO MITSU</title>
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -14,103 +20,117 @@
         <![endif]-->
     </head>
     <body>
+        <div class="content">
+            <div class="line1">
+                <h1>WEB GUI</h1>
+            </div>
 
-        <form>
-            <select id="cd-dropdown-bitrate" class="cd-select">
-                <option value="4000000" selected="selected">4 Mbps</option>
-                <option value="2000000">2 Mbps</option>
-                <option value="1000000">1 Mbps</option>
-                <option value="500000">500 kbps</option>
-            </select>
-        </form>
+            <div class="line2">
+                <div class="single-form">
+                    bitrate
+                    <form>
+                        <select id="cd-dropdown-bitrate" class="cd-select">
+                            <option value="4000000" selected="selected">4 Mbps</option>
+                            <option value="2000000">2 Mbps</option>
+                            <option value="1000000">1 Mbps</option>
+                            <option value="500000">500 kbps</option>
+                        </select>
+                    </form>
+                </div>
 
-        <form>
-            <select id="cd-dropdown-fps" class="cd-select">
-                <option value="25" selected="selected">25 fps</option>
-                <option value="20">20 fps</option>
-                <option value="10">10 fps</option>
-                <option value="1">1 fps</option>
-            </select>
-        </form>
+                <div class="single-form">
+                    framerate
+                    <form>
+                        <select id="cd-dropdown-fps" class="cd-select">
+                            <option value="25" selected="selected">25 fps</option>
+                            <option value="20">20 fps</option>
+                            <option value="10">10 fps</option>
+                            <option value="1">1 fps</option>
+                        </select>
+                    </form>
+                </div>
+                <div class="single-form">
+                    size
+                    <form>
+                        <select id="cd-dropdown-size" class="cd-select">
+                            <option value="1920x1080" selected="selected">FHD</option>
+                            <option value="1280x720">HD</option>
+                            <option value="720x480">SD</option>
+                            <option value="352x288">CIF</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
 
-        <form>
-            <select id="cd-dropdown-size" class="cd-select">
-                <option value="1920x1080" selected="selected">FHD</option>
-                <option value="1280x720">HD</option>
-                <option value="720x480">SD</option>
-                <option value="360x280">CIF</option>
-            </select>
-        </form>
+            <div class="footer">
+                <img src="/img/logo.png"></img>
+            </div>
+        </div>
+
+        <script src="/bs/assets/js/jquery.js"></script>
+        <script type="text/javascript" src="/js/jquery.dropdown.js"></script>
+        <script type="text/javascript">
 
 
+        $( "#cd-dropdown-bitrate" ).change(function () {
 
-    ==================================================
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/bs/assets/js/jquery.js"></script>
-    <script type="text/javascript" src="/js/jquery.dropdown.js"></script>
+            console.log( $('#cd-dropdown-bitrate').find(":selected").val());
 
-    <script type="text/javascript">
-    $( "#cd-dropdown-bitrate" ).change(function () {
+            $.ajax({
+                type : 'POST',
+                url : "/app/demo/bitrate",
+                data : "bitrate=" + $('#cd-dropdown-bitrate').find(":selected").val(),
+                async : false,
+                success : function(msg) {
+                    console.log(msg);
+                    state = msg;
+                },
+                error : function(xhr, msg) {
+                    console.log('ERROR: ' + msg + '\n' + xhr.responseText);
+                }
+            });
 
-        console.log( $('#cd-dropdown-bitrate').find(":selected").val());
-
-        $.ajax({
-            type : 'POST',
-            url : "/app/demo/bitrate",
-            data : "bitrate=" + $('#cd-dropdown-bitrate').find(":selected").val(),
-            async : false,
-            success : function(msg) {
-                console.log(msg);
-                state = msg;
-            },
-            error : function(xhr, msg) {
-                console.log('ERROR: ' + msg + '\n' + xhr.responseText);
-            }
         });
 
-    });
+        $( "#cd-dropdown-fps" ).change(function () {
 
-    $( "#cd-dropdown-fps" ).change(function () {
+            console.log( $('#cd-dropdown-fps').find(":selected").val());
+            $.ajax({
+                type : 'POST',
+                url : "/app/demo/fps",
+                data : "fps="+ $('#cd-dropdown-fps').find(":selected").val(),
+                async : false,
+                success : function(msg) {
+                    console.log(msg);
+                    state = msg;
+                },
+                error : function(xhr, msg) {
+                    console.log('ERROR: ' + msg + '\n' + xhr.responseText);
+                }
+            });
 
-        console.log( $('#cd-dropdown-fps').find(":selected").val());
-
-        $.ajax({
-            type : 'POST',
-            url : "/app/demo/fps",
-            data : "fps=" + $('#cd-dropdown-fps').find(":selected").val(),
-            async : false,
-            success : function(msg) {
-                console.log(msg);
-                state = msg;
-            },
-            error : function(xhr, msg) {
-                console.log('ERROR: ' + msg + '\n' + xhr.responseText);
-            }
         });
 
-    });
+        $( "#cd-dropdown-size" ).change(function () {
 
-    $( "#cd-dropdown-size" ).change(function () {
+            console.log( $('#cd-dropdown-size').find(":selected").val());
+            size = $('#cd-dropdown-size').find(":selected").val().split("x");
 
-        console.log( $('#cd-dropdown-size').find(":selected").val());
+            $.ajax({
+                type : 'POST',
+                url : "/app/demo/size",
+                data : "width=" + size[0]+"&height="+size[1],
+                async : false,
+                success : function(msg) {
+                    console.log(msg);
+                    state = msg;
+                },
+                error : function(xhr, msg) {
+                    console.log('ERROR: ' + msg + '\n' + xhr.responseText);
+                }
+            });
 
-        $.ajax({
-            type : 'POST',
-            url : "/app/demo/size",
-            data : "size=" + $('#cd-dropdown-size').find(":selected").val(),
-            async : false,
-            success : function(msg) {
-                console.log(msg);
-                state = msg;
-            },
-            error : function(xhr, msg) {
-                console.log('ERROR: ' + msg + '\n' + xhr.responseText);
-            }
         });
-
-    });
-
-    </script>
-
+        </script>
     </body>
 </html>
