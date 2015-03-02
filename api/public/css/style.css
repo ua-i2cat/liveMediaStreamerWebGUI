@@ -29,6 +29,10 @@ select, option {
     width: 100px;
     text-align: center;
 }
+input {
+    width: 300px;
+    text-align: center;
+}
 .theme-dropdown .dropdown-menu {
     margin-bottom: 1px;
     display: block;

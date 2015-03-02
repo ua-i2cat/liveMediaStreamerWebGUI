@@ -85,7 +85,7 @@ class MITSUdemoAPI < Sinatra::Base
     ############
     post '/app/demo/start' do
         content_type :json
-        if run_demo(params[:demo])
+        if run_demo(params)
             settings.scenario = params[:demo]
             return settings.scenario.to_json
         else
@@ -180,17 +180,35 @@ class MITSUdemoAPI < Sinatra::Base
     #####################
     # PROCES MANAGEMENT #
     #####################
-    def run_demo(demo)
+    def run_demo(params)
         return if settings.demoStarted #force only one process
-        case demo
-        when "MPEGTS"
-            cmd = "testtranscoder -v 5004"
-        when "DASH"
-            cmd = "testtranscoder -v 5004 -dash"
+        demo = params[:demo]
+        puts params[:rtspURI]
+        uri = params[:rtspURI]
+
+        if !params[:rtspURI].empty?
+            case demo
+            when "MPEGTS"
+                cmd = "testtranscoder -r #{params[:rtspURI]}"
+            when "DASH"
+                cmd = "testtranscoder -dash -r #{params[:rtspURI]}"
+            else
+                puts "You gave me #{demo} -- I have no idea what to do with that."
+                return
+            end
         else
-            puts "You gave me #{demo} -- I have no idea what to do with that."
-            return
+            case demo
+            when "MPEGTS"
+                cmd = "testtranscoder -v 5004"
+            when "DASH"
+                cmd = "testtranscoder -v 5004 -dash"
+            else
+                puts "You gave me #{demo} -- I have no idea what to do with that."
+                return
+            end
         end
+
+        puts "command to run: #{cmd}"
         #run thread demo (parsing std and output stdout and stderr)
         settings.demoThread = Thread.new do # Calling a class method new
             begin
@@ -204,6 +222,7 @@ class MITSUdemoAPI < Sinatra::Base
                         puts "#{cmd} running!"
                         settings.demoStarted = true
                     else
+                        puts "inside thread..."
                         puts "#{cmd} failed!!!"
                         settings.demoStarted = false
                     end
@@ -211,9 +230,12 @@ class MITSUdemoAPI < Sinatra::Base
             rescue SignalException => e
                 raise e
             rescue Exception => e
+                puts "got run exception"
                 puts "#{cmd} failed!!!"
                 settings.demoStarted = false
             end
+            sleep(1)
+            puts "ending"
             settings.demoStarted = false
         end
         settings.demoStarted = true

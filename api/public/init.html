@@ -24,6 +24,7 @@
             <div class="line1">
                 <h1>WEB GUI</h1>
                 <h5>Please, select demo to start:</h5>
+                <input id="rtspURI" type="text" name="rtspURI" placeholder="input RTSP URI, leave blank if RTP is desired"></input>
             </div>
 
             <div class="line2">
@@ -55,7 +56,7 @@
                     $.ajax({
                         type : 'POST',
                         url : "/app/demo/start",
-                        data : "demo=" + $('#startTS').val(),
+                        data : "demo=" + $('#startTS').val()+"&rtspURI="+$('#rtspURI').val(),
                         async : false,
                         success : function(msg) {
                             console.log(msg);
@@ -78,7 +79,7 @@
                     $.ajax({
                         type : 'POST',
                         url : "/app/demo/start",
-                        data : "demo=" + $('#startDASH').val(),
+                        data : "demo=" + $('#startDASH').val()+"&rtspURI="+$('#rtspURI').val(),
                         async : false,
                         success : function(msg) {
                             console.log(msg);
