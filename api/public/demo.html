@@ -23,6 +23,8 @@
         <div class="content">
             <div class="line1">
                 <h1>WEB GUI</h1>
+                <div id="incomingMsg">
+                </div>
             </div>
 
             <div class="line2">
@@ -63,9 +65,6 @@
             </div>
 
             <div class="footer">
-                <div id="incomingMsg">
-                </div>
-                <br><br><br><br>
                 <button id="stop">STOP DEMO</button><br><br><br><br>
                 <img src="/img/logo.png"></img>
             </div>
@@ -142,8 +141,8 @@
                 success : function(msg) {
                     console.log(msg);
                     state = msg;
-                    if(state == "MPEGTS"){
-                        //$('#incomingMsg').after('http://localhost:8554/plainrtp <br>http://localhost:8554/mpegts<br>');
+                    if(state == "MPEGTS" || state == "DASH"){
+                        $('#incomingMsg').after("<h3>"+state+"</h3>");
                     }
                 },
                 error : function(xhr, msg) {
