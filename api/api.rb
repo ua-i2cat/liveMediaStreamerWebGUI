@@ -33,6 +33,12 @@ class MITSUdemoAPI < Sinatra::Base
     # GENERAL CONFIG. #
     ###################
 
+    set :ip, '127.0.0.1'
+    set :port, 7777
+    set :demoStarted, false
+    set :demoThread, nil
+    set :demoPID, nil
+
     configure do
         set :show_exceptions, false
     end
@@ -68,7 +74,11 @@ class MITSUdemoAPI < Sinatra::Base
     end
 
     get '/app/demo' do
-        send_file 'public/demo.html'
+        if settings.demoStarted
+            send_file 'public/demo.html'
+        else
+            send_file 'public/init.html'
+        end
     end
 
     ############
@@ -77,23 +87,37 @@ class MITSUdemoAPI < Sinatra::Base
 
     post '/app/demo/bitrate' do
         content_type :json
-        config = {
+        config0 = {
             :bitrate => params[:bitrate].to_i
         }
+        config1 = {
+            :bitrate => params[:bitrate].to_i/2
+        }
+        config2 = {
+            :bitrate => params[:bitrate].to_i/4
+        }
         puts "received new bitrate config"
-        puts config
-        sendRequest(createEvent("configure", config, 1000))
+        puts config0
+        sendRequest(createEvent("configure", config2, 1002))
+        sendRequest(createEvent("configure", config1, 1001))
+        sendRequest(createEvent("configure", config0, 1000))
     end
 
     post '/app/demo/size' do
         content_type :json
-        config = {
+        config0 = {
             :width => params[:width].to_i,
             :height => params[:height].to_i
         }
+        config1 = {
+            :width => params[:width].to_i/2,
+            :height => params[:height].to_i/2
+        }
         puts "received new size config"
-        puts config
-        sendRequest(createEvent("configure", config, 2000))
+        puts config0
+        sendRequest(createEvent("configure", config1, 2002))
+        sendRequest(createEvent("configure", config0, 2001))
+        sendRequest(createEvent("configure", config0, 2000))
     end
 
     post '/app/demo/fps' do
@@ -103,13 +127,14 @@ class MITSUdemoAPI < Sinatra::Base
         }
         puts "received new fps config"
         puts config
+        sendRequest(createEvent("configure", config, 1002))
+        sendRequest(createEvent("configure", config, 1001))
         sendRequest(createEvent("configure", config, 1000))
     end
 
     ###############
     # MSG SOCKETS #
     ###############
-
     def createEvent(action, params, filterID)
         event = {
             :action => action,
@@ -123,7 +148,7 @@ class MITSUdemoAPI < Sinatra::Base
         :events => events
         }
         puts "sending msg socket"
-        s = TCPSocket.open('127.0.0.1', 7777)
+        s = TCPSocket.open(settings.ip, settings.port)
         s.print(request.to_json)
         puts request
         response = s.recv(4096*4) # TODO: max_len ?
