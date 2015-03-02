@@ -48,54 +48,70 @@
         <script src="/bs/assets/js/jquery.js"></script>
         <script type="text/javascript" src="/js/jquery.dropdown.js"></script>
         <script type="text/javascript">
-            $(document).ready(function() {
-                $( "#startTS" ).click(function () {
-                    state = false;
-                    console.log( $('#start').val());
-
-                    $.ajax({
-                        type : 'POST',
-                        url : "/app/demo/start",
-                        data : "demo=" + $('#startTS').val()+"&rtspURI="+$('#rtspURI').val(),
-                        async : false,
-                        success : function(msg) {
-                            console.log(msg);
-                            state = msg;
-                        },
-                        error : function(xhr, msg) {
-                            console.log('ERROR: ' + msg + '\n' + xhr.responseText);
-                        }
-                    });
-                    if(state == "MPEGTS"){
+        $(document).ready(function() {
+            $.ajax({
+                type : 'GET',
+                url : "/app/demo/scenario",
+                async : false,
+                success : function(msg) {
+                    console.log(msg);
+                    state = msg;
+                    if(state == "MPEGTS" || state == "DASH"){
                         location.reload();
-                    } else {
-                        $("ERROR: Please, reload and try again.").appendTo('#incomingMsg');
                     }
-                });
-                $( "#startDASH" ).click(function () {
-                    state = false;
-                    console.log( $('#start').val());
-
-                    $.ajax({
-                        type : 'POST',
-                        url : "/app/demo/start",
-                        data : "demo=" + $('#startDASH').val()+"&rtspURI="+$('#rtspURI').val(),
-                        async : false,
-                        success : function(msg) {
-                            console.log(msg);
-                            state = msg;
-                        },
-                        error : function(xhr, msg) {
-                            console.log('ERROR: ' + msg + '\n' + xhr.responseText);
-                        }
-                    });
-                    if(state == "DASH"){
-                        location.reload();
-                    } else {
-                        $("ERROR: Please, reload and try again.").appendTo('#incomingMsg');
-                    }
-                });
+                },
+                error : function(xhr, msg) {
+                    console.log('ERROR: ' + msg + '\n' + xhr.responseText);
+                }
             });
+
+            $( "#startTS" ).click(function () {
+                state = false;
+                console.log( $('#start').val());
+
+                $.ajax({
+                    type : 'POST',
+                    url : "/app/demo/start",
+                    data : "demo=" + $('#startTS').val()+"&rtspURI="+$('#rtspURI').val(),
+                    async : false,
+                    success : function(msg) {
+                        console.log(msg);
+                        state = msg;
+                    },
+                    error : function(xhr, msg) {
+                        console.log('ERROR: ' + msg + '\n' + xhr.responseText);
+                    }
+                });
+                if(state == "MPEGTS"){
+                    location.reload();
+                } else {
+                    $("ERROR: Please, reload and try again.").appendTo('#incomingMsg');
+                }
+            });
+            $( "#startDASH" ).click(function () {
+                state = false;
+                console.log( $('#start').val());
+
+                $.ajax({
+                    type : 'POST',
+                    url : "/app/demo/start",
+                    data : "demo=" + $('#startDASH').val()+"&rtspURI="+$('#rtspURI').val(),
+                    async : false,
+                    success : function(msg) {
+                        console.log(msg);
+                        state = msg;
+                    },
+                    error : function(xhr, msg) {
+                        console.log('ERROR: ' + msg + '\n' + xhr.responseText);
+                    }
+                });
+                if(state == "DASH"){
+                    location.reload();
+                } else {
+                    $("ERROR: Please, reload and try again.").appendTo('#incomingMsg');
+                }
+            });
+        });
         </script>
     </body>
 </html>

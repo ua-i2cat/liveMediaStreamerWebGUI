@@ -95,7 +95,7 @@ class MITSUdemoAPI < Sinatra::Base
 
     get '/app/demo/stop' do
         content_type :json
-        stop_demo.to_json
+        (settings.scenario = '' if stop_demo).to_json
     end
 
     get '/app/demo/scenario' do
