@@ -37,6 +37,7 @@ class MITSUdemoAPI < Sinatra::Base
     set :demoStarted, false
     set :demoThread, nil
     set :demoPID, nil
+    set :scenario, ''
 
     configure do
         set :show_exceptions, false
@@ -83,13 +84,23 @@ class MITSUdemoAPI < Sinatra::Base
     # API REST #
     ############
     post '/app/demo/start' do
-        run_demo(params[:demo])
-        redirect ('/app/demo')
+        content_type :json
+        if run_demo(params[:demo])
+            settings.scenario = params[:demo]
+            return settings.scenario.to_json
+        else
+            return settings.scenario.to_json
+        end
     end
 
     get '/app/demo/stop' do
-        stop_demo
-        redirect('/app/demo')
+        content_type :json
+        stop_demo.to_json
+    end
+
+    get '/app/demo/scenario' do
+        content_type :json
+        settings.scenario.to_json
     end
 
     post '/app/demo/bitrate' do
@@ -175,7 +186,7 @@ class MITSUdemoAPI < Sinatra::Base
         when "MPEGTS"
             cmd = "testtranscoder -v 5004"
         when "DASH"
-            cmd = "testtranscoder -dash"
+            cmd = "testtranscoder -v 5004 -dash"
         else
             puts "You gave me #{demo} -- I have no idea what to do with that."
             return

@@ -30,10 +30,10 @@
                     bitrate
                     <form>
                         <select id="cd-dropdown-bitrate" class="cd-select">
-                            <option value="4000000" selected="selected">4 Mbps</option>
-                            <option value="2000000">2 Mbps</option>
-                            <option value="1000000">1 Mbps</option>
-                            <option value="500000">500 kbps</option>
+                            <option value="4000" selected="selected">4 Mbps</option>
+                            <option value="2000">2 Mbps</option>
+                            <option value="1000">1 Mbps</option>
+                            <option value="500">500 kbps</option>
                         </select>
                     </form>
                 </div>
@@ -63,7 +63,10 @@
             </div>
 
             <div class="footer">
-                <button id="stop">STOP DEMO</button>
+                <div id="incomingMsg">
+                </div>
+                <br><br><br><br>
+                <button id="stop">STOP DEMO</button><br><br><br><br>
                 <img src="/img/logo.png"></img>
             </div>
         </div>
@@ -132,10 +135,25 @@
         });
 
         $(document).ready(function() {
+            $.ajax({
+                type : 'GET',
+                url : "/app/demo/scenario",
+                async : false,
+                success : function(msg) {
+                    console.log(msg);
+                    state = msg;
+                    if(state == "MPEGTS"){
+                        //$('#incomingMsg').after('http://localhost:8554/plainrtp <br>http://localhost:8554/mpegts<br>');
+                    }
+                },
+                error : function(xhr, msg) {
+                    console.log('ERROR: ' + msg + '\n' + xhr.responseText);
+                }
+            });
+
             $( "#stop" ).click(function () {
-
                 console.log( $('#start').val());
-
+                state = false;
                 $.ajax({
                     type : 'GET',
                     url : "/app/demo/stop",
@@ -148,7 +166,9 @@
                         console.log('ERROR: ' + msg + '\n' + xhr.responseText);
                     }
                 });
-
+                if(state == true){
+                    location.reload();
+                }
             });
         });
         </script>

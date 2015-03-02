@@ -28,15 +28,18 @@
 
             <div class="line2">
                 <div class="single-form">
-                    <button id="start" value="MPEGTS">MPEG-TS</button>
+                    <button id="startTS" value="MPEGTS">MPEG-TS</button>
                 </div>
 
                 <div class="single-form">
-                    <button id="start" value="DASH">DASH</button>
+                    <button id="startDASH" value="DASH">DASH</button>
                 </div>
             </div>
 
             <div class="footer">
+                <div id="incomingMsg">
+                </div>
+                <br><br><br><br>
                 <img src="/img/logo.png"></img>
             </div>
         </div>
@@ -45,14 +48,14 @@
         <script type="text/javascript" src="/js/jquery.dropdown.js"></script>
         <script type="text/javascript">
             $(document).ready(function() {
-                $( "#start" ).click(function () {
-
+                $( "#startTS" ).click(function () {
+                    state = false;
                     console.log( $('#start').val());
 
                     $.ajax({
                         type : 'POST',
                         url : "/app/demo/start",
-                        data : "demo=" + $('#start').val(),
+                        data : "demo=" + $('#startTS').val(),
                         async : false,
                         success : function(msg) {
                             console.log(msg);
@@ -62,7 +65,34 @@
                             console.log('ERROR: ' + msg + '\n' + xhr.responseText);
                         }
                     });
+                    if(state == "MPEGTS"){
+                        location.reload();
+                    } else {
+                        $("ERROR: Please, reload and try again.").appendTo('#incomingMsg');
+                    }
+                });
+                $( "#startDASH" ).click(function () {
+                    state = false;
+                    console.log( $('#start').val());
 
+                    $.ajax({
+                        type : 'POST',
+                        url : "/app/demo/start",
+                        data : "demo=" + $('#startDASH').val(),
+                        async : false,
+                        success : function(msg) {
+                            console.log(msg);
+                            state = msg;
+                        },
+                        error : function(xhr, msg) {
+                            console.log('ERROR: ' + msg + '\n' + xhr.responseText);
+                        }
+                    });
+                    if(state == "DASH"){
+                        location.reload();
+                    } else {
+                        $("ERROR: Please, reload and try again.").appendTo('#incomingMsg');
+                    }
                 });
             });
         </script>
