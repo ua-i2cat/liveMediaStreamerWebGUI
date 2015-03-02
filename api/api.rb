@@ -32,7 +32,6 @@ class MITSUdemoAPI < Sinatra::Base
     ###################
     # GENERAL CONFIG. #
     ###################
-
     set :ip, '127.0.0.1'
     set :port, 7777
     set :demoStarted, false
@@ -64,7 +63,6 @@ class MITSUdemoAPI < Sinatra::Base
     ##############
     # WEB ROUTES #
     ##############
-
     get '/' do
         redirect '/app'
     end
@@ -84,6 +82,15 @@ class MITSUdemoAPI < Sinatra::Base
     ############
     # API REST #
     ############
+    post '/app/demo/start' do
+        run_demo(params[:demo])
+        redirect ('/app/demo')
+    end
+
+    get '/app/demo/stop' do
+        stop_demo
+        redirect('/app/demo')
+    end
 
     post '/app/demo/bitrate' do
         content_type :json
@@ -157,6 +164,65 @@ class MITSUdemoAPI < Sinatra::Base
         puts
         s.close
         return response
+    end
+
+    #####################
+    # PROCES MANAGEMENT #
+    #####################
+    def run_demo(demo)
+        return if settings.demoStarted #force only one process
+        case demo
+        when "MPEGTS"
+            cmd = "testtranscoder -v 5004"
+        when "DASH"
+            cmd = "testtranscoder -dash"
+        else
+            puts "You gave me #{demo} -- I have no idea what to do with that."
+            return
+        end
+        #run thread demo (parsing std and output stdout and stderr)
+        settings.demoThread = Thread.new do # Calling a class method new
+            begin
+                Open3.popen2e(cmd) do |stdin, stdout_err, wait_thr|
+                    settings.demoPID = wait_thr[:pid]
+                    while line = stdout_err.gets
+                        puts "--> demo output: #{line}"
+                    end
+                    exit_status = wait_thr.value
+                    if exit_status.success?
+                        puts "#{cmd} running!"
+                        settings.demoStarted = true
+                    else
+                        puts "#{cmd} failed!!!"
+                        settings.demoStarted = false
+                    end
+                end
+            rescue SignalException => e
+                raise e
+            rescue Exception => e
+                puts "#{cmd} failed!!!"
+                settings.demoStarted = false
+            end
+            settings.demoStarted = false
+        end
+        settings.demoStarted = true
+    end
+
+    def stop_demo
+        begin
+            puts "Stopping demo"
+            Process.kill("TERM", settings.demoPID)
+            Thread.kill(settings.demoThread)
+        rescue SignalException => e
+            raise e
+        rescue Exception => e
+            puts "No succes on exiting demo...!"
+            settings.demoStarted = true
+            return false
+        end
+        puts "demo exit success"
+        settings.demoStarted = false
+        return true
     end
 
 end

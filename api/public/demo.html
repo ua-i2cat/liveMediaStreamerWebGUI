@@ -63,6 +63,7 @@
             </div>
 
             <div class="footer">
+                <button id="stop">STOP DEMO</button>
                 <img src="/img/logo.png"></img>
             </div>
         </div>
@@ -70,8 +71,6 @@
         <script src="/bs/assets/js/jquery.js"></script>
         <script type="text/javascript" src="/js/jquery.dropdown.js"></script>
         <script type="text/javascript">
-
-
         $( "#cd-dropdown-bitrate" ).change(function () {
 
             console.log( $('#cd-dropdown-bitrate').find(":selected").val());
@@ -130,6 +129,27 @@
                 }
             });
 
+        });
+
+        $(document).ready(function() {
+            $( "#stop" ).click(function () {
+
+                console.log( $('#start').val());
+
+                $.ajax({
+                    type : 'GET',
+                    url : "/app/demo/stop",
+                    async : false,
+                    success : function(msg) {
+                        console.log(msg);
+                        state = msg;
+                    },
+                    error : function(xhr, msg) {
+                        console.log('ERROR: ' + msg + '\n' + xhr.responseText);
+                    }
+                });
+
+            });
         });
         </script>
     </body>

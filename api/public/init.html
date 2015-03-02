@@ -23,19 +23,16 @@
         <div class="content">
             <div class="line1">
                 <h1>WEB GUI</h1>
+                <h5>Please, select demo to start:</h5>
             </div>
 
             <div class="line2">
                 <div class="single-form">
-                    <form>
-                        <button type="submit" form="startTS" value="startTS">MPEG-TS</button>
-                    </form>
+                    <button id="start" value="MPEGTS">MPEG-TS</button>
                 </div>
 
                 <div class="single-form">
-                    <form>
-                        <button type="submit" form="startDASH" value="startDASH">DASH</button>
-                    </form>
+                    <button id="start" value="DASH">DASH</button>
                 </div>
             </div>
 
@@ -46,5 +43,28 @@
 
         <script src="/bs/assets/js/jquery.js"></script>
         <script type="text/javascript" src="/js/jquery.dropdown.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $( "#start" ).click(function () {
+
+                    console.log( $('#start').val());
+
+                    $.ajax({
+                        type : 'POST',
+                        url : "/app/demo/start",
+                        data : "demo=" + $('#start').val(),
+                        async : false,
+                        success : function(msg) {
+                            console.log(msg);
+                            state = msg;
+                        },
+                        error : function(xhr, msg) {
+                            console.log('ERROR: ' + msg + '\n' + xhr.responseText);
+                        }
+                    });
+
+                });
+            });
+        </script>
     </body>
 </html>
