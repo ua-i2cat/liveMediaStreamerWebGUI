@@ -13,6 +13,7 @@ div.single-form {
     float:left;
 }
 div.single-img {
+    top: -300px;
     position:relative;
     float:left;
     width:50%;
