@@ -204,13 +204,14 @@ class MITSUdemoAPI < Sinatra::Base
         demo = params[:demo]
         puts params[:rtspURI]
         uri = params[:rtspURI]
+        shmID = Random.rand(1000 ... 2500)
 
         if !params[:rtspURI].empty?
             case demo
             when "MPEGTS"
-                cmd = "testtranscoder -r #{params[:rtspURI]}"
+                cmd = "testtranscoder -r #{params[:rtspURI]} -s #{shmID}"
             when "DASH"
-                cmd = "testtranscoder -dash -r #{params[:rtspURI]}"
+                cmd = "testtranscoder -dash -r #{params[:rtspURI]} -s #{shmID}"
             else
                 puts "You gave me #{demo} -- I have no idea what to do with that."
                 return
@@ -218,9 +219,9 @@ class MITSUdemoAPI < Sinatra::Base
         else
             case demo
             when "MPEGTS"
-                cmd = "testtranscoder -v 5004"
+                cmd = "testtranscoder -v 5004 -s #{shmID}"
             when "DASH"
-                cmd = "testtranscoder -v 5004 -dash"
+                cmd = "testtranscoder -v 5004 -dash -s #{shmID}"
             else
                 puts "You gave me #{demo} -- I have no idea what to do with that."
                 return
