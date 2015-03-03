@@ -119,15 +119,15 @@ class MITSUdemoAPI < Sinatra::Base
 
         if settings.scenario == "DASH"
             configDash0 = {
-                :bitrate => params[:bitrate].to_i,
+                :bitrate => params[:bitrate].to_i*1000,
                 :id => 3000
             }
             configDash1 = {
-                :bitrate => params[:bitrate].to_i/2,
+                :bitrate => params[:bitrate].to_i*1000/2,
                 :id => 3001
             }
             configDash2 = {
-                :bitrate => params[:bitrate].to_i/4,
+                :bitrate => params[:bitrate].to_i*1000/4,
                 :id => 3002
             }
             sendRequest(createEvent("setBitrate", configDash2, 4000))
