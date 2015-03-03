@@ -12,6 +12,11 @@ div.content{
 div.single-form {
     float:left;
 }
+div.single-img {
+    position:relative;
+    float:left;
+    width:50%;
+}
 div.line2 {
     padding:10px;
     padding-bottom:60px;   /* Height of the footer */

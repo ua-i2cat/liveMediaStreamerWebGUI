@@ -66,7 +66,12 @@
 
             <div class="footer">
                 <button id="stop">STOP DEMO</button><br><br><br><br>
-                <img src="/img/logo.png"></img>
+                <div class="single-img">
+                    <img  height="72px" src="/img/i2CAT_logo.png"></img>
+                </div>
+                <div class="single-img">
+                    <img  height="82px" src="/img/MITSU_logo.png"></img>
+                </div>
             </div>
         </div>
 
@@ -165,9 +170,7 @@
                         console.log('ERROR: ' + msg + '\n' + xhr.responseText);
                     }
                 });
-                if(state == ""){
-                    location.reload();
-                }
+                location.reload();
             });
         });
         </script>

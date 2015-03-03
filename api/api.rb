@@ -34,7 +34,7 @@ class MITSUdemoAPI < Sinatra::Base
     ###################
     set :ip, '127.0.0.1'
     set :port, 7777
-    set :demoStarted, false
+    @@demoStarted = false
     set :demoThread, nil
     set :demoPID, nil
     set :scenario, ''
@@ -73,7 +73,7 @@ class MITSUdemoAPI < Sinatra::Base
     end
 
     get '/app/demo' do
-        if settings.demoStarted
+        if @@demoStarted
             send_file 'public/demo.html'
         else
             send_file 'public/init.html'
@@ -181,7 +181,7 @@ class MITSUdemoAPI < Sinatra::Base
     # PROCES MANAGEMENT #
     #####################
     def run_demo(params)
-        return if settings.demoStarted #force only one process
+        return if @@demoStarted #force only one process
         demo = params[:demo]
         puts params[:rtspURI]
         uri = params[:rtspURI]
@@ -220,11 +220,11 @@ class MITSUdemoAPI < Sinatra::Base
                     exit_status = wait_thr.value
                     if exit_status.success?
                         puts "#{cmd} running!"
-                        settings.demoStarted = true
+                        @@demoStarted = true
                     else
                         puts "inside thread..."
                         puts "#{cmd} failed!!!"
-                        settings.demoStarted = false
+                        @@demoStarted = false
                     end
                 end
             rescue SignalException => e
@@ -232,13 +232,13 @@ class MITSUdemoAPI < Sinatra::Base
             rescue Exception => e
                 puts "got run exception"
                 puts "#{cmd} failed!!!"
-                settings.demoStarted = false
+                @@demoStarted = false
             end
             sleep(1)
             puts "ending"
-            settings.demoStarted = false
+            @@demoStarted = false
         end
-        settings.demoStarted = true
+        @@demoStarted = true
     end
 
     def stop_demo
@@ -250,11 +250,11 @@ class MITSUdemoAPI < Sinatra::Base
             raise e
         rescue Exception => e
             puts "No succes on exiting demo...!"
-            settings.demoStarted = true
+            @@demoStarted = true
             return false
         end
         puts "demo exit success"
-        settings.demoStarted = false
+        @@demoStarted = false
         return true
     end
 
