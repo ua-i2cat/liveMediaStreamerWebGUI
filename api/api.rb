@@ -116,6 +116,25 @@ class MITSUdemoAPI < Sinatra::Base
         }
         puts "received new bitrate config"
         puts config0
+
+        if settings.scenario == "DASH"
+            configDash0 = {
+                :bitrate => params[:bitrate].to_i,
+                :id => 3000
+            }
+            configDash1 = {
+                :bitrate => params[:bitrate].to_i/2,
+                :id => 3001
+            }
+            configDash2 = {
+                :bitrate => params[:bitrate].to_i/4,
+                :id => 3002
+            }
+            sendRequest(createEvent("setBitrate", configDash2, 4000))
+            sendRequest(createEvent("setBitrate", configDash1, 4000))
+            sendRequest(createEvent("setBitrate", configDash0, 4000))
+        end
+
         sendRequest(createEvent("configure", config2, 1002))
         sendRequest(createEvent("configure", config1, 1001))
         sendRequest(createEvent("configure", config0, 1000))
