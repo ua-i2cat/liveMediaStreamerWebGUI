@@ -61,6 +61,10 @@ class MITSUdemoAPI < Sinatra::Base
         end
     end
 
+    def html(view)
+        File.read(File.join('public', "#{view.to_s}.html"))
+    end
+
     ##############
     # WEB ROUTES #
     ##############
@@ -74,9 +78,9 @@ class MITSUdemoAPI < Sinatra::Base
 
     get '/app/demo' do
         if @@demoStarted
-            File.read 'public/demo.html'
+            html :demo
         else
-            File.read 'public/init.html'
+            html :init
         end
     end
 
