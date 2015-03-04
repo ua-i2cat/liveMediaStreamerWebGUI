@@ -32,15 +32,15 @@ class MITSUdemoAPI < Sinatra::Base
     ###################
     # GENERAL CONFIG. #
     ###################
-    set :ip, '127.0.0.1'
-    set :port, 7777
-    @@demoStarted = false
-    set :demoThread, nil
-    set :demoPID, nil
-    set :scenario, ''
-
     configure do
+        set :ip, '127.0.0.1'
+        set :port, 7777
+        @@demoStarted = false
+        set :demoThread, nil
+        set :demoPID, nil
+        set :scenario, ''
         set :show_exceptions, false
+        enable :static
     end
 
     not_found do
@@ -74,9 +74,9 @@ class MITSUdemoAPI < Sinatra::Base
 
     get '/app/demo' do
         if @@demoStarted
-            send_file 'public/demo.html'
+            File.read 'public/demo.html'
         else
-            send_file 'public/init.html'
+            File.read 'public/init.html'
         end
     end
 
