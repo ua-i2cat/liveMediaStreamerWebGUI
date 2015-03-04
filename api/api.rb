@@ -35,7 +35,7 @@ class MITSUdemoAPI < Sinatra::Base
     configure do
         set :ip, '127.0.0.1'
         set :port, 7777
-        @@demoStarted = false
+        set :demoStarted, false
         set :demoThread, nil
         set :demoPID, nil
         set :scenario, ''
@@ -77,7 +77,7 @@ class MITSUdemoAPI < Sinatra::Base
     end
 
     get '/app/demo' do
-        if @@demoStarted
+        if settings.demoStarted
             html :demo
         else
             html :init
@@ -204,7 +204,7 @@ class MITSUdemoAPI < Sinatra::Base
     # PROCES MANAGEMENT #
     #####################
     def run_demo(params)
-        return if @@demoStarted #force only one process
+        return if settings.demoStarted #force only one process
         demo = params[:demo]
         puts params[:rtspURI]
         uri = params[:rtspURI]
@@ -244,11 +244,11 @@ class MITSUdemoAPI < Sinatra::Base
                     exit_status = wait_thr.value
                     if exit_status.success?
                         puts "#{cmd} running!"
-                        @@demoStarted = true
+                        settings.demoStarted = true
                     else
                         puts "inside thread..."
                         puts "#{cmd} failed!!!"
-                        @@demoStarted = false
+                        settings.demoStarted = false
                     end
                 end
             rescue SignalException => e
@@ -256,13 +256,13 @@ class MITSUdemoAPI < Sinatra::Base
             rescue Exception => e
                 puts "got run exception"
                 puts "#{cmd} failed!!!"
-                @@demoStarted = false
+                settings.demoStarted = false
             end
             sleep(1)
             puts "ending"
-            @@demoStarted = false
+            settings.demoStarted = false
         end
-        @@demoStarted = true
+        settings.demoStarted = true
     end
 
     def stop_demo
@@ -274,11 +274,11 @@ class MITSUdemoAPI < Sinatra::Base
             raise e
         rescue Exception => e
             puts "No succes on exiting demo...!"
-            @@demoStarted = true
+            settings.demoStarted = true
             return false
         end
         puts "demo exit success"
-        @@demoStarted = false
+        settings.demoStarted = false
         return true
     end
 
