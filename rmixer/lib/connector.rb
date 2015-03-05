@@ -100,15 +100,6 @@ module RMixer
       createEvent("addSession", params, filterID)
     end
 
-#    def addRTSPOutputSession(filterID, readers)
-#      if readers.length > 0
-#        params = {
-#          :readers => readers
-#        }
-#        createEvent("addSession", params, filterID)
-#      end
-#    end
-
     def getState
       createEvent("getState")
     end
@@ -123,15 +114,6 @@ module RMixer
 
       createEvent("addRTSPConnection", params, txID)
     end
-
-#    def addOutputSessionTemporal(txID, readers, sessionName)
-#      params = {
-#        :readers => readers,
-#        :sessionName => sessionName
-#      }
-#
-#      createEvent("addSession", params, txID)
-#    end
 
     def createFilter(id, type, role, sharedFrames = true)
       params = {
