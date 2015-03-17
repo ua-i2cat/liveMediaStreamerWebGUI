@@ -1,0 +1,46 @@
+Installation guide
+==================
+
+## MongoDB ##
+sudo apt-get install mongodb
+
+## Nginx Web Server ##
+sudo apt-get install nginx
+
+## Ruby ##
+curl -sSL https://get.rvm.io | bash -s stable
+source ~/.rvm/scripts/rvm
+rvm install 2.0.0
+rvm use 2.0.0
+
+cd rmixer
+bundle install
+cd ../api
+bundle install
+
+
+Deployment guide
+================
+In order to start de LiveMediaStreamer core it is only necessary to execute the compiled binary. 
+This binary uses one argument: the TCP port to communicate with the Ruby middleware. It must be configured accordingly to this middleware, which is 7777 by default. 
+
+$ livemediastreamer <port>
+
+There are two ways for deploying the web GUI:
+
+-- Rackup (Recommended only for testing purposes. Default port is 9292)
+
+	$ cd livemediastreamerwebgui/api
+	$ rackup –p<port>
+
+-- Nginx + Unicorn (Recommended for non testing purposes. Default port is 80)
+
+	It is necessary to configure nginx configuration file correctly. An example can be found in api/nginx.conf.example
+
+	$ cd mixerwebgui/api
+	$ mkdir tmp
+	$ mkdir tmp/sockets
+	$ mkdir tmp/pids
+	$ mkdir log
+	$ sudo service nginx restart
+	$ unicorn –c unicorn.rb -D
