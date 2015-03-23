@@ -1,5 +1,5 @@
 #
-#  RUBYMIXER - A management ruby interface for MIXER 
+#  RUBYMIXER - A management ruby interface for MIXER
 #  Copyright (C) 2013  Fundació i2CAT, Internet i Innovació digital a Catalunya
 #
 #  This file is part of thin RUBYMIXER.
@@ -19,7 +19,7 @@
 #
 #  Authors:  Marc Palau <marc.palau@i2cat.net>,
 #            Ignacio Contreras <ignacio.contreras@i2cat.net>
-#   
+#
 
 require 'mongo'
 
@@ -29,7 +29,7 @@ module RMixer
 
   # ==== Overview
   # Class that manages MongoDB access
-  
+
   class MongoMngr
 
     # Database server host
@@ -92,11 +92,19 @@ module RMixer
       end
     end
 
-#   ===================
-#    Worker management
-#   ===================
+    def getWorkerByType(workerType, filterRole, filterType, fps = 24)
+      db = MongoClient.new(host, port).db(dbname)
+      workers = db.collection('workers')
 
-    def addWorker(id, workerType, filterType, fps = 24)
+      workers.find({:workerType => workerType,
+                    :filterRole => filterRole,
+                    :filterType => filterType,
+                    :fps => fps
+                    }
+                  )
+    end
+
+    def addWorker(id, workerType, filterRole, filterType, fps = 24)
       db = MongoClient.new(host, port).db(dbname)
       workers = db.collection('workers')
 
@@ -105,6 +113,7 @@ module RMixer
       w = {
         :id => id,
         :workerType => workerType,
+        :filterRole => filterRole,
         :filterType => filterType,
         :processors => processors,
         :fps => fps
@@ -113,44 +122,15 @@ module RMixer
       workers.insert(w)
     end
 
-    def getWorkerByType(workerType, filterType, fps = 24)
+    def addProcessorToWorker(workerId, filterId, filterRole, filterType)
       db = MongoClient.new(host, port).db(dbname)
       workers = db.collection('workers')
 
-      workers.find({:workerType => workerType, 
-                    :filterType => filterType,
-                    :fps => fps
-                    }
-                  )
-    end
+      w = workers.find({:id => workerId, :filterRole => filterRole, :filterType => filterType}).first
 
-    def addProcessorToWorker(workerId, filterId, filterType)
-      db = MongoClient.new(host, port).db(dbname)
-      workers = db.collection('workers')
-
-      w = workers.find({:id => workerId, :filterType => filterType}).first
-
-      w["processors"] << {"id" => filterId, "type" => filterType}
+      w["processors"] << {"id" => filterId, "filterRole" => filterRole, "type" => filterType}
 
       workers.update({:id => workerId}, w)
-    end
-
-#   ===================
-#    Filter management
-#   ===================
-
-    def getFilterByType(type)
-      db = MongoClient.new(host, port).db(dbname)
-      filters = db.collection('filters')
-
-      filter = filters.find(:type=>type).first
-    end
-
-    def getFilter(filterID)
-      db = MongoClient.new(host, port).db(dbname)
-      filters = db.collection('filters')
-
-      filter = filters.find(:id=>filterID).first
     end
 
     def updateFilter(filter)
@@ -159,10 +139,6 @@ module RMixer
 
       filters.update({:id => filter["id"]}, filter)
     end
-
-#   ==================
-#    Grids management
-#   ==================
 
     def loadGrids(gridsArray)
       db = MongoClient.new(host, port).db(dbname)
@@ -191,16 +167,12 @@ module RMixer
       db = MongoClient.new(host, port).db(dbname)
       grids = db.collection('grids')
 
-      grids.find.each { |g| 
+      grids.find.each { |g|
         g["positions"].each do |p|
           p["channel"] = 0
         end
       }
     end
-
-#   ==================
-#    Mixer management
-#   ==================
 
     def addVideoChannelPort(chID, chPort)
       db = MongoClient.new(host, port).db(dbname)
@@ -250,21 +222,6 @@ module RMixer
       end
     end
 
-    def updateChannelVolume(id, volume)
-      db = MongoClient.new(host, port).db(dbname)
-      filters = db.collection('filters')
-
-      mixer = filters.find(:type=>"audioMixer").first
-
-      if mixer["gains"]
-        mixer["gains"].each do |g|
-          if g["id"] == id 
-            g["volume"] = volume
-          end
-        end
-      end
-    end
-
     def getAudioMixerState
       db = MongoClient.new(host, port).db(dbname)
       filters = db.collection('filters')
@@ -298,7 +255,7 @@ module RMixer
       grid = grids.find(:id => grid).first
       mixer = filters.find(:id => mixerID).first
       transmitter = filters.find(:type=>"transmitter").first
-      
+
       mixerHash = {"grid" => grid}
       mixerHash["maxChannels"] = mixer["maxChannels"]
       if transmitter["sessions"]
@@ -315,17 +272,16 @@ module RMixer
       return mixerHash
     end
 
-#   ==================
-#    Paths management
-#   ==================
-
-    def getOutputPathFromFilter(mixerId, writer = 0)
+    def getOutputPathFromFilter(mixerID, writer = 0)
       db = MongoClient.new(host, port).db(dbname)
       paths = db.collection('paths')
 
       if writer == 0
-        path = paths.find(:originFilter=>mixerId).first
+        path = paths.find(:originFilter=>mixerID).first
       end
+
+      return path
+
     end
 
     def getPathByDestination(filter, reader = 1)
@@ -335,11 +291,40 @@ module RMixer
       path = paths.find({:destinationFilter=>filter,:destinationReader=>reader}).first
     end
 
+    def getFilterByType(type)
+      db = MongoClient.new(host, port).db(dbname)
+      filters = db.collection('filters')
+
+      filter = filters.find(:type=>type).first
+    end
+
+    def getFilter(filterID)
+      db = MongoClient.new(host, port).db(dbname)
+      filters = db.collection('filters')
+
+      filter = filters.find(:id=>filterID).first
+    end
+
     def getPath(pathID)
       db = MongoClient.new(host,port).db(dbname)
       paths = db.collection('paths')
 
       path = paths.find(:id=>pathID).first
+    end
+
+    def updateChannelVolume(id, volume)
+      db = MongoClient.new(host, port).db(dbname)
+      filters = db.collection('filters')
+
+      mixer = filters.find(:type=>"audioMixer").first
+
+      if mixer["gains"]
+        mixer["gains"].each do |g|
+          if g["id"] == id
+            g["volume"] = volume
+          end
+        end
+      end
     end
 
   end
