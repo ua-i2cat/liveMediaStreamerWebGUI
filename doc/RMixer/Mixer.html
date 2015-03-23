@@ -1,0 +1,3005 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: RMixer::Mixer
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../';
+  framesUrl = "../frames.html#!RMixer/Mixer.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (M)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../RMixer.html" title="RMixer (module)">RMixer</a></span></span>
+     &raquo; 
+    <span class="title">Mixer</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: RMixer::Mixer
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">RMixer::Mixer</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">rmixer/lib/rmixer.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Proxy class that delegates most of it functions to a RMixer::Connector
+instance while adding exception and convenience methods.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+
+
+
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#addOutputRTPtx-instance_method" title="#addOutputRTPtx (instance method)">- (String) <strong>addOutputRTPtx</strong>(output, txFormat, ip, port) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Adds an output RTP transmision.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#addRTPSession-instance_method" title="#addRTPSession (instance method)">- (Object) <strong>addRTPSession</strong>(medium, params, bandwidth, timeStampFrequency) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>NETWORK METHODS #.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#addRTSPSession-instance_method" title="#addRTSPSession (instance method)">- (Object) <strong>addRTSPSession</strong>(vChannel, aChannel, progName, uri) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#applyGrid-instance_method" title="#applyGrid (instance method)">- (Object) <strong>applyGrid</strong>(gridID, positions) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#applyPreviewGrid-instance_method" title="#applyPreviewGrid (instance method)">- (Object) <strong>applyPreviewGrid</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>VIDEO METHODS #.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#assignWorker-instance_method" title="#assignWorker (instance method)">- (Object) <strong>assignWorker</strong>(filterId, filterType, workerType, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#blend-instance_method" title="#blend (instance method)">- (Object) <strong>blend</strong>(channel) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#changeChannelVolume-instance_method" title="#changeChannelVolume (instance method)">- (Object) <strong>changeChannelVolume</strong>(channel, volume) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#changeMasterVolume-instance_method" title="#changeMasterVolume (instance method)">- (Object) <strong>changeMasterVolume</strong>(volume) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#check_livemediastreamer_installation-instance_method" title="#check_livemediastreamer_installation (instance method)">- (Object) <strong>check_livemediastreamer_installation</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#check_livemediastreamer_process-instance_method" title="#check_livemediastreamer_process (instance method)">- (Object) <strong>check_livemediastreamer_process</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#commute-instance_method" title="#commute (instance method)">- (Object) <strong>commute</strong>(channel) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#createAudioInputPath-instance_method" title="#createAudioInputPath (instance method)">- (Object) <strong>createAudioInputPath</strong>(port) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#createFilter-instance_method" title="#createFilter (instance method)">- (Object) <strong>createFilter</strong>(id, type, role = &#39;default&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#createPath-instance_method" title="#createPath (instance method)">- (Object) <strong>createPath</strong>(id, orgFilterId, dstFilterId, midFiltersIds, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#createVideoInputPaths-instance_method" title="#createVideoInputPaths (instance method)">- (Object) <strong>createVideoInputPaths</strong>(port) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#fade-instance_method" title="#fade (instance method)">- (Object) <strong>fade</strong>(channel, time) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#getAVMixerState-instance_method" title="#getAVMixerState (instance method)">- (Object) <strong>getAVMixerState</strong>(grid = &#39;2x2&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (Mixer) <strong>initialize</strong>(host, port) </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>A new instance of Mixer.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#isStarted-instance_method" title="#isStarted (instance method)">- (Object) <strong>isStarted</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#loadGrids-instance_method" title="#loadGrids (instance method)">- (Object) <strong>loadGrids</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#method_missing-instance_method" title="#method_missing (instance method)">- (Object) <strong>method_missing</strong>(name, *args, &amp;block) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#muteChannel-instance_method" title="#muteChannel (instance method)">- (Object) <strong>muteChannel</strong>(channel) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#muteMaster-instance_method" title="#muteMaster (instance method)">- (Object) <strong>muteMaster</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>AUDIO METHODS #.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#resetScenario-instance_method" title="#resetScenario (instance method)">- (Object) <strong>resetScenario</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rmRTPSession-instance_method" title="#rmRTPSession (instance method)">- (Object) <strong>rmRTPSession</strong>(mixerChannel, port, medium, codec, bandwidth, timeStampFrequency, channels = 0) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#run_livemediastreamer-instance_method" title="#run_livemediastreamer (instance method)">- (Object) <strong>run_livemediastreamer</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#soloChannel-instance_method" title="#soloChannel (instance method)">- (Object) <strong>soloChannel</strong>(channel) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#start-instance_method" title="#start (instance method)">- (Object) <strong>start</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#stop-instance_method" title="#stop (instance method)">- (Object) <strong>stop</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#stop_livemediastreamer-instance_method" title="#stop_livemediastreamer (instance method)">- (Object) <strong>stop_livemediastreamer</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#updateDataBase-instance_method" title="#updateDataBase (instance method)">- (Object) <strong>updateDataBase</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="RMixer::Mixer (class)">Mixer</a></span></tt>) <strong>initialize</strong>(host, port) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns a new instance of Mixer</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 42</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_host'>host</span><span class='comma'>,</span> <span class='id identifier rubyid_port'>port</span><span class='rparen'>)</span>
+  <span class='ivar'>@conn</span> <span class='op'>=</span> <span class='const'>RMixer</span><span class='op'>::</span><span class='const'>Connector</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_host'>host</span><span class='comma'>,</span> <span class='id identifier rubyid_port'>port</span><span class='rparen'>)</span>
+  <span class='ivar'>@db</span> <span class='op'>=</span> <span class='const'>RMixer</span><span class='op'>::</span><span class='const'>MongoMngr</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='ivar'>@started</span> <span class='op'>=</span> <span class='kw'>false</span>
+  <span class='ivar'>@lmsStarted</span> <span class='op'>=</span> <span class='kw'>false</span>
+  <span class='ivar'>@lmsThread</span> <span class='op'>=</span> <span class='kw'>nil</span>
+  <span class='ivar'>@lmspid</span> <span class='op'>=</span> <span class='kw'>nil</span>
+  <span class='ivar'>@randomSize</span> <span class='op'>=</span> <span class='int'>2</span><span class='op'>**</span><span class='int'>16</span>
+  <span class='ivar'>@videoFadeInterval</span> <span class='op'>=</span> <span class='int'>50</span> <span class='comment'>#ms
+</span><span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+<div id="method_missing_details" class="method_details_list">
+  <h2>Dynamic Method Handling</h2>
+  <p class="notice this">
+    This class handles dynamic methods through the <tt>method_missing</tt> method
+    
+  </p>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="method_missing-instance_method">
+  
+    - (<tt>Object</tt>) <strong>method_missing</strong>(name, *args, &amp;block) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+727
+728
+729
+730
+731
+732
+733
+734
+735
+736
+737
+738
+739
+740
+741
+742
+743
+744
+745
+746
+747
+748
+749</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 727</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='ivar'>@conn</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
+    <span class='kw'>begin</span>
+      <span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='ivar'>@conn</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>rescue</span> <span class='const'>JSON</span><span class='op'>::</span><span class='const'>ParserError</span><span class='comma'>,</span> <span class='const'>Errno</span><span class='op'>::</span><span class='const'>ECONNREFUSED</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>MixerError</span><span class='comma'>,</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span>
+    <span class='kw'>end</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>MixerError</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:error</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:error</span><span class='rbracket'>]</span>
+    <span class='comment'>#return nil if response.include?(:error) &amp;&amp; response.size == 1
+</span>    <span class='kw'>return</span> <span class='id identifier rubyid_response'>response</span>
+  <span class='kw'>elsif</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
+    <span class='kw'>begin</span>
+      <span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>rescue</span> <span class='const'>JSON</span><span class='op'>::</span><span class='const'>ParserError</span><span class='comma'>,</span> <span class='const'>Errno</span><span class='op'>::</span><span class='const'>ECONNREFUSED</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>MixerError</span><span class='comma'>,</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span>
+    <span class='kw'>end</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>MixerError</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:error</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:error</span><span class='rbracket'>]</span>
+    <span class='comment'>#return nil if response.include?(:error) &amp;&amp; response.size == 1
+</span>    <span class='kw'>return</span> <span class='id identifier rubyid_response'>response</span>
+  <span class='kw'>else</span>
+    <span class='kw'>super</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="addOutputRTPtx-instance_method">
+  
+    - (<tt>String</tt>) <strong>addOutputRTPtx</strong>(output, txFormat, ip, port) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Adds an output RTP transmision</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>output</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the output content, “air” or “preview”</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>txFormat</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the tx format type, “std”, “ultragrid” or “mpegts”</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ip</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the destination ip</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>port</span>
+      
+      
+        <span class='type'>(<tt>Numeric</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the destination port</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the object converted into the expected format.</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="MixerError.html" title="RMixer::MixerError (class)">MixerError</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 392</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_addOutputRTPtx'>addOutputRTPtx</span><span class='lparen'>(</span><span class='id identifier rubyid_output'>output</span><span class='comma'>,</span> <span class='id identifier rubyid_txFormat'>txFormat</span><span class='comma'>,</span> <span class='id identifier rubyid_ip'>ip</span><span class='comma'>,</span> <span class='id identifier rubyid_port'>port</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_txId'>txId</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_getFilterByType'>getFilterByType</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>transmitter</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+  <span class='kw'>case</span> <span class='id identifier rubyid_output'>output</span>
+  <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>air</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_videoPath'>videoPath</span> <span class='op'>=</span> <span class='id identifier rubyid_getOutputPathFromFilter'>getOutputPathFromFilter</span><span class='lparen'>(</span><span class='ivar'>@airMixerID</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_audioPath'>audioPath</span> <span class='op'>=</span> <span class='id identifier rubyid_getOutputPathFromFilter'>getOutputPathFromFilter</span><span class='lparen'>(</span><span class='ivar'>@audioMixer</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_videoId'>videoId</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_audioId'>audioId</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+
+    <span class='kw'>if</span> <span class='id identifier rubyid_txFormat'>txFormat</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mpegts</span><span class='tstring_end'>&quot;</span></span>
+      <span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span>
+                  <span class='ivar'>@conn</span><span class='period'>.</span><span class='id identifier rubyid_addOutputRTPtx'>addOutputRTPtx</span><span class='lparen'>(</span><span class='id identifier rubyid_txId'>txId</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='id identifier rubyid_videoPath'>videoPath</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>destinationReader</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span> 
+                                       <span class='id identifier rubyid_audioPath'>audioPath</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>destinationReader</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='comma'>,</span> 
+                                       <span class='id identifier rubyid_videoId'>videoId</span><span class='comma'>,</span> <span class='id identifier rubyid_ip'>ip</span><span class='comma'>,</span> <span class='id identifier rubyid_port'>port</span><span class='comma'>,</span> <span class='id identifier rubyid_txFormat'>txFormat</span><span class='rparen'>)</span>
+                  <span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span>
+                  <span class='ivar'>@conn</span><span class='period'>.</span><span class='id identifier rubyid_addOutputRTPtx'>addOutputRTPtx</span><span class='lparen'>(</span><span class='id identifier rubyid_txId'>txId</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='id identifier rubyid_videoPath'>videoPath</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>destinationReader</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='comma'>,</span> 
+                             <span class='id identifier rubyid_videoId'>videoId</span><span class='comma'>,</span> <span class='id identifier rubyid_ip'>ip</span><span class='comma'>,</span> <span class='id identifier rubyid_port'>port</span><span class='comma'>,</span> <span class='id identifier rubyid_txFormat'>txFormat</span><span class='rparen'>)</span>
+                  <span class='rparen'>)</span>
+
+      <span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span>
+                  <span class='ivar'>@conn</span><span class='period'>.</span><span class='id identifier rubyid_addOutputRTPtx'>addOutputRTPtx</span><span class='lparen'>(</span><span class='id identifier rubyid_txId'>txId</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='id identifier rubyid_audioPath'>audioPath</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>destinationReader</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='comma'>,</span> 
+                             <span class='id identifier rubyid_audioId'>audioId</span><span class='comma'>,</span> <span class='id identifier rubyid_ip'>ip</span><span class='comma'>,</span> <span class='id identifier rubyid_port'>port</span><span class='op'>+</span><span class='int'>2</span><span class='comma'>,</span> <span class='id identifier rubyid_txFormat'>txFormat</span><span class='rparen'>)</span>
+                 <span class='rparen'>)</span>
+    <span class='kw'>end</span>
+
+  <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>preview</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_videoPath'>videoPath</span> <span class='op'>=</span> <span class='id identifier rubyid_getOutputPathFromFilter'>getOutputPathFromFilter</span><span class='lparen'>(</span><span class='ivar'>@previewMixerID</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_videoId'>videoId</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+
+    <span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span>
+                <span class='ivar'>@conn</span><span class='period'>.</span><span class='id identifier rubyid_addOutputRTPtx'>addOutputRTPtx</span><span class='lparen'>(</span><span class='id identifier rubyid_txId'>txId</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='id identifier rubyid_videoPath'>videoPath</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>destinationReader</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='comma'>,</span> 
+                             <span class='id identifier rubyid_videoId'>videoId</span><span class='comma'>,</span> <span class='id identifier rubyid_ip'>ip</span><span class='comma'>,</span> <span class='id identifier rubyid_port'>port</span><span class='comma'>,</span> <span class='id identifier rubyid_txFormat'>txFormat</span><span class='rparen'>)</span>
+               <span class='rparen'>)</span>
+
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>MixerError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Error, wrong RTP output option</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>MixerError</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:error</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:error</span><span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="addRTPSession-instance_method">
+  
+    - (<tt>Object</tt>) <strong>addRTPSession</strong>(medium, params, bandwidth, timeStampFrequency) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>NETWORK METHODS #</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 296</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_addRTPSession'>addRTPSession</span><span class='lparen'>(</span><span class='id identifier rubyid_medium'>medium</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_bandwidth'>bandwidth</span><span class='comma'>,</span> <span class='id identifier rubyid_timeStampFrequency'>timeStampFrequency</span><span class='rparen'>)</span>
+  <span class='comment'>#TODO CHECK IF PORT ALREADY OCCUPYED!!!
+</span>  <span class='id identifier rubyid_port'>port</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:port</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+  <span class='kw'>return</span> <span class='kw'>if</span> <span class='id identifier rubyid_port'>port</span> <span class='op'>==</span> <span class='int'>0</span>
+
+  <span class='id identifier rubyid_codec'>codec</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:codec</span><span class='rbracket'>]</span>
+
+  <span class='kw'>case</span> <span class='id identifier rubyid_medium'>medium</span>
+  <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>audio</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_mixerChannel'>mixerChannel</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:channel</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+    <span class='id identifier rubyid_channels'>channels</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:channels</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+    <span class='id identifier rubyid_timeStampFrequency'>timeStampFrequency</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:sampleRate</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> 
+    
+    <span class='id identifier rubyid_receiver'>receiver</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_getFilterByType'>getFilterByType</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>receiver</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+
+    <span class='comment'>#TODO manage response
+</span>    <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='ivar'>@conn</span><span class='period'>.</span><span class='id identifier rubyid_addRTPSession'>addRTPSession</span><span class='lparen'>(</span><span class='id identifier rubyid_receiver'>receiver</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_port'>port</span><span class='comma'>,</span> <span class='id identifier rubyid_medium'>medium</span><span class='comma'>,</span> <span class='id identifier rubyid_codec'>codec</span><span class='comma'>,</span> <span class='id identifier rubyid_bandwidth'>bandwidth</span><span class='comma'>,</span> <span class='id identifier rubyid_timeStampFrequency'>timeStampFrequency</span><span class='comma'>,</span> <span class='id identifier rubyid_channels'>channels</span><span class='rparen'>)</span><span class='rparen'>)</span>
+
+    <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_addAudioChannelPort'>addAudioChannelPort</span><span class='lparen'>(</span><span class='id identifier rubyid_mixerChannel'>mixerChannel</span><span class='comma'>,</span> <span class='id identifier rubyid_port'>port</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_createAudioInputPath'>createAudioInputPath</span><span class='lparen'>(</span><span class='id identifier rubyid_port'>port</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_updateDataBase'>updateDataBase</span>
+  <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>video</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_mixerChannel'>mixerChannel</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:channel</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+  
+    <span class='id identifier rubyid_receiver'>receiver</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_getFilterByType'>getFilterByType</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>receiver</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+
+    <span class='comment'>#TODO manage response
+</span>    <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='ivar'>@conn</span><span class='period'>.</span><span class='id identifier rubyid_addRTPSession'>addRTPSession</span><span class='lparen'>(</span><span class='id identifier rubyid_receiver'>receiver</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_port'>port</span><span class='comma'>,</span> <span class='id identifier rubyid_medium'>medium</span><span class='comma'>,</span> <span class='id identifier rubyid_codec'>codec</span><span class='comma'>,</span> <span class='id identifier rubyid_bandwidth'>bandwidth</span><span class='comma'>,</span> <span class='id identifier rubyid_timeStampFrequency'>timeStampFrequency</span><span class='comma'>,</span> <span class='id identifier rubyid_channels'>channels</span><span class='rparen'>)</span><span class='rparen'>)</span>
+
+    <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_addVideoChannelPort'>addVideoChannelPort</span><span class='lparen'>(</span><span class='id identifier rubyid_mixerChannel'>mixerChannel</span><span class='comma'>,</span> <span class='id identifier rubyid_port'>port</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_createVideoInputPaths'>createVideoInputPaths</span><span class='lparen'>(</span><span class='id identifier rubyid_port'>port</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_applyPreviewGrid'>applyPreviewGrid</span>
+
+    <span class='id identifier rubyid_updateDataBase'>updateDataBase</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Error, no medium type...</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="addRTSPSession-instance_method">
+  
+    - (<tt>Object</tt>) <strong>addRTSPSession</strong>(vChannel, aChannel, progName, uri) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 335</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_addRTSPSession'>addRTSPSession</span><span class='lparen'>(</span><span class='id identifier rubyid_vChannel'>vChannel</span><span class='comma'>,</span> <span class='id identifier rubyid_aChannel'>aChannel</span><span class='comma'>,</span> <span class='id identifier rubyid_progName'>progName</span><span class='comma'>,</span> <span class='id identifier rubyid_uri'>uri</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_receiver'>receiver</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_getFilterByType'>getFilterByType</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>receiver</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_id'>id</span> <span class='op'>=</span> <span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_last'>last</span>
+  <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='ivar'>@conn</span><span class='period'>.</span><span class='id identifier rubyid_addRTSPSession'>addRTSPSession</span><span class='lparen'>(</span><span class='id identifier rubyid_receiver'>receiver</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_progName'>progName</span><span class='comma'>,</span> <span class='id identifier rubyid_uri'>uri</span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_session'>session</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+
+  <span class='kw'>begin</span>
+    <span class='id identifier rubyid_sleep'>sleep</span><span class='lparen'>(</span><span class='float'>1.0</span><span class='op'>/</span><span class='float'>5.0</span><span class='rparen'>)</span> <span class='comment'>#sleep 200 ms
+</span>    <span class='id identifier rubyid_stateHash'>stateHash</span> <span class='op'>=</span> <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='id identifier rubyid_getState'>getState</span><span class='rparen'>)</span>
+
+    <span class='id identifier rubyid_stateHash'>stateHash</span><span class='lbracket'>[</span><span class='symbol'>:filters</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_f'>f</span><span class='op'>|</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_f'>f</span><span class='lbracket'>[</span><span class='symbol'>:type</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>receiver</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>and</span> <span class='id identifier rubyid_f'>f</span><span class='lbracket'>[</span><span class='symbol'>:sessions</span><span class='rbracket'>]</span>
+        <span class='id identifier rubyid_f'>f</span><span class='lbracket'>[</span><span class='symbol'>:sessions</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+          <span class='kw'>if</span> <span class='id identifier rubyid_s'>s</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='id identifier rubyid_id'>id</span> <span class='kw'>and</span> <span class='id identifier rubyid_s'>s</span><span class='lbracket'>[</span><span class='symbol'>:subsessions</span><span class='rbracket'>]</span>
+            <span class='id identifier rubyid_session'>session</span> <span class='op'>=</span> <span class='id identifier rubyid_s'>s</span>
+          <span class='kw'>end</span>
+        <span class='kw'>end</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span> <span class='kw'>while</span> <span class='id identifier rubyid_session'>session</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+
+  <span class='id identifier rubyid_vChCount'>vChCount</span> <span class='op'>=</span> <span class='int'>0</span>
+  <span class='id identifier rubyid_aChCount'>aChCount</span> <span class='op'>=</span> <span class='int'>0</span>
+  <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:subsessions</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_s'>s</span><span class='lbracket'>[</span><span class='symbol'>:medium</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>audio</span><span class='tstring_end'>&#39;</span></span>
+      <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_addAudioChannelPort'>addAudioChannelPort</span><span class='lparen'>(</span><span class='id identifier rubyid_aChannel'>aChannel</span> <span class='op'>+</span> <span class='id identifier rubyid_aChCount'>aChCount</span><span class='comma'>,</span> <span class='id identifier rubyid_s'>s</span><span class='lbracket'>[</span><span class='symbol'>:port</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_createAudioInputPath'>createAudioInputPath</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='lbracket'>[</span><span class='symbol'>:port</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_aChCount'>aChCount</span> <span class='op'>+=</span> <span class='int'>1</span>
+    <span class='kw'>elsif</span> <span class='id identifier rubyid_s'>s</span><span class='lbracket'>[</span><span class='symbol'>:medium</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>video</span><span class='tstring_end'>&#39;</span></span>
+      <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_addVideoChannelPort'>addVideoChannelPort</span><span class='lparen'>(</span><span class='id identifier rubyid_vChannel'>vChannel</span> <span class='op'>+</span> <span class='id identifier rubyid_vChCount'>vChCount</span><span class='comma'>,</span> <span class='id identifier rubyid_s'>s</span><span class='lbracket'>[</span><span class='symbol'>:port</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_createVideoInputPaths'>createVideoInputPaths</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='lbracket'>[</span><span class='symbol'>:port</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_applyPreviewGrid'>applyPreviewGrid</span>
+      <span class='id identifier rubyid_vChCount'>vChCount</span> <span class='op'>+=</span> <span class='int'>1</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="applyGrid-instance_method">
+  
+    - (<tt>Object</tt>) <strong>applyGrid</strong>(gridID, positions) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+508
+509
+510
+511
+512
+513
+514
+515</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 508</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_applyGrid'>applyGrid</span><span class='lparen'>(</span><span class='id identifier rubyid_gridID'>gridID</span><span class='comma'>,</span> <span class='id identifier rubyid_positions'>positions</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_grid'>grid</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_getGrid'>getGrid</span><span class='lparen'>(</span><span class='id identifier rubyid_gridID'>gridID</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_updateGrid'>updateGrid</span><span class='lparen'>(</span><span class='id identifier rubyid_grid'>grid</span><span class='comma'>,</span> <span class='id identifier rubyid_positions'>positions</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_doApplyGrid'>doApplyGrid</span><span class='lparen'>(</span><span class='id identifier rubyid_grid'>grid</span><span class='rparen'>)</span>
+
+  <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_updateGrid'>updateGrid</span><span class='lparen'>(</span><span class='id identifier rubyid_grid'>grid</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="applyPreviewGrid-instance_method">
+  
+    - (<tt>Object</tt>) <strong>applyPreviewGrid</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>VIDEO METHODS #</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 472</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_applyPreviewGrid'>applyPreviewGrid</span>
+  <span class='id identifier rubyid_grid'>grid</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_getGrid'>getGrid</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>preview</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_mixer'>mixer</span> <span class='op'>=</span> <span class='id identifier rubyid_getFilter'>getFilter</span><span class='lparen'>(</span><span class='ivar'>@previewMixerID</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_grid'>grid</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>positions</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_p'>p</span><span class='op'>|</span>
+    <span class='id identifier rubyid_mixerChannelId'>mixerChannelId</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_getVideoChannelPort'>getVideoChannelPort</span><span class='lparen'>(</span><span class='id identifier rubyid_p'>p</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rparen'>)</span>
+
+    <span class='kw'>unless</span> <span class='id identifier rubyid_mixerChannelId'>mixerChannelId</span> <span class='op'>==</span> <span class='int'>0</span>
+      <span class='id identifier rubyid_path'>path</span> <span class='op'>=</span> <span class='id identifier rubyid_getPathByDestination'>getPathByDestination</span><span class='lparen'>(</span><span class='ivar'>@previewMixerID</span><span class='comma'>,</span> <span class='id identifier rubyid_mixerChannelId'>mixerChannelId</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_resamplerID'>resamplerID</span> <span class='op'>=</span> <span class='id identifier rubyid_path'>path</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>filters</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
+
+      <span class='id identifier rubyid_width'>width</span> <span class='op'>=</span> <span class='id identifier rubyid_p'>p</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>width</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='op'>*</span><span class='id identifier rubyid_mixer'>mixer</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>width</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+      <span class='id identifier rubyid_height'>height</span> <span class='op'>=</span> <span class='id identifier rubyid_p'>p</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>height</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='op'>*</span><span class='id identifier rubyid_mixer'>mixer</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>height</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+
+      <span class='id identifier rubyid_appendEvent'>appendEvent</span><span class='lparen'>(</span><span class='id identifier rubyid_configureResampler'>configureResampler</span><span class='lparen'>(</span><span class='id identifier rubyid_resamplerID'>resamplerID</span><span class='comma'>,</span> <span class='id identifier rubyid_width'>width</span><span class='comma'>,</span> <span class='id identifier rubyid_height'>height</span><span class='rparen'>)</span><span class='rparen'>)</span>
+
+      <span class='id identifier rubyid_appendEvent'>appendEvent</span><span class='lparen'>(</span>
+      <span class='id identifier rubyid_setPositionSize'>setPositionSize</span><span class='lparen'>(</span>
+      <span class='ivar'>@previewMixerID</span><span class='comma'>,</span>
+      <span class='id identifier rubyid_mixerChannelId'>mixerChannelId</span><span class='comma'>,</span>
+      <span class='id identifier rubyid_p'>p</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>width</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+      <span class='id identifier rubyid_p'>p</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>height</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+      <span class='id identifier rubyid_p'>p</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>x</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+      <span class='id identifier rubyid_p'>p</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>y</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+      <span class='id identifier rubyid_p'>p</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>layer</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+      <span class='id identifier rubyid_p'>p</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>opacity</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+      <span class='rparen'>)</span>
+      <span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_sendRequest'>sendRequest</span>
+
+  <span class='id identifier rubyid_updateDataBase'>updateDataBase</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="assignWorker-instance_method">
+  
+    - (<tt>Object</tt>) <strong>assignWorker</strong>(filterId, filterType, workerType, options = {}) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 273</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_assignWorker'>assignWorker</span><span class='lparen'>(</span><span class='id identifier rubyid_filterId'>filterId</span><span class='comma'>,</span> <span class='id identifier rubyid_filterType'>filterType</span><span class='comma'>,</span> <span class='id identifier rubyid_workerType'>workerType</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_processorLimit'>processorLimit</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:processorLimit</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:processorLimit</span><span class='rbracket'>]</span> <span class='op'>:</span> <span class='int'>0</span>
+
+  <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_getWorkerByType'>getWorkerByType</span><span class='lparen'>(</span><span class='id identifier rubyid_workerType'>workerType</span><span class='comma'>,</span> <span class='id identifier rubyid_filterType'>filterType</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_w'>w</span><span class='op'>|</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_processorLimit'>processorLimit</span> <span class='op'>==</span> <span class='int'>0</span> <span class='op'>||</span> <span class='id identifier rubyid_processorLimit'>processorLimit</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_w'>w</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>processors</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+      <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='id identifier rubyid_addFiltersToWorker'>addFiltersToWorker</span><span class='lparen'>(</span><span class='id identifier rubyid_w'>w</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='id identifier rubyid_filterId'>filterId</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='rparen'>)</span>
+      <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_addProcessorToWorker'>addProcessorToWorker</span><span class='lparen'>(</span><span class='id identifier rubyid_w'>w</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_filterId'>filterId</span><span class='comma'>,</span> <span class='id identifier rubyid_filterType'>filterType</span><span class='rparen'>)</span>
+      <span class='kw'>return</span> <span class='id identifier rubyid_w'>w</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_newWorker'>newWorker</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='id identifier rubyid_addWorker'>addWorker</span><span class='lparen'>(</span><span class='id identifier rubyid_newWorker'>newWorker</span><span class='comma'>,</span> <span class='id identifier rubyid_workerType'>workerType</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_addWorker'>addWorker</span><span class='lparen'>(</span><span class='id identifier rubyid_newWorker'>newWorker</span><span class='comma'>,</span> <span class='id identifier rubyid_workerType'>workerType</span><span class='comma'>,</span> <span class='id identifier rubyid_filterType'>filterType</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='id identifier rubyid_addFiltersToWorker'>addFiltersToWorker</span><span class='lparen'>(</span><span class='id identifier rubyid_newWorker'>newWorker</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='id identifier rubyid_filterId'>filterId</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_addProcessorToWorker'>addProcessorToWorker</span><span class='lparen'>(</span><span class='id identifier rubyid_newWorker'>newWorker</span><span class='comma'>,</span> <span class='id identifier rubyid_filterId'>filterId</span><span class='comma'>,</span> <span class='id identifier rubyid_filterType'>filterType</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_newWorker'>newWorker</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="blend-instance_method">
+  
+    - (<tt>Object</tt>) <strong>blend</strong>(channel) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+653
+654
+655
+656
+657
+658
+659
+660
+661
+662
+663
+664
+665
+666
+667
+668
+669
+670
+671
+672
+673
+674
+675
+676
+677
+678
+679
+680
+681
+682
+683
+684
+685</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 653</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_blend'>blend</span><span class='lparen'>(</span><span class='id identifier rubyid_channel'>channel</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_mixer'>mixer</span> <span class='op'>=</span> <span class='id identifier rubyid_getFilter'>getFilter</span><span class='lparen'>(</span><span class='ivar'>@airMixerID</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_port'>port</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_getVideoChannelPort'>getVideoChannelPort</span><span class='lparen'>(</span><span class='id identifier rubyid_channel'>channel</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_path'>path</span> <span class='op'>=</span> <span class='id identifier rubyid_getPathByDestination'>getPathByDestination</span><span class='lparen'>(</span><span class='ivar'>@airMixerID</span><span class='comma'>,</span> <span class='id identifier rubyid_port'>port</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_resamplerID'>resamplerID</span> <span class='op'>=</span> <span class='id identifier rubyid_path'>path</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>filters</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
+
+  <span class='id identifier rubyid_mixer'>mixer</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>channels</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_ch'>ch</span><span class='op'>|</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>layer</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>&gt;=</span> <span class='id identifier rubyid_mixer'>mixer</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>maxChannels</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>-</span> <span class='int'>1</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>layer</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_mixer'>mixer</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>maxChannels</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>-</span> <span class='int'>2</span>
+      <span class='id identifier rubyid_appendEvent'>appendEvent</span><span class='lparen'>(</span><span class='id identifier rubyid_updateVideoChannel'>updateVideoChannel</span><span class='lparen'>(</span><span class='ivar'>@airMixerID</span><span class='comma'>,</span> <span class='id identifier rubyid_ch'>ch</span><span class='rparen'>)</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_appendEvent'>appendEvent</span><span class='lparen'>(</span><span class='id identifier rubyid_configureResampler'>configureResampler</span><span class='lparen'>(</span><span class='id identifier rubyid_resamplerID'>resamplerID</span><span class='comma'>,</span> <span class='id identifier rubyid_mixer'>mixer</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>width</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_mixer'>mixer</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>height</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_mixer'>mixer</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>channels</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_ch'>ch</span><span class='op'>|</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='id identifier rubyid_port'>port</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>width</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='int'>1</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>height</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='int'>1</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>x</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='int'>0</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>y</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='int'>0</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>layer</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_mixer'>mixer</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>maxChannels</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>-</span> <span class='int'>1</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>opacity</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='float'>0.5</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>enabled</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>true</span>
+
+      <span class='id identifier rubyid_appendEvent'>appendEvent</span><span class='lparen'>(</span><span class='id identifier rubyid_updateVideoChannel'>updateVideoChannel</span><span class='lparen'>(</span><span class='ivar'>@airMixerID</span><span class='comma'>,</span> <span class='id identifier rubyid_ch'>ch</span><span class='rparen'>)</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_sendRequest'>sendRequest</span>
+  <span class='id identifier rubyid_updateFilter'>updateFilter</span><span class='lparen'>(</span><span class='id identifier rubyid_mixer'>mixer</span><span class='rparen'>)</span>
+
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="changeChannelVolume-instance_method">
+  
+    - (<tt>Object</tt>) <strong>changeChannelVolume</strong>(channel, volume) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+461
+462
+463
+464
+465
+466</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 461</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_changeChannelVolume'>changeChannelVolume</span><span class='lparen'>(</span><span class='id identifier rubyid_channel'>channel</span><span class='comma'>,</span> <span class='id identifier rubyid_volume'>volume</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_port'>port</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_getAudioChannelPort'>getAudioChannelPort</span><span class='lparen'>(</span><span class='id identifier rubyid_channel'>channel</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_port'>port</span>
+    <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='ivar'>@conn</span><span class='period'>.</span><span class='id identifier rubyid_changeChannelVolume'>changeChannelVolume</span><span class='lparen'>(</span><span class='ivar'>@audioMixer</span><span class='comma'>,</span> <span class='id identifier rubyid_port'>port</span><span class='comma'>,</span> <span class='id identifier rubyid_volume'>volume</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="changeMasterVolume-instance_method">
+  
+    - (<tt>Object</tt>) <strong>changeMasterVolume</strong>(volume) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+457
+458
+459</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 457</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_changeMasterVolume'>changeMasterVolume</span><span class='lparen'>(</span><span class='id identifier rubyid_volume'>volume</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='ivar'>@conn</span><span class='period'>.</span><span class='id identifier rubyid_changeMasterVolume'>changeMasterVolume</span><span class='lparen'>(</span><span class='ivar'>@audioMixer</span><span class='comma'>,</span> <span class='id identifier rubyid_volume'>volume</span><span class='rparen'>)</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="check_livemediastreamer_installation-instance_method">
+  
+    - (<tt>Object</tt>) <strong>check_livemediastreamer_installation</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+53
+54
+55
+56
+57
+58
+59</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 53</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_check_livemediastreamer_installation'>check_livemediastreamer_installation</span>
+  <span class='kw'>if</span> <span class='op'>!</span><span class='lparen'>(</span><span class='id identifier rubyid_find_executable'>find_executable</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>livemediastreamer</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+    <span class='kw'>return</span> <span class='kw'>true</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='kw'>false</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="check_livemediastreamer_process-instance_method">
+  
+    - (<tt>Object</tt>) <strong>check_livemediastreamer_process</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+61
+62
+63
+64
+65
+66
+67</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 61</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_check_livemediastreamer_process'>check_livemediastreamer_process</span>
+  <span class='kw'>if</span> <span class='backtick'>`</span><span class='tstring_content'>ps aux | grep livemediastreamer | grep --invert grep</span><span class='tstring_end'>`</span></span> <span class='op'>!=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_found'>found</span> <span class='op'>=</span> <span class='backtick'>`</span><span class='tstring_content'>ps aux | grep livemediastreamer | grep --invert grep</span><span class='tstring_end'>`</span></span>
+    <span class='id identifier rubyid_tmpPid'>tmpPid</span> <span class='op'>=</span> <span class='backtick'>`</span><span class='tstring_content'>ps aux | grep livemediastreamer | grep --invert grep |awk &#39;{ print $2 }&#39;</span><span class='tstring_end'>`</span></span>
+    <span class='const'>Process</span><span class='period'>.</span><span class='id identifier rubyid_kill'>kill</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>TERM</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_tmpPid'>tmpPid</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="commute-instance_method">
+  
+    - (<tt>Object</tt>) <strong>commute</strong>(channel) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 571</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_commute'>commute</span><span class='lparen'>(</span><span class='id identifier rubyid_channel'>channel</span><span class='rparen'>)</span>
+  <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_resetGrids'>resetGrids</span>
+  <span class='id identifier rubyid_mixer'>mixer</span> <span class='op'>=</span> <span class='id identifier rubyid_getFilter'>getFilter</span><span class='lparen'>(</span><span class='ivar'>@airMixerID</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_port'>port</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_getVideoChannelPort'>getVideoChannelPort</span><span class='lparen'>(</span><span class='id identifier rubyid_channel'>channel</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_mixer'>mixer</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>channels</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_ch'>ch</span><span class='op'>|</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='id identifier rubyid_port'>port</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>width</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='int'>1</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>height</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='int'>1</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>x</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='int'>0</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>y</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='int'>0</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>layer</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='int'>1</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>opacity</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='float'>1.0</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>enabled</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>true</span>
+
+      <span class='id identifier rubyid_appendEvent'>appendEvent</span><span class='lparen'>(</span><span class='id identifier rubyid_updateVideoChannel'>updateVideoChannel</span><span class='lparen'>(</span><span class='ivar'>@airMixerID</span><span class='comma'>,</span> <span class='id identifier rubyid_ch'>ch</span><span class='rparen'>)</span><span class='rparen'>)</span>
+
+      <span class='id identifier rubyid_path'>path</span> <span class='op'>=</span> <span class='id identifier rubyid_getPathByDestination'>getPathByDestination</span><span class='lparen'>(</span><span class='ivar'>@airMixerID</span><span class='comma'>,</span> <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_resamplerID'>resamplerID</span> <span class='op'>=</span> <span class='id identifier rubyid_path'>path</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>filters</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
+
+      <span class='id identifier rubyid_width'>width</span> <span class='op'>=</span> <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>width</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='op'>*</span><span class='id identifier rubyid_mixer'>mixer</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>width</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+      <span class='id identifier rubyid_height'>height</span> <span class='op'>=</span> <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>height</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='op'>*</span><span class='id identifier rubyid_mixer'>mixer</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>height</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+
+      <span class='id identifier rubyid_appendEvent'>appendEvent</span><span class='lparen'>(</span><span class='id identifier rubyid_configureResampler'>configureResampler</span><span class='lparen'>(</span><span class='id identifier rubyid_resamplerID'>resamplerID</span><span class='comma'>,</span> <span class='id identifier rubyid_width'>width</span><span class='comma'>,</span> <span class='id identifier rubyid_height'>height</span><span class='rparen'>)</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>enabled</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>false</span>
+
+      <span class='id identifier rubyid_appendEvent'>appendEvent</span><span class='lparen'>(</span><span class='id identifier rubyid_updateVideoChannel'>updateVideoChannel</span><span class='lparen'>(</span><span class='ivar'>@airMixerID</span><span class='comma'>,</span> <span class='id identifier rubyid_ch'>ch</span><span class='rparen'>)</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_sendRequest'>sendRequest</span>
+
+  <span class='id identifier rubyid_updateFilter'>updateFilter</span><span class='lparen'>(</span><span class='id identifier rubyid_mixer'>mixer</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="createAudioInputPath-instance_method">
+  
+    - (<tt>Object</tt>) <strong>createAudioInputPath</strong>(port) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+713
+714
+715
+716
+717
+718
+719
+720
+721
+722
+723</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 713</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_createAudioInputPath'>createAudioInputPath</span><span class='lparen'>(</span><span class='id identifier rubyid_port'>port</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_receiver'>receiver</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_getFilterByType'>getFilterByType</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>receiver</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_decoderID'>decoderID</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_decoderPathID'>decoderPathID</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_createFilter'>createFilter</span><span class='lparen'>(</span><span class='id identifier rubyid_decoderID'>decoderID</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>audioDecoder</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_createPath'>createPath</span><span class='lparen'>(</span><span class='id identifier rubyid_decoderPathID'>decoderPathID</span><span class='comma'>,</span> <span class='id identifier rubyid_receiver'>receiver</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='ivar'>@audioMixer</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='id identifier rubyid_decoderID'>decoderID</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:orgWriterId</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_port'>port</span><span class='comma'>,</span> <span class='symbol'>:dstReaderId</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_port'>port</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_assignWorker'>assignWorker</span><span class='lparen'>(</span><span class='id identifier rubyid_decoderID'>decoderID</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>audioDecoder</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>master</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="createFilter-instance_method">
+  
+    - (<tt>Object</tt>) <strong>createFilter</strong>(id, type, role = &#39;default&#39;) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 247</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_createFilter'>createFilter</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_role'>role</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>default</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='kw'>begin</span>
+    <span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='ivar'>@conn</span><span class='period'>.</span><span class='id identifier rubyid_createFilter'>createFilter</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>MixerError</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:error</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:error</span><span class='rbracket'>]</span>
+  <span class='kw'>rescue</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_response'>response</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_updateDataBase'>updateDataBase</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="createPath-instance_method">
+  
+    - (<tt>Object</tt>) <strong>createPath</strong>(id, orgFilterId, dstFilterId, midFiltersIds, options = {}) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 258</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_createPath'>createPath</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='id identifier rubyid_orgFilterId'>orgFilterId</span><span class='comma'>,</span> <span class='id identifier rubyid_dstFilterId'>dstFilterId</span><span class='comma'>,</span> <span class='id identifier rubyid_midFiltersIds'>midFiltersIds</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_orgWriterId'>orgWriterId</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:orgWriterId</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>!=</span> <span class='int'>0</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:orgWriterId</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>:</span> <span class='op'>-</span><span class='int'>1</span>
+  <span class='id identifier rubyid_dstReaderId'>dstReaderId</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:dstReaderId</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>!=</span> <span class='int'>0</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:dstReaderId</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>:</span> <span class='op'>-</span><span class='int'>1</span>
+  <span class='id identifier rubyid_sharedQueue'>sharedQueue</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:sharedQueue</span><span class='rbracket'>]</span> <span class='op'>!=</span> <span class='kw'>nil</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:sharedQueue</span><span class='rbracket'>]</span> <span class='op'>:</span> <span class='kw'>false</span>
+
+  <span class='kw'>begin</span>
+    <span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='ivar'>@conn</span><span class='period'>.</span><span class='id identifier rubyid_createPath'>createPath</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='id identifier rubyid_orgFilterId'>orgFilterId</span><span class='comma'>,</span> <span class='id identifier rubyid_dstFilterId'>dstFilterId</span><span class='comma'>,</span> <span class='id identifier rubyid_orgWriterId'>orgWriterId</span><span class='comma'>,</span> <span class='id identifier rubyid_dstReaderId'>dstReaderId</span><span class='comma'>,</span> <span class='id identifier rubyid_midFiltersIds'>midFiltersIds</span><span class='comma'>,</span> <span class='id identifier rubyid_sharedQueue'>sharedQueue</span><span class='rparen'>)</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>MixerError</span><span class='comma'>,</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:error</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id identifier rubyid_response'>response</span><span class='lbracket'>[</span><span class='symbol'>:error</span><span class='rbracket'>]</span>
+  <span class='kw'>rescue</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_response'>response</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_updateDataBase'>updateDataBase</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="createVideoInputPaths-instance_method">
+  
+    - (<tt>Object</tt>) <strong>createVideoInputPaths</strong>(port) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+687
+688
+689
+690
+691
+692
+693
+694
+695
+696
+697
+698
+699
+700
+701
+702
+703
+704
+705
+706
+707
+708
+709
+710
+711</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 687</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_createVideoInputPaths'>createVideoInputPaths</span><span class='lparen'>(</span><span class='id identifier rubyid_port'>port</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_receiver'>receiver</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_getFilterByType'>getFilterByType</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>receiver</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_decoderID'>decoderID</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_airResamplerID'>airResamplerID</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_previewResamplerID'>previewResamplerID</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_decoderPathID'>decoderPathID</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_airPathID'>airPathID</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_previewPathID'>previewPathID</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_createFilter'>createFilter</span><span class='lparen'>(</span><span class='id identifier rubyid_decoderID'>decoderID</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>videoDecoder</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_createFilter'>createFilter</span><span class='lparen'>(</span><span class='id identifier rubyid_airResamplerID'>airResamplerID</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>videoResampler</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_createFilter'>createFilter</span><span class='lparen'>(</span><span class='id identifier rubyid_previewResamplerID'>previewResamplerID</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>videoResampler</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_createPath'>createPath</span><span class='lparen'>(</span><span class='id identifier rubyid_decoderPathID'>decoderPathID</span><span class='comma'>,</span> <span class='id identifier rubyid_receiver'>receiver</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_decoderID'>decoderID</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:orgWriterId</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_port'>port</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_createPath'>createPath</span><span class='lparen'>(</span><span class='id identifier rubyid_airPathID'>airPathID</span><span class='comma'>,</span> <span class='id identifier rubyid_decoderID'>decoderID</span><span class='comma'>,</span> <span class='ivar'>@airMixerID</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='id identifier rubyid_airResamplerID'>airResamplerID</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:dstReaderId</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_port'>port</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_createPath'>createPath</span><span class='lparen'>(</span><span class='id identifier rubyid_previewPathID'>previewPathID</span><span class='comma'>,</span> <span class='id identifier rubyid_decoderID'>decoderID</span><span class='comma'>,</span> <span class='ivar'>@previewMixerID</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='id identifier rubyid_previewResamplerID'>previewResamplerID</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:dstReaderId</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_port'>port</span><span class='comma'>,</span> <span class='symbol'>:sharedQueue</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_assignWorker'>assignWorker</span><span class='lparen'>(</span><span class='id identifier rubyid_decoderID'>decoderID</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>videoDecoder</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>master</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:processorLimit</span> <span class='op'>=&gt;</span> <span class='int'>2</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_master'>master</span> <span class='op'>=</span> <span class='id identifier rubyid_assignWorker'>assignWorker</span><span class='lparen'>(</span><span class='id identifier rubyid_airResamplerID'>airResamplerID</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>videoResampler</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>master</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:processorLimit</span> <span class='op'>=&gt;</span> <span class='int'>2</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_slave'>slave</span> <span class='op'>=</span> <span class='id identifier rubyid_assignWorker'>assignWorker</span><span class='lparen'>(</span><span class='id identifier rubyid_previewResamplerID'>previewResamplerID</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>videoResampler</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>slave</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:processorLimit</span> <span class='op'>=&gt;</span> <span class='int'>2</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='id identifier rubyid_addSlavesToWorker'>addSlavesToWorker</span><span class='lparen'>(</span><span class='id identifier rubyid_master'>master</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='id identifier rubyid_slave'>slave</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='id identifier rubyid_configureResampler'>configureResampler</span><span class='lparen'>(</span><span class='id identifier rubyid_previewResamplerID'>previewResamplerID</span><span class='comma'>,</span> <span class='int'>0</span><span class='comma'>,</span> <span class='int'>0</span><span class='rparen'>)</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="fade-instance_method">
+  
+    - (<tt>Object</tt>) <strong>fade</strong>(channel, time) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+607
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624
+625
+626
+627
+628
+629
+630
+631
+632
+633
+634
+635
+636
+637
+638
+639
+640
+641
+642
+643
+644
+645
+646
+647
+648
+649
+650
+651</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 607</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_fade'>fade</span><span class='lparen'>(</span><span class='id identifier rubyid_channel'>channel</span><span class='comma'>,</span> <span class='id identifier rubyid_time'>time</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_mixer'>mixer</span> <span class='op'>=</span> <span class='id identifier rubyid_getFilter'>getFilter</span><span class='lparen'>(</span><span class='ivar'>@airMixerID</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_port'>port</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_getVideoChannelPort'>getVideoChannelPort</span><span class='lparen'>(</span><span class='id identifier rubyid_channel'>channel</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_path'>path</span> <span class='op'>=</span> <span class='id identifier rubyid_getPathByDestination'>getPathByDestination</span><span class='lparen'>(</span><span class='ivar'>@airMixerID</span><span class='comma'>,</span> <span class='id identifier rubyid_port'>port</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_resamplerID'>resamplerID</span> <span class='op'>=</span> <span class='id identifier rubyid_path'>path</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>filters</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
+
+  <span class='id identifier rubyid_intervals'>intervals</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_time'>time</span><span class='op'>/</span><span class='ivar'>@videoFadeInterval</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_deltaOp'>deltaOp</span> <span class='op'>=</span> <span class='float'>1.0</span><span class='op'>/</span><span class='id identifier rubyid_intervals'>intervals</span>
+
+  <span class='id identifier rubyid_mixer'>mixer</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>channels</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_ch'>ch</span><span class='op'>|</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>layer</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>&gt;=</span> <span class='id identifier rubyid_mixer'>mixer</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>maxChannels</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>-</span> <span class='int'>1</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>layer</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_mixer'>mixer</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>maxChannels</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>-</span> <span class='int'>2</span>
+      <span class='id identifier rubyid_appendEvent'>appendEvent</span><span class='lparen'>(</span><span class='id identifier rubyid_updateVideoChannel'>updateVideoChannel</span><span class='lparen'>(</span><span class='ivar'>@airMixerID</span><span class='comma'>,</span> <span class='id identifier rubyid_ch'>ch</span><span class='rparen'>)</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_appendEvent'>appendEvent</span><span class='lparen'>(</span><span class='id identifier rubyid_configureResampler'>configureResampler</span><span class='lparen'>(</span><span class='id identifier rubyid_resamplerID'>resamplerID</span><span class='comma'>,</span> <span class='id identifier rubyid_mixer'>mixer</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>width</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_mixer'>mixer</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>height</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_intervals'>intervals</span><span class='period'>.</span><span class='id identifier rubyid_times'>times</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_d'>d</span><span class='op'>|</span>
+    <span class='id identifier rubyid_appendEvent'>appendEvent</span><span class='lparen'>(</span><span class='id identifier rubyid_setPositionSize'>setPositionSize</span><span class='lparen'>(</span><span class='ivar'>@airMixerID</span><span class='comma'>,</span> <span class='id identifier rubyid_port'>port</span><span class='comma'>,</span> <span class='int'>1</span><span class='comma'>,</span> <span class='int'>1</span><span class='comma'>,</span> <span class='int'>0</span><span class='comma'>,</span> <span class='int'>0</span><span class='comma'>,</span> <span class='id identifier rubyid_mixer'>mixer</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>maxChannels</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>-</span> <span class='int'>1</span><span class='comma'>,</span> <span class='id identifier rubyid_d'>d</span><span class='op'>*</span><span class='id identifier rubyid_deltaOp'>deltaOp</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_d'>d</span><span class='op'>*</span><span class='ivar'>@videoFadeInterval</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_mixer'>mixer</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>channels</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_ch'>ch</span><span class='op'>|</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='id identifier rubyid_port'>port</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>width</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='int'>1</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>height</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='int'>1</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>x</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='int'>0</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>y</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='int'>0</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>layer</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_mixer'>mixer</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>maxChannels</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>-</span> <span class='int'>1</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>opacity</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='float'>1.0</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>enabled</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>true</span>
+
+      <span class='id identifier rubyid_appendEvent'>appendEvent</span><span class='lparen'>(</span><span class='id identifier rubyid_updateVideoChannel'>updateVideoChannel</span><span class='lparen'>(</span><span class='ivar'>@airMixerID</span><span class='comma'>,</span> <span class='id identifier rubyid_ch'>ch</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_intervals'>intervals</span><span class='op'>*</span><span class='ivar'>@videoFadeInterval</span><span class='rparen'>)</span>
+
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_ch'>ch</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>enabled</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>false</span>
+
+      <span class='id identifier rubyid_appendEvent'>appendEvent</span><span class='lparen'>(</span><span class='id identifier rubyid_updateVideoChannel'>updateVideoChannel</span><span class='lparen'>(</span><span class='ivar'>@airMixerID</span><span class='comma'>,</span> <span class='id identifier rubyid_ch'>ch</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_intervals'>intervals</span><span class='op'>*</span><span class='ivar'>@videoFadeInterval</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_sendRequest'>sendRequest</span>
+  <span class='id identifier rubyid_updateFilter'>updateFilter</span><span class='lparen'>(</span><span class='id identifier rubyid_mixer'>mixer</span><span class='rparen'>)</span>
+
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="getAVMixerState-instance_method">
+  
+    - (<tt>Object</tt>) <strong>getAVMixerState</strong>(grid = &#39;2x2&#39;) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+239
+240
+241
+242
+243
+244
+245</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 239</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_getAVMixerState'>getAVMixerState</span><span class='lparen'>(</span><span class='id identifier rubyid_grid'>grid</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>2x2</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_updateDataBase'>updateDataBase</span>
+  <span class='id identifier rubyid_avmstate'>avmstate</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='id identifier rubyid_avmstate'>avmstate</span><span class='lbracket'>[</span><span class='symbol'>:video</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_getVideoMixerState'>getVideoMixerState</span><span class='lparen'>(</span><span class='ivar'>@airMixerID</span><span class='comma'>,</span> <span class='id identifier rubyid_grid'>grid</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_avmstate'>avmstate</span><span class='lbracket'>[</span><span class='symbol'>:audio</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_getAudioMixerState'>getAudioMixerState</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_avmstate'>avmstate</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="isStarted-instance_method">
+  
+    - (<tt>Object</tt>) <strong>isStarted</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+141
+142
+143</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 141</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_isStarted'>isStarted</span>
+  <span class='ivar'>@started</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="loadGrids-instance_method">
+  
+    - (<tt>Object</tt>) <strong>loadGrids</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 129</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_loadGrids'>loadGrids</span>
+  <span class='id identifier rubyid_grids'>grids</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+
+  <span class='id identifier rubyid_grids'>grids</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_calcRegularGrid'>calcRegularGrid</span><span class='lparen'>(</span><span class='int'>2</span><span class='comma'>,</span> <span class='int'>2</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_grids'>grids</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_calcRegularGrid'>calcRegularGrid</span><span class='lparen'>(</span><span class='int'>3</span><span class='comma'>,</span> <span class='int'>3</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_grids'>grids</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_calcRegularGrid'>calcRegularGrid</span><span class='lparen'>(</span><span class='int'>4</span><span class='comma'>,</span> <span class='int'>4</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_grids'>grids</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_calcPictureInPicture'>calcPictureInPicture</span>
+  <span class='id identifier rubyid_grids'>grids</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_calcPreviewGrid'>calcPreviewGrid</span>
+
+  <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_loadGrids'>loadGrids</span><span class='lparen'>(</span><span class='id identifier rubyid_grids'>grids</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="muteChannel-instance_method">
+  
+    - (<tt>Object</tt>) <strong>muteChannel</strong>(channel) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+443
+444
+445
+446
+447
+448</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 443</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_muteChannel'>muteChannel</span><span class='lparen'>(</span><span class='id identifier rubyid_channel'>channel</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_port'>port</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_getAudioChannelPort'>getAudioChannelPort</span><span class='lparen'>(</span><span class='id identifier rubyid_channel'>channel</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_port'>port</span>
+    <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='ivar'>@conn</span><span class='period'>.</span><span class='id identifier rubyid_muteChannel'>muteChannel</span><span class='lparen'>(</span><span class='ivar'>@audioMixer</span><span class='comma'>,</span> <span class='id identifier rubyid_port'>port</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='kw'>end</span> 
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="muteMaster-instance_method">
+  
+    - (<tt>Object</tt>) <strong>muteMaster</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>AUDIO METHODS #</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+439
+440
+441</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 439</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_muteMaster'>muteMaster</span>
+  <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='ivar'>@conn</span><span class='period'>.</span><span class='id identifier rubyid_muteMaster'>muteMaster</span><span class='lparen'>(</span><span class='ivar'>@audioMixer</span><span class='rparen'>)</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="resetScenario-instance_method">
+  
+    - (<tt>Object</tt>) <strong>resetScenario</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+145
+146
+147
+148</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 145</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_resetScenario'>resetScenario</span>
+  <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
+  <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='id identifier rubyid_reset'>reset</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="rmRTPSession-instance_method">
+  
+    - (<tt>Object</tt>) <strong>rmRTPSession</strong>(mixerChannel, port, medium, codec, bandwidth, timeStampFrequency, channels = 0) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 373</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_rmRTPSession'>rmRTPSession</span><span class='lparen'>(</span><span class='id identifier rubyid_mixerChannel'>mixerChannel</span><span class='comma'>,</span> <span class='id identifier rubyid_port'>port</span><span class='comma'>,</span> <span class='id identifier rubyid_medium'>medium</span><span class='comma'>,</span> <span class='id identifier rubyid_codec'>codec</span><span class='comma'>,</span> <span class='id identifier rubyid_bandwidth'>bandwidth</span><span class='comma'>,</span> <span class='id identifier rubyid_timeStampFrequency'>timeStampFrequency</span><span class='comma'>,</span> <span class='id identifier rubyid_channels'>channels</span> <span class='op'>=</span> <span class='int'>0</span><span class='rparen'>)</span>
+       <span class='comment'># receiver = @db.getFilterByType(&#39;receiver&#39;)
+</span>       <span class='comment'># @conn.addRTPSession(receiver[&quot;id&quot;], port, medium, codec, bandwidth, timeStampFrequency, channels)
+</span>  
+       <span class='comment'># if medium == &#39;audio&#39;
+</span>       <span class='comment'># elsif medium == &#39;video&#39;
+</span>       <span class='comment'>#   @db.addVideoChannelPort(mixerChannel, port)
+</span>       <span class='comment'>#   createInputPaths(port)
+</span>       <span class='comment'>#   applyPreviewGrid
+</span>       <span class='comment'># end
+</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="run_livemediastreamer-instance_method">
+  
+    - (<tt>Object</tt>) <strong>run_livemediastreamer</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 69</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_run_livemediastreamer'>run_livemediastreamer</span>
+  <span class='kw'>return</span> <span class='kw'>if</span> <span class='id identifier rubyid_isStarted'>isStarted</span> <span class='comment'>#force only one process
+</span>  <span class='id identifier rubyid_cmd'>cmd</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>livemediastreamer 7777</span><span class='tstring_end'>&quot;</span></span>
+  <span class='comment'>#run thread livemediastreamer (parsing std and output stdout and stderr)
+</span>  <span class='ivar'>@lmsThread</span> <span class='op'>=</span> <span class='const'>Thread</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>do</span>   <span class='comment'># Calling a class method new
+</span>    <span class='kw'>begin</span>
+      <span class='const'>Open3</span><span class='period'>.</span><span class='id identifier rubyid_popen2e'>popen2e</span><span class='lparen'>(</span><span class='id identifier rubyid_cmd'>cmd</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_stdin'>stdin</span><span class='comma'>,</span> <span class='id identifier rubyid_stdout_err'>stdout_err</span><span class='comma'>,</span> <span class='id identifier rubyid_wait_thr'>wait_thr</span><span class='op'>|</span>
+        <span class='ivar'>@lmspid</span> <span class='op'>=</span> <span class='id identifier rubyid_wait_thr'>wait_thr</span><span class='lbracket'>[</span><span class='symbol'>:pid</span><span class='rbracket'>]</span>
+
+        <span class='kw'>while</span> <span class='id identifier rubyid_line'>line</span> <span class='op'>=</span> <span class='id identifier rubyid_stdout_err'>stdout_err</span><span class='period'>.</span><span class='id identifier rubyid_gets'>gets</span>
+          <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--&gt; livemediastreamer output:  </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_line'>line</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+        <span class='kw'>end</span>
+
+        <span class='id identifier rubyid_exit_status'>exit_status</span> <span class='op'>=</span> <span class='id identifier rubyid_wait_thr'>wait_thr</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span>
+        <span class='kw'>if</span> <span class='id identifier rubyid_exit_status'>exit_status</span><span class='period'>.</span><span class='id identifier rubyid_success?'>success?</span>
+          <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_cmd'>cmd</span><span class='embexpr_end'>}</span><span class='tstring_content'> running!</span><span class='tstring_end'>&quot;</span></span>
+          <span class='ivar'>@lmsStarted</span> <span class='op'>=</span> <span class='kw'>true</span>
+        <span class='kw'>else</span>
+          <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_cmd'>cmd</span><span class='embexpr_end'>}</span><span class='tstring_content'> failed!!!</span><span class='tstring_end'>&quot;</span></span>
+          <span class='ivar'>@lmsStarted</span> <span class='op'>=</span> <span class='kw'>false</span>
+        <span class='kw'>end</span>
+      <span class='kw'>end</span>
+    <span class='kw'>rescue</span> <span class='const'>SignalException</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='id identifier rubyid_e'>e</span>
+    <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+      <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_cmd'>cmd</span><span class='embexpr_end'>}</span><span class='tstring_content'> failed!!!</span><span class='tstring_end'>&quot;</span></span>
+      <span class='ivar'>@lmsStarted</span> <span class='op'>=</span> <span class='kw'>false</span>
+    <span class='kw'>end</span>
+    <span class='ivar'>@lmsStarted</span> <span class='op'>=</span> <span class='kw'>false</span>
+  <span class='kw'>end</span>
+  <span class='ivar'>@lmsStarted</span> <span class='op'>=</span> <span class='kw'>true</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="soloChannel-instance_method">
+  
+    - (<tt>Object</tt>) <strong>soloChannel</strong>(channel) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+450
+451
+452
+453
+454
+455</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 450</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_soloChannel'>soloChannel</span><span class='lparen'>(</span><span class='id identifier rubyid_channel'>channel</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_port'>port</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_getAudioChannelPort'>getAudioChannelPort</span><span class='lparen'>(</span><span class='id identifier rubyid_channel'>channel</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_port'>port</span>
+    <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='ivar'>@conn</span><span class='period'>.</span><span class='id identifier rubyid_soloChannel'>soloChannel</span><span class='lparen'>(</span><span class='ivar'>@audioMixer</span><span class='comma'>,</span> <span class='id identifier rubyid_port'>port</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='kw'>end</span> 
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="start-instance_method">
+  
+    - (<tt>Object</tt>) <strong>start</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 150</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_start'>start</span>
+  <span class='kw'>if</span> <span class='ivar'>@lmsStarted</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>MixerError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Live Media Streamer is still running</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_check_livemediastreamer_installation'>check_livemediastreamer_installation</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>MixerError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Live Media Streamer is not installed</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_check_livemediastreamer_process'>check_livemediastreamer_process</span>
+  <span class='id identifier rubyid_run_livemediastreamer'>run_livemediastreamer</span>
+  <span class='id identifier rubyid_sleep'>sleep</span><span class='lparen'>(</span><span class='int'>1</span><span class='rparen'>)</span>
+
+  <span class='kw'>if</span> <span class='op'>!</span><span class='ivar'>@lmsStarted</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>MixerError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Error starting Live Media Streamer</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_resetScenario'>resetScenario</span>
+  <span class='id identifier rubyid_loadGrids'>loadGrids</span>
+
+  <span class='ivar'>@airMixerID</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+  <span class='ivar'>@previewMixerID</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_airEncoderID'>airEncoderID</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_previewEncoderID'>previewEncoderID</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_airResamplerEncoderID'>airResamplerEncoderID</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_previewResamplerEncoderID'>previewResamplerEncoderID</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_airOutputPathID'>airOutputPathID</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_previewOutputPathID'>previewOutputPathID</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_createFilter'>createFilter</span><span class='lparen'>(</span><span class='ivar'>@airMixerID</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>videoMixer</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_createFilter'>createFilter</span><span class='lparen'>(</span><span class='ivar'>@previewMixerID</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>videoMixer</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_createFilter'>createFilter</span><span class='lparen'>(</span><span class='id identifier rubyid_airEncoderID'>airEncoderID</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>videoEncoder</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_createFilter'>createFilter</span><span class='lparen'>(</span><span class='id identifier rubyid_previewEncoderID'>previewEncoderID</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>videoEncoder</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_createFilter'>createFilter</span><span class='lparen'>(</span><span class='id identifier rubyid_airResamplerEncoderID'>airResamplerEncoderID</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>videoResampler</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_createFilter'>createFilter</span><span class='lparen'>(</span><span class='id identifier rubyid_previewResamplerEncoderID'>previewResamplerEncoderID</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>videoResampler</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_txId'>txId</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_getFilterByType'>getFilterByType</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>transmitter</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+
+  <span class='id identifier rubyid_createPath'>createPath</span><span class='lparen'>(</span><span class='id identifier rubyid_airOutputPathID'>airOutputPathID</span><span class='comma'>,</span> <span class='ivar'>@airMixerID</span><span class='comma'>,</span> <span class='id identifier rubyid_txId'>txId</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='id identifier rubyid_airResamplerEncoderID'>airResamplerEncoderID</span><span class='comma'>,</span> <span class='id identifier rubyid_airEncoderID'>airEncoderID</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_createPath'>createPath</span><span class='lparen'>(</span><span class='id identifier rubyid_previewOutputPathID'>previewOutputPathID</span><span class='comma'>,</span> <span class='ivar'>@previewMixerID</span><span class='comma'>,</span> <span class='id identifier rubyid_txId'>txId</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='id identifier rubyid_previewResamplerEncoderID'>previewResamplerEncoderID</span><span class='comma'>,</span> <span class='id identifier rubyid_previewEncoderID'>previewEncoderID</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_airPath'>airPath</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_getPath'>getPath</span><span class='lparen'>(</span><span class='id identifier rubyid_airOutputPathID'>airOutputPathID</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_previewPath'>previewPath</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_getPath'>getPath</span><span class='lparen'>(</span><span class='id identifier rubyid_previewOutputPathID'>previewOutputPathID</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_airEncoderFPS'>airEncoderFPS</span> <span class='op'>=</span> <span class='int'>25</span>
+
+  <span class='id identifier rubyid_assignWorker'>assignWorker</span><span class='lparen'>(</span><span class='ivar'>@airMixerID</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>videoMixer</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>master</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_assignWorker'>assignWorker</span><span class='lparen'>(</span><span class='ivar'>@previewMixerID</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>videoMixer</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>master</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_assignWorker'>assignWorker</span><span class='lparen'>(</span><span class='id identifier rubyid_airEncoderID'>airEncoderID</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>videoEncoder</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>master</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_assignWorker'>assignWorker</span><span class='lparen'>(</span><span class='id identifier rubyid_previewEncoderID'>previewEncoderID</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>videoEncoder</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>master</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_assignWorker'>assignWorker</span><span class='lparen'>(</span><span class='id identifier rubyid_airResamplerEncoderID'>airResamplerEncoderID</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>videoResampler</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>master</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_assignWorker'>assignWorker</span><span class='lparen'>(</span><span class='id identifier rubyid_previewResamplerEncoderID'>previewResamplerEncoderID</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>videoResampler</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>master</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='id identifier rubyid_configureVideoEncoder'>configureVideoEncoder</span><span class='lparen'>(</span><span class='id identifier rubyid_airEncoderID'>airEncoderID</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:bitrate</span> <span class='op'>=&gt;</span> <span class='int'>3000</span><span class='rbrace'>}</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='id identifier rubyid_configureVideoEncoder'>configureVideoEncoder</span><span class='lparen'>(</span><span class='id identifier rubyid_previewEncoderID'>previewEncoderID</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:bitrate</span> <span class='op'>=&gt;</span> <span class='int'>3000</span><span class='rbrace'>}</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='id identifier rubyid_configureResampler'>configureResampler</span><span class='lparen'>(</span><span class='id identifier rubyid_airResamplerEncoderID'>airResamplerEncoderID</span><span class='comma'>,</span> <span class='int'>0</span><span class='comma'>,</span> <span class='int'>0</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:pixelFormat</span> <span class='op'>=&gt;</span> <span class='int'>2</span><span class='rbrace'>}</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='id identifier rubyid_configureResampler'>configureResampler</span><span class='lparen'>(</span><span class='id identifier rubyid_previewResamplerEncoderID'>previewResamplerEncoderID</span><span class='comma'>,</span> <span class='int'>0</span><span class='comma'>,</span> <span class='int'>0</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:pixelFormat</span> <span class='op'>=&gt;</span> <span class='int'>2</span><span class='rbrace'>}</span><span class='rparen'>)</span><span class='rparen'>)</span>
+
+  <span class='ivar'>@audioMixer</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_audioEncoder'>audioEncoder</span> <span class='op'>=</span>  <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_audioPathID'>audioPathID</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_audioMixerWorker'>audioMixerWorker</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_audioEncoderWorker'>audioEncoderWorker</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='ivar'>@randomSize</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_createFilter'>createFilter</span><span class='lparen'>(</span><span class='ivar'>@audioMixer</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>audioMixer</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_createFilter'>createFilter</span><span class='lparen'>(</span><span class='id identifier rubyid_audioEncoder'>audioEncoder</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>audioEncoder</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_createPath'>createPath</span><span class='lparen'>(</span><span class='id identifier rubyid_audioPathID'>audioPathID</span><span class='comma'>,</span> <span class='ivar'>@audioMixer</span><span class='comma'>,</span> <span class='id identifier rubyid_txId'>txId</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='id identifier rubyid_audioEncoder'>audioEncoder</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_audioPath'>audioPath</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_getPath'>getPath</span><span class='lparen'>(</span><span class='id identifier rubyid_audioPathID'>audioPathID</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_assignWorker'>assignWorker</span><span class='lparen'>(</span><span class='ivar'>@audioMixer</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>audioMixer</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>master</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_assignWorker'>assignWorker</span><span class='lparen'>(</span><span class='id identifier rubyid_audioEncoder'>audioEncoder</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>audioEncoder</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>master</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+
+  <span class='comment'>#OUTPUT
+</span>
+  <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='ivar'>@conn</span><span class='period'>.</span><span class='id identifier rubyid_addOutputSession'>addOutputSession</span><span class='lparen'>(</span><span class='id identifier rubyid_txId'>txId</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='id identifier rubyid_airPath'>airPath</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>destinationReader</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_audioPath'>audioPath</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>destinationReader</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>air</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='ivar'>@conn</span><span class='period'>.</span><span class='id identifier rubyid_addOutputSession'>addOutputSession</span><span class='lparen'>(</span><span class='id identifier rubyid_txId'>txId</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='id identifier rubyid_previewPath'>previewPath</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>destinationReader</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>preview</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='ivar'>@started</span> <span class='op'>=</span> <span class='kw'>true</span> 
+
+  <span class='id identifier rubyid_updateDataBase'>updateDataBase</span>
+  
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="stop-instance_method">
+  
+    - (<tt>Object</tt>) <strong>stop</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+102
+103
+104
+105
+106
+107
+108
+109
+110</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 102</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_stop'>stop</span>
+  <span class='kw'>if</span> <span class='ivar'>@lmsStarted</span>
+    <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='ivar'>@conn</span><span class='period'>.</span><span class='id identifier rubyid_stop'>stop</span><span class='rparen'>)</span>
+    <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
+    <span class='id identifier rubyid_stop_livemediastreamer'>stop_livemediastreamer</span> <span class='op'>?</span> <span class='ivar'>@started</span> <span class='op'>=</span> <span class='kw'>false</span> <span class='op'>:</span> <span class='ivar'>@started</span> <span class='op'>=</span> <span class='kw'>true</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>livemediastreamer not running...ambiguous situation...!</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="stop_livemediastreamer-instance_method">
+  
+    - (<tt>Object</tt>) <strong>stop_livemediastreamer</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 112</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_stop_livemediastreamer'>stop_livemediastreamer</span>
+  <span class='kw'>begin</span>
+    <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Stopping livemediastreamer</span><span class='tstring_end'>&quot;</span></span>
+    <span class='const'>Process</span><span class='period'>.</span><span class='id identifier rubyid_kill'>kill</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>TERM</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='ivar'>@lmspid</span><span class='rparen'>)</span>
+    <span class='const'>Thread</span><span class='period'>.</span><span class='id identifier rubyid_kill'>kill</span><span class='lparen'>(</span><span class='ivar'>@lmsThread</span><span class='rparen'>)</span>
+  <span class='kw'>rescue</span> <span class='const'>SignalException</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='id identifier rubyid_e'>e</span>
+  <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+    <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>No succes on exiting livemediastreamer...!</span><span class='tstring_end'>&quot;</span></span>
+    <span class='ivar'>@lmsStarted</span> <span class='op'>=</span> <span class='kw'>true</span>
+    <span class='kw'>return</span> <span class='kw'>false</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>livemediastreamer exit success</span><span class='tstring_end'>&quot;</span></span>
+  <span class='ivar'>@lmsStarted</span> <span class='op'>=</span> <span class='kw'>false</span>
+  <span class='kw'>return</span> <span class='kw'>true</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="updateDataBase-instance_method">
+  
+    - (<tt>Object</tt>) <strong>updateDataBase</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+234
+235
+236
+237</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/rmixer.rb', line 234</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_updateDataBase'>updateDataBase</span>
+  <span class='id identifier rubyid_stateHash'>stateHash</span> <span class='op'>=</span> <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='id identifier rubyid_getState'>getState</span><span class='rparen'>)</span>
+  <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span><span class='id identifier rubyid_stateHash'>stateHash</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Mon Mar 23 09:56:36 2015 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.0.0).
+</div>
+
+  </body>
+</html>
