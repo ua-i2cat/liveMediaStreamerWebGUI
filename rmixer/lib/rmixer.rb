@@ -360,6 +360,56 @@ module RMixer
 
     end
 
+    # Adds an output RTP transmision
+    # @param output [String] the output content, "air" or "preview"
+    # @param txFormat [String] the tx format type, "std", "ultragrid" or "mpegts"
+    # @param ip [String] the destination ip
+    # @param port [Numeric] the destination port
+    # @return [String] the object converted into the expected format.
+    def addOutputRTPtx(output, txFormat, ip, port)
+      txId = @db.getFilterByType('transmitter')["id"]
+      case output
+      when "air"
+        videoPath = getOutputPathFromFilter(@airMixerID)
+        audioPath = getOutputPathFromFilter(@audioMixer)
+
+        videoId = Random.rand(@randomSize)
+        audioId = Random.rand(@randomSize)
+
+        if txFormat == "mpegts"
+          response = sendRequest(
+                      @conn.addOutputRTPtx(txId, [videoPath["destinationReader"], 
+                                           audioPath["destinationReader"]], 
+                                           videoId, ip, port, txFormat)
+                      )
+        else
+          response = sendRequest(
+                      @conn.addOutputRTPtx(txId, [videoPath["destinationReader"]], 
+                                 videoId, ip, port, txFormat)
+                      )
+
+          response = sendRequest(
+                      @conn.addOutputRTPtx(txId, [audioPath["destinationReader"]], 
+                                 audioId, ip, port+2, txFormat)
+                     )
+        end
+
+      when "preview"
+        videoPath = getOutputPathFromFilter(@previewMixerID)
+        videoId = Random.rand(@randomSize)
+
+        response = sendRequest(
+                    @conn.addOutputRTPtx(txId, [videoPath["destinationReader"]], 
+                                 videoId, ip, port, txFormat)
+                   )
+
+      else
+        raise MixerError, "Error, wrong RTP output option"
+      end
+
+      raise MixerError, response[:error] if response[:error]
+    end
+
     def assignWorker(filterId, filterType, filterRole, workerType, options = {})
       processorLimit = (options[:processorLimit]) ? options[:processorLimit] : 0
 
