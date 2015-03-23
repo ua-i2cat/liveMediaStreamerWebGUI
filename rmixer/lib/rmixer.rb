@@ -24,9 +24,7 @@
 
 require "rmixer/version"
 require "connector"
-require "append"
 require "grids"
-require "ultragrid"
 require "mongodb"
 require 'mkmf'
 require 'open3'
@@ -44,7 +42,6 @@ module RMixer
     def initialize(host, port)
       @conn = RMixer::Connector.new(host, port)
       @db = RMixer::MongoMngr.new
-      @uv = RMixer::UltraGridRC.new
       @started = false
       @lmsStarted = false
       @lmsThread = nil
@@ -273,43 +270,28 @@ module RMixer
       updateDataBase
     end
 
-    def addRTSPSession(vChannel, aChannel, progName, uri)
-      receiver = @db.getFilterByType('receiver')
-      id = uri.split('/').last
-      sendRequest(@conn.addRTSPSession(receiver["id"], progName, uri, id))
+    def assignWorker(filterId, filterType, workerType, options = {})
+      processorLimit = (options[:processorLimit]) ? options[:processorLimit] : 0
 
-      session = {}
-
-      begin
-        sleep(1.0/5.0) #sleep 200 ms
-        stateHash = sendRequest(getState)
-
-        stateHash[:filters].each do |f|
-          if f[:type] == 'receiver' and f[:sessions]
-            f[:sessions].each do |s|
-              if s[:id] == id and s[:subsessions]
-                session = s
-              end
-            end
-          end
-        end
-      end while session.empty?
-
-      vChCount = 0
-      aChCount = 0
-      session[:subsessions].each do |s|
-        if s[:medium] == 'audio'
-          @db.addAudioChannelPort(aChannel + aChCount, s[:port])
-          createAudioInputPath(s[:port])
-          aChCount += 1
-        elsif s[:medium] == 'video'
-          @db.addVideoChannelPort(vChannel + vChCount, s[:port])
-          createVideoInputPaths(s[:port])
-          applyPreviewGrid
-          vChCount += 1
+      @db.getWorkerByType(workerType, filterType).each do |w|
+        if processorLimit == 0 || processorLimit > w["processors"].size
+          sendRequest(addFiltersToWorker(w["id"], [filterId]))
+          @db.addProcessorToWorker(w["id"], filterId, filterType)
+          return w["id"]
         end
       end
+
+      newWorker = Random.rand(@randomSize)
+      sendRequest(addWorker(newWorker, workerType))
+      @db.addWorker(newWorker, workerType, filterType)
+      sendRequest(addFiltersToWorker(newWorker, [filterId]))
+      @db.addProcessorToWorker(newWorker, filterId, filterType)
+      return newWorker
     end
+
+    ###################
+    # NETWORK METHODS #
+    ###################
 
     def addRTPSession(medium, params, bandwidth, timeStampFrequency)
       #TODO CHECK IF PORT ALREADY OCCUPYED!!!
@@ -350,36 +332,105 @@ module RMixer
       end
     end
 
+    def addRTSPSession(vChannel, aChannel, progName, uri)
+      receiver = @db.getFilterByType('receiver')
+      id = uri.split('/').last
+      sendRequest(@conn.addRTSPSession(receiver["id"], progName, uri, id))
+
+      session = {}
+
+      begin
+        sleep(1.0/5.0) #sleep 200 ms
+        stateHash = sendRequest(getState)
+
+        stateHash[:filters].each do |f|
+          if f[:type] == 'receiver' and f[:sessions]
+            f[:sessions].each do |s|
+              if s[:id] == id and s[:subsessions]
+                session = s
+              end
+            end
+          end
+        end
+      end while session.empty?
+
+      vChCount = 0
+      aChCount = 0
+      session[:subsessions].each do |s|
+        if s[:medium] == 'audio'
+          @db.addAudioChannelPort(aChannel + aChCount, s[:port])
+          createAudioInputPath(s[:port])
+          aChCount += 1
+        elsif s[:medium] == 'video'
+          @db.addVideoChannelPort(vChannel + vChCount, s[:port])
+          createVideoInputPaths(s[:port])
+          applyPreviewGrid
+          vChCount += 1
+        end
+      end
+    end
+
     def rmRTPSession(mixerChannel, port, medium, codec, bandwidth, timeStampFrequency, channels = 0)
-      #      receiver = @db.getFilterByType('receiver')
-      #      @conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels)
-      #
-      #      if medium == 'audio'
-      #      elsif medium == 'video'
-      #        @db.addVideoChannelPort(mixerChannel, port)
-      #        createInputPaths(port)
-      #        applyPreviewGrid
-      #      end
+           # receiver = @db.getFilterByType('receiver')
+           # @conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels)
+      
+           # if medium == 'audio'
+           # elsif medium == 'video'
+           #   @db.addVideoChannelPort(mixerChannel, port)
+           #   createInputPaths(port)
+           #   applyPreviewGrid
+           # end
 
     end
 
-    def assignWorker(filterId, filterType, workerType, options = {})
-      processorLimit = (options[:processorLimit]) ? options[:processorLimit] : 0
+    # Adds an output RTP transmision
+    # @param output [String] the output content, "air" or "preview"
+    # @param txFormat [String] the tx format type, "std", "ultragrid" or "mpegts"
+    # @param ip [String] the destination ip
+    # @param port [Numeric] the destination port
+    # @return [String] the object converted into the expected format.
+    def addOutputRTPtx(output, txFormat, ip, port)
+      txId = @db.getFilterByType('transmitter')["id"]
+      case output
+      when "air"
+        videoPath = getOutputPathFromFilter(@airMixerID)
+        audioPath = getOutputPathFromFilter(@audioMixer)
 
-      @db.getWorkerByType(workerType, filterType).each do |w|
-        if processorLimit == 0 || processorLimit > w["processors"].size
-          sendRequest(addFiltersToWorker(w["id"], [filterId]))
-          @db.addProcessorToWorker(w["id"], filterId, filterType)
-          return w["id"]
+        videoId = Random.rand(@randomSize)
+        audioId = Random.rand(@randomSize)
+
+        if txFormat == "mpegts"
+          response = sendRequest(
+                      @conn.addOutputRTPtx(txId, [videoPath["destinationReader"], 
+                                           audioPath["destinationReader"]], 
+                                           videoId, ip, port, txFormat)
+                      )
+        else
+          response = sendRequest(
+                      @conn.addOutputRTPtx(txId, [videoPath["destinationReader"]], 
+                                 videoId, ip, port, txFormat)
+                      )
+
+          response = sendRequest(
+                      @conn.addOutputRTPtx(txId, [audioPath["destinationReader"]], 
+                                 audioId, ip, port+2, txFormat)
+                     )
         end
+
+      when "preview"
+        videoPath = getOutputPathFromFilter(@previewMixerID)
+        videoId = Random.rand(@randomSize)
+
+        response = sendRequest(
+                    @conn.addOutputRTPtx(txId, [videoPath["destinationReader"]], 
+                                 videoId, ip, port, txFormat)
+                   )
+
+      else
+        raise MixerError, "Error, wrong RTP output option"
       end
 
-      newWorker = Random.rand(@randomSize)
-      sendRequest(addWorker(newWorker, workerType))
-      @db.addWorker(newWorker, workerType, filterType)
-      sendRequest(addFiltersToWorker(newWorker, [filterId]))
-      @db.addProcessorToWorker(newWorker, filterId, filterType)
-      return newWorker
+      raise MixerError, response[:error] if response[:error]
     end
 
     #################

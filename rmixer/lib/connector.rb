@@ -91,6 +91,18 @@ module RMixer
       createEvent("addSession", params, filterID)
     end
 
+    def addOutputRTPtx(filterId, readers, sessionId, ip, port, txFormat)
+      params = {
+        :readers => readers,
+        :id => sessionId,
+        :ip => ip,
+        :port => port,
+        :txFormat => txFormat
+      }
+
+      createEvent("addRTPConnection", params, filterId)
+    end
+
     def addRTSPSession (filterID, progName, uri, id)
       params = {
         :progName => progName,
@@ -100,29 +112,11 @@ module RMixer
       createEvent("addSession", params, filterID)
     end
 
-    def addOutputSession(filterID, readers)
-      if readers.length > 0
-        params = {
-          :readers => readers
-        }
-        createEvent("addSession", params, filterID)
-      end
-    end
-
     def getState
       createEvent("getState")
     end
 
     def addOutputSession(txID, readers, sessionName)
-      params = {
-        :readers => readers,
-        :sessionName => sessionName
-      }
-
-      createEvent("addSession", params, txID)
-    end
-
-    def addOutputSessionTemporal(txID, readers, sessionName)
       params = {
         :readers => readers,
         :sessionName => sessionName
