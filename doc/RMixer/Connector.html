@@ -1,0 +1,2215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: RMixer::Connector
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../';
+  framesUrl = "../frames.html#!RMixer/Connector.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (C)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../RMixer.html" title="RMixer (module)">RMixer</a></span></span>
+     &raquo; 
+    <span class="title">Connector</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: RMixer::Connector
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">RMixer::Connector</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">rmixer/lib/connector.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<h4 id="label-Overview">Overview</h4>
+
+<p>Class that allows the module to connect with a remote mixer instance and
+communicate with it using, under the hood, the <strong>Mixer JSON
+API</strong>.</p>
+
+<h4 id="label-TCP+Socket+Usage">TCP Socket Usage</h4>
+
+<p>A RMixer::Connector instance creates a new TCP connection for each method.
+This means that multiple instances of this class can be working at the same
+time without blocking each other.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+
+
+
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#host-instance_method" title="#host (instance method)">- (Object) <strong>host</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Remote mixer host address.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#port-instance_method" title="#port (instance method)">- (Object) <strong>port</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Remote mixer port address.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#addFiltersToWorker-instance_method" title="#addFiltersToWorker (instance method)">- (Object) <strong>addFiltersToWorker</strong>(worker, filters) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#addOutputRTPtx-instance_method" title="#addOutputRTPtx (instance method)">- (Object) <strong>addOutputRTPtx</strong>(filterId, readers, sessionId, ip, port, txFormat) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#addOutputSession-instance_method" title="#addOutputSession (instance method)">- (Object) <strong>addOutputSession</strong>(txID, readers, sessionName) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#addRTPSession-instance_method" title="#addRTPSession (instance method)">- (Object) <strong>addRTPSession</strong>(filterID, port, medium, codec, bandwidth, timeStampFrequency, channels) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#addRTSPSession-instance_method" title="#addRTSPSession (instance method)">- (Object) <strong>addRTSPSession</strong>(filterID, progName, uri, id) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#addSlavesToWorker-instance_method" title="#addSlavesToWorker (instance method)">- (Object) <strong>addSlavesToWorker</strong>(master, slaves) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#addWorker-instance_method" title="#addWorker (instance method)">- (Object) <strong>addWorker</strong>(id, type, fps = 24) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#appendEvent-instance_method" title="#appendEvent (instance method)">- (Object) <strong>appendEvent</strong>(event, delay = 0) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#changeChannelVolume-instance_method" title="#changeChannelVolume (instance method)">- (Object) <strong>changeChannelVolume</strong>(filterID, id, volume) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#changeMasterVolume-instance_method" title="#changeMasterVolume (instance method)">- (Object) <strong>changeMasterVolume</strong>(filterID, volume) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#configureResampler-instance_method" title="#configureResampler (instance method)">- (Object) <strong>configureResampler</strong>(resamplerID, width, height, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#configureVideoEncoder-instance_method" title="#configureVideoEncoder (instance method)">- (Object) <strong>configureVideoEncoder</strong>(encoderId, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#createEvent-instance_method" title="#createEvent (instance method)">- (Object) <strong>createEvent</strong>(action, params = {}, filterID = 0) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Method that composes the JSON request and sends it over TCP to the
+targetted remote mixer instance.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#createFilter-instance_method" title="#createFilter (instance method)">- (Object) <strong>createFilter</strong>(id, type) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#createPath-instance_method" title="#createPath (instance method)">- (Object) <strong>createPath</strong>(id, orgFilterId, dstFilterId, orgWriterId, dstReaderId, midFiltersIds, sharedQueue = false) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#getState-instance_method" title="#getState (instance method)">- (Object) <strong>getState</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (Connector) <strong>initialize</strong>(host, port, testing = nil) </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Initializes a new RMixer::Connector instance.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#muteChannel-instance_method" title="#muteChannel (instance method)">- (Object) <strong>muteChannel</strong>(filterID, id) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#muteMaster-instance_method" title="#muteMaster (instance method)">- (Object) <strong>muteMaster</strong>(filterID) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>AUDIO METHODS #.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#removeFilter-instance_method" title="#removeFilter (instance method)">- (Object) <strong>removeFilter</strong>(id) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#removePath-instance_method" title="#removePath (instance method)">- (Object) <strong>removePath</strong>(id) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#removeWorker-instance_method" title="#removeWorker (instance method)">- (Object) <strong>removeWorker</strong>(id) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#reset-instance_method" title="#reset (instance method)">- (Object) <strong>reset</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#sendRequest-instance_method" title="#sendRequest (instance method)">- (Object) <strong>sendRequest</strong>(events = @eventArray) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#setPositionSize-instance_method" title="#setPositionSize (instance method)">- (Object) <strong>setPositionSize</strong>(mixerID, id, width, height, x, y, layer, opacity, enabled = true) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>VIDEO METHODS #.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#soloChannel-instance_method" title="#soloChannel (instance method)">- (Object) <strong>soloChannel</strong>(filterID, id) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#stop-instance_method" title="#stop (instance method)">- (Object) <strong>stop</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#updateVideoChannel-instance_method" title="#updateVideoChannel (instance method)">- (Object) <strong>updateVideoChannel</strong>(mixerId, channel) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="RMixer::Connector (class)">Connector</a></span></tt>) <strong>initialize</strong>(host, port, testing = nil) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Initializes a new RMixer::Connector instance.</p>
+
+<h4 id="label-Attributes">Attributes</h4>
+<ul><li>
+<p><code>host</code> - Remote mixer host address</p>
+</li><li>
+<p><code>port</code> - Remote mixer port address</p>
+</li><li>
+<p><code>eventArray</code> - Array for sending events</p>
+</li><li>
+<p><code>testing</code> - Optional testing parameter. If set to
+<code>:request</code>, changes the behaviour of
+RMixer::Connector#get_response</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+55
+56
+57
+58
+59
+60</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 55</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_host'>host</span><span class='comma'>,</span> <span class='id identifier rubyid_port'>port</span><span class='comma'>,</span> <span class='id identifier rubyid_testing'>testing</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='ivar'>@host</span> <span class='op'>=</span> <span class='id identifier rubyid_host'>host</span>
+  <span class='ivar'>@port</span> <span class='op'>=</span> <span class='id identifier rubyid_port'>port</span>
+  <span class='ivar'>@testing</span> <span class='op'>=</span> <span class='id identifier rubyid_testing'>testing</span>
+  <span class='ivar'>@eventArray</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id=""></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="host-instance_method">
+  
+    - (<tt>Object</tt>) <strong>host</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Remote mixer host address</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+41
+42
+43</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 41</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_host'>host</span>
+  <span class='ivar'>@host</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="port-instance_method">
+  
+    - (<tt>Object</tt>) <strong>port</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Remote mixer port address</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+43
+44
+45</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 43</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_port'>port</span>
+  <span class='ivar'>@port</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="addFiltersToWorker-instance_method">
+  
+    - (<tt>Object</tt>) <strong>addFiltersToWorker</strong>(worker, filters) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+194
+195
+196
+197
+198
+199
+200
+201</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 194</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_addFiltersToWorker'>addFiltersToWorker</span><span class='lparen'>(</span><span class='id identifier rubyid_worker'>worker</span><span class='comma'>,</span> <span class='id identifier rubyid_filters'>filters</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='symbol'>:worker</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_worker'>worker</span><span class='comma'>,</span>
+    <span class='symbol'>:filters</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_filters'>filters</span>
+  <span class='rbrace'>}</span>
+
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>addFiltersToWorker</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="addOutputRTPtx-instance_method">
+  
+    - (<tt>Object</tt>) <strong>addOutputRTPtx</strong>(filterId, readers, sessionId, ip, port, txFormat) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 94</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_addOutputRTPtx'>addOutputRTPtx</span><span class='lparen'>(</span><span class='id identifier rubyid_filterId'>filterId</span><span class='comma'>,</span> <span class='id identifier rubyid_readers'>readers</span><span class='comma'>,</span> <span class='id identifier rubyid_sessionId'>sessionId</span><span class='comma'>,</span> <span class='id identifier rubyid_ip'>ip</span><span class='comma'>,</span> <span class='id identifier rubyid_port'>port</span><span class='comma'>,</span> <span class='id identifier rubyid_txFormat'>txFormat</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='symbol'>:readers</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_readers'>readers</span><span class='comma'>,</span>
+    <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_sessionId'>sessionId</span><span class='comma'>,</span>
+    <span class='symbol'>:ip</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_ip'>ip</span><span class='comma'>,</span>
+    <span class='symbol'>:port</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_port'>port</span><span class='comma'>,</span>
+    <span class='symbol'>:txFormat</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_txFormat'>txFormat</span>
+  <span class='rbrace'>}</span>
+
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>addRTPConnection</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_filterId'>filterId</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="addOutputSession-instance_method">
+  
+    - (<tt>Object</tt>) <strong>addOutputSession</strong>(txID, readers, sessionName) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+119
+120
+121
+122
+123
+124
+125
+126</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 119</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_addOutputSession'>addOutputSession</span><span class='lparen'>(</span><span class='id identifier rubyid_txID'>txID</span><span class='comma'>,</span> <span class='id identifier rubyid_readers'>readers</span><span class='comma'>,</span> <span class='id identifier rubyid_sessionName'>sessionName</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='symbol'>:readers</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_readers'>readers</span><span class='comma'>,</span>
+    <span class='symbol'>:sessionName</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_sessionName'>sessionName</span>
+  <span class='rbrace'>}</span>
+
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>addSession</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_txID'>txID</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="addRTPSession-instance_method">
+  
+    - (<tt>Object</tt>) <strong>addRTPSession</strong>(filterID, port, medium, codec, bandwidth, timeStampFrequency, channels) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 74</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_addRTPSession'>addRTPSession</span><span class='lparen'>(</span><span class='id identifier rubyid_filterID'>filterID</span><span class='comma'>,</span> <span class='id identifier rubyid_port'>port</span><span class='comma'>,</span> <span class='id identifier rubyid_medium'>medium</span><span class='comma'>,</span> <span class='id identifier rubyid_codec'>codec</span><span class='comma'>,</span> <span class='id identifier rubyid_bandwidth'>bandwidth</span><span class='comma'>,</span> <span class='id identifier rubyid_timeStampFrequency'>timeStampFrequency</span><span class='comma'>,</span> <span class='id identifier rubyid_channels'>channels</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_subsessions'>subsessions</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_subsession'>subsession</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='symbol'>:port</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_port'>port</span><span class='comma'>,</span>
+    <span class='symbol'>:medium</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_medium'>medium</span><span class='comma'>,</span>
+    <span class='symbol'>:codec</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_codec'>codec</span><span class='comma'>,</span>
+    <span class='symbol'>:bandwidth</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_bandwidth'>bandwidth</span><span class='comma'>,</span>
+    <span class='symbol'>:timeStampFrequency</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_timeStampFrequency'>timeStampFrequency</span><span class='comma'>,</span>
+    <span class='symbol'>:channels</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_channels'>channels</span>
+  <span class='rbrace'>}</span>
+
+  <span class='id identifier rubyid_subsessions'>subsessions</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_subsession'>subsession</span>
+
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='symbol'>:subsessions</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_subsessions'>subsessions</span>
+  <span class='rbrace'>}</span>
+
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>addSession</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_filterID'>filterID</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="addRTSPSession-instance_method">
+  
+    - (<tt>Object</tt>) <strong>addRTSPSession</strong>(filterID, progName, uri, id) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+106
+107
+108
+109
+110
+111
+112
+113</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 106</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_addRTSPSession'>addRTSPSession</span> <span class='lparen'>(</span><span class='id identifier rubyid_filterID'>filterID</span><span class='comma'>,</span> <span class='id identifier rubyid_progName'>progName</span><span class='comma'>,</span> <span class='id identifier rubyid_uri'>uri</span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='symbol'>:progName</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_progName'>progName</span><span class='comma'>,</span>
+    <span class='symbol'>:uri</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_uri'>uri</span><span class='comma'>,</span>
+    <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_id'>id</span>
+  <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>addSession</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_filterID'>filterID</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="addSlavesToWorker-instance_method">
+  
+    - (<tt>Object</tt>) <strong>addSlavesToWorker</strong>(master, slaves) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+185
+186
+187
+188
+189
+190
+191
+192</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 185</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_addSlavesToWorker'>addSlavesToWorker</span><span class='lparen'>(</span><span class='id identifier rubyid_master'>master</span><span class='comma'>,</span> <span class='id identifier rubyid_slaves'>slaves</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='symbol'>:master</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_master'>master</span><span class='comma'>,</span>
+    <span class='symbol'>:slaves</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_slaves'>slaves</span>
+  <span class='rbrace'>}</span>
+
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>addSlavesToWorker</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="addWorker-instance_method">
+  
+    - (<tt>Object</tt>) <strong>addWorker</strong>(id, type, fps = 24) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+167
+168
+169
+170
+171
+172
+173
+174
+175</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 167</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_addWorker'>addWorker</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_fps'>fps</span> <span class='op'>=</span> <span class='int'>24</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_id'>id</span><span class='comma'>,</span>
+    <span class='symbol'>:type</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_type'>type</span><span class='comma'>,</span>
+    <span class='symbol'>:fps</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_fps'>fps</span>
+  <span class='rbrace'>}</span>
+
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>addWorker</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="appendEvent-instance_method">
+  
+    - (<tt>Object</tt>) <strong>appendEvent</strong>(event, delay = 0) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+371
+372
+373
+374
+375</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 371</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_appendEvent'>appendEvent</span><span class='lparen'>(</span><span class='id identifier rubyid_event'>event</span><span class='comma'>,</span> <span class='id identifier rubyid_delay'>delay</span> <span class='op'>=</span> <span class='int'>0</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_event'>event</span><span class='lbracket'>[</span><span class='symbol'>:delay</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_delay'>delay</span>
+  <span class='ivar'>@eventArray</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_event'>event</span>
+  <span class='kw'>return</span> <span class='lbrace'>{</span><span class='symbol'>:error</span> <span class='op'>=&gt;</span> <span class='kw'>nil</span><span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="changeChannelVolume-instance_method">
+  
+    - (<tt>Object</tt>) <strong>changeChannelVolume</strong>(filterID, id, volume) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+233
+234
+235
+236
+237
+238
+239</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 233</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_changeChannelVolume'>changeChannelVolume</span><span class='lparen'>(</span><span class='id identifier rubyid_filterID'>filterID</span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='id identifier rubyid_volume'>volume</span><span class='rparen'>)</span> 
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_id'>id</span><span class='comma'>,</span>
+    <span class='symbol'>:volume</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_volume'>volume</span>
+  <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>changeChannelVolume</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_filterID'>filterID</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="changeMasterVolume-instance_method">
+  
+    - (<tt>Object</tt>) <strong>changeMasterVolume</strong>(filterID, volume) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+226
+227
+228
+229
+230
+231</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 226</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_changeMasterVolume'>changeMasterVolume</span><span class='lparen'>(</span><span class='id identifier rubyid_filterID'>filterID</span><span class='comma'>,</span> <span class='id identifier rubyid_volume'>volume</span><span class='rparen'>)</span> 
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='symbol'>:volume</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_volume'>volume</span>
+  <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>changeMasterVolume</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_filterID'>filterID</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="configureResampler-instance_method">
+  
+    - (<tt>Object</tt>) <strong>configureResampler</strong>(resamplerID, width, height, options = {}) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 275</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_configureResampler'>configureResampler</span><span class='lparen'>(</span><span class='id identifier rubyid_resamplerID'>resamplerID</span><span class='comma'>,</span> <span class='id identifier rubyid_width'>width</span><span class='comma'>,</span> <span class='id identifier rubyid_height'>height</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='symbol'>:width</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_width'>width</span><span class='comma'>,</span>
+    <span class='symbol'>:height</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_height'>height</span>
+  <span class='rbrace'>}</span>
+
+  <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:pixelFormat</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:pixelFormat</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:pixelFormat</span><span class='rbracket'>]</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:discartPeriod</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:discartPeriod</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:discartPeriod</span><span class='rbracket'>]</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>configure</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_resamplerID'>resamplerID</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="configureVideoEncoder-instance_method">
+  
+    - (<tt>Object</tt>) <strong>configureVideoEncoder</strong>(encoderId, options = {}) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 292</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_configureVideoEncoder'>configureVideoEncoder</span><span class='lparen'>(</span><span class='id identifier rubyid_encoderId'>encoderId</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+
+  <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:fps</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:fps</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:fps</span><span class='rbracket'>]</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:gop</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:gop</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:gop</span><span class='rbracket'>]</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:bitrate</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:bitrate</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:bitrate</span><span class='rbracket'>]</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:threads</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:threads</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:threads</span><span class='rbracket'>]</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:annexb</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:annexb</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:annexb</span><span class='rbracket'>]</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>configure</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_encoderId'>encoderId</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="createEvent-instance_method">
+  
+    - (<tt>Object</tt>) <strong>createEvent</strong>(action, params = {}, filterID = 0) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Method that composes the JSON request and sends it over TCP to the
+targetted remote mixer instance.</p>
+
+<p>Returns the Mixer&#39;s JSON response converted to a hash unless the
+RMixer::Mixer was initialized with <code>testing = :request</code> option.</p>
+
+<h4 id="label-Testing+">Testing </h4>
+
+<p>If <code>@testing == :request</code>, this method returns the hash that
+should be sent over TCP without actually sending it.</p>
+
+<h4 id="label-Debugging">Debugging</h4>
+
+<p>This method is intended to be used internally, but is exposed since
+it&#39;s useful for debugging.</p>
+
+<h4 id="label-Attributes">Attributes</h4>
+<ul><li>
+<p><code>action</code> - The action to be sent</p>
+</li><li>
+<p><code>params</code> - Optional hash containing the parameters to be sent</p>
+</li></ul>
+
+<h4 id="label-Examples">Examples</h4>
+
+<pre class="ruby"><span class="ruby-identifier">mixer</span> = <span class="ruby-constant">RMixer</span><span class="ruby-operator">::</span><span class="ruby-constant">Mixer</span>.<span class="ruby-identifier">new</span> <span class="ruby-string">&quot;localhost&quot;</span>, <span class="ruby-value">7777</span>
+<span class="ruby-identifier">mixer</span>.<span class="ruby-identifier">get_response</span>(<span class="ruby-string">&quot;start_mixer&quot;</span>, { :<span class="ruby-identifier">width</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1280</span>, :<span class="ruby-identifier">height</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">720</span> })
+</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+346
+347
+348
+349
+350
+351
+352</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 346</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='id identifier rubyid_action'>action</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='id identifier rubyid_filterID'>filterID</span> <span class='op'>=</span> <span class='int'>0</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_event'>event</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='symbol'>:action</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_action'>action</span><span class='comma'>,</span>
+    <span class='symbol'>:params</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_params'>params</span><span class='comma'>,</span>
+    <span class='symbol'>:filterID</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_filterID'>filterID</span>
+  <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="createFilter-instance_method">
+  
+    - (<tt>Object</tt>) <strong>createFilter</strong>(id, type) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+128
+129
+130
+131
+132
+133
+134
+135</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 128</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_createFilter'>createFilter</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_id'>id</span><span class='comma'>,</span>
+    <span class='symbol'>:type</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_type'>type</span><span class='comma'>,</span>
+  <span class='rbrace'>}</span>
+
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>createFilter</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="createPath-instance_method">
+  
+    - (<tt>Object</tt>) <strong>createPath</strong>(id, orgFilterId, dstFilterId, orgWriterId, dstReaderId, midFiltersIds, sharedQueue = false) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 145</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_createPath'>createPath</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='id identifier rubyid_orgFilterId'>orgFilterId</span><span class='comma'>,</span> <span class='id identifier rubyid_dstFilterId'>dstFilterId</span><span class='comma'>,</span> <span class='id identifier rubyid_orgWriterId'>orgWriterId</span><span class='comma'>,</span> <span class='id identifier rubyid_dstReaderId'>dstReaderId</span><span class='comma'>,</span> <span class='id identifier rubyid_midFiltersIds'>midFiltersIds</span><span class='comma'>,</span> <span class='id identifier rubyid_sharedQueue'>sharedQueue</span> <span class='op'>=</span> <span class='kw'>false</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_id'>id</span><span class='comma'>,</span>
+    <span class='symbol'>:orgFilterId</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_orgFilterId'>orgFilterId</span><span class='comma'>,</span>
+    <span class='symbol'>:dstFilterId</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_dstFilterId'>dstFilterId</span><span class='comma'>,</span>
+    <span class='symbol'>:orgWriterId</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_orgWriterId'>orgWriterId</span><span class='comma'>,</span>
+    <span class='symbol'>:dstReaderId</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_dstReaderId'>dstReaderId</span><span class='comma'>,</span>
+    <span class='symbol'>:midFiltersIds</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_midFiltersIds'>midFiltersIds</span><span class='comma'>,</span>
+    <span class='symbol'>:sharedQueue</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_sharedQueue'>sharedQueue</span>
+  <span class='rbrace'>}</span>
+
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>createPath</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="getState-instance_method">
+  
+    - (<tt>Object</tt>) <strong>getState</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+115
+116
+117</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 115</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_getState'>getState</span>
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>getState</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="muteChannel-instance_method">
+  
+    - (<tt>Object</tt>) <strong>muteChannel</strong>(filterID, id) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+212
+213
+214
+215
+216
+217</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 212</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_muteChannel'>muteChannel</span><span class='lparen'>(</span><span class='id identifier rubyid_filterID'>filterID</span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span> 
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_id'>id</span>
+  <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>muteChannel</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_filterID'>filterID</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="muteMaster-instance_method">
+  
+    - (<tt>Object</tt>) <strong>muteMaster</strong>(filterID) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>AUDIO METHODS #</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+207
+208
+209
+210</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 207</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_muteMaster'>muteMaster</span><span class='lparen'>(</span><span class='id identifier rubyid_filterID'>filterID</span><span class='rparen'>)</span> 
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>muteMaster</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_filterID'>filterID</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="removeFilter-instance_method">
+  
+    - (<tt>Object</tt>) <strong>removeFilter</strong>(id) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+137
+138
+139
+140
+141
+142
+143</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 137</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_removeFilter'>removeFilter</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_id'>id</span>
+  <span class='rbrace'>}</span>
+
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>removeFilter</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="removePath-instance_method">
+  
+    - (<tt>Object</tt>) <strong>removePath</strong>(id) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+159
+160
+161
+162
+163
+164
+165</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 159</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_removePath'>removePath</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_id'>id</span>
+  <span class='rbrace'>}</span>
+
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>removePath</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="removeWorker-instance_method">
+  
+    - (<tt>Object</tt>) <strong>removeWorker</strong>(id) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+177
+178
+179
+180
+181
+182
+183</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 177</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_removeWorker'>removeWorker</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_id'>id</span>
+  <span class='rbrace'>}</span>
+
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>removeWorker</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="reset-instance_method">
+  
+    - (<tt>Object</tt>) <strong>reset</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+62
+63
+64
+65
+66</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 62</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_reset'>reset</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>reset</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="sendRequest-instance_method">
+  
+    - (<tt>Object</tt>) <strong>sendRequest</strong>(events = @eventArray) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 354</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_sendRequest'>sendRequest</span><span class='lparen'>(</span><span class='id identifier rubyid_events'>events</span> <span class='op'>=</span> <span class='ivar'>@eventArray</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_request'>request</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='symbol'>:events</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_events'>events</span>
+  <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_s'>s</span> <span class='op'>=</span> <span class='const'>TCPSocket</span><span class='period'>.</span><span class='id identifier rubyid_open'>open</span><span class='lparen'>(</span><span class='ivar'>@host</span><span class='comma'>,</span> <span class='ivar'>@port</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_print'>print</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_puts'>puts</span>
+  <span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_request'>request</span>
+  <span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_recv'>recv</span><span class='lparen'>(</span><span class='int'>4096</span><span class='op'>*</span><span class='int'>4</span><span class='rparen'>)</span> <span class='comment'># TODO: max_len ?
+</span>  <span class='id identifier rubyid_puts'>puts</span>
+  <span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_response'>response</span>
+  <span class='id identifier rubyid_puts'>puts</span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_close'>close</span>
+  <span class='ivar'>@eventArray</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
+  <span class='kw'>return</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_response'>response</span><span class='comma'>,</span> <span class='symbol'>:symbolize_names</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="setPositionSize-instance_method">
+  
+    - (<tt>Object</tt>) <strong>setPositionSize</strong>(mixerID, id, width, height, x, y, layer, opacity, enabled = true) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>VIDEO METHODS #</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 245</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_setPositionSize'>setPositionSize</span><span class='lparen'>(</span><span class='id identifier rubyid_mixerID'>mixerID</span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='id identifier rubyid_width'>width</span><span class='comma'>,</span> <span class='id identifier rubyid_height'>height</span><span class='comma'>,</span> <span class='id identifier rubyid_x'>x</span><span class='comma'>,</span> <span class='id identifier rubyid_y'>y</span><span class='comma'>,</span> <span class='id identifier rubyid_layer'>layer</span><span class='comma'>,</span> <span class='id identifier rubyid_opacity'>opacity</span><span class='comma'>,</span> <span class='id identifier rubyid_enabled'>enabled</span> <span class='op'>=</span> <span class='kw'>true</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_id'>id</span><span class='comma'>,</span>
+    <span class='symbol'>:width</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_width'>width</span><span class='comma'>,</span>
+    <span class='symbol'>:height</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_height'>height</span><span class='comma'>,</span>
+    <span class='symbol'>:x</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_x'>x</span><span class='comma'>,</span>
+    <span class='symbol'>:y</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_y'>y</span><span class='comma'>,</span>
+    <span class='symbol'>:layer</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_layer'>layer</span><span class='comma'>,</span>
+    <span class='symbol'>:opacity</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_opacity'>opacity</span><span class='comma'>,</span>
+    <span class='symbol'>:enabled</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_enabled'>enabled</span>
+  <span class='rbrace'>}</span>
+  
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>configChannel</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_mixerID'>mixerID</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="soloChannel-instance_method">
+  
+    - (<tt>Object</tt>) <strong>soloChannel</strong>(filterID, id) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+219
+220
+221
+222
+223
+224</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 219</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_soloChannel'>soloChannel</span><span class='lparen'>(</span><span class='id identifier rubyid_filterID'>filterID</span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span> 
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_id'>id</span>
+  <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>soloChannel</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_filterID'>filterID</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="stop-instance_method">
+  
+    - (<tt>Object</tt>) <strong>stop</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+68
+69
+70
+71
+72</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 68</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_stop'>stop</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>stop</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="updateVideoChannel-instance_method">
+  
+    - (<tt>Object</tt>) <strong>updateVideoChannel</strong>(mixerId, channel) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'rmixer/lib/connector.rb', line 260</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_updateVideoChannel'>updateVideoChannel</span><span class='lparen'>(</span><span class='id identifier rubyid_mixerId'>mixerId</span><span class='comma'>,</span> <span class='id identifier rubyid_channel'>channel</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_channel'>channel</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='symbol'>:width</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_channel'>channel</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>width</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='symbol'>:height</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_channel'>channel</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>height</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='symbol'>:x</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_channel'>channel</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>x</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='symbol'>:y</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_channel'>channel</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>y</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='symbol'>:layer</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_channel'>channel</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>layer</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='symbol'>:opacity</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_channel'>channel</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>opacity</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='symbol'>:enabled</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_channel'>channel</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>enabled</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+  <span class='rbrace'>}</span>
+
+  <span class='id identifier rubyid_createEvent'>createEvent</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>configChannel</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_mixerId'>mixerId</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Mon Mar 23 09:56:37 2015 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.0.0).
+</div>
+
+  </body>
+</html>

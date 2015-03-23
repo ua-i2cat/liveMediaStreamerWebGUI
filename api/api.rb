@@ -29,6 +29,8 @@ require 'sinatra/base'
 require 'rmixer'
 require 'rack/protection'
 
+# Class that defines the API REST, executing RMixer::Mixer methods
+# and returning as response the updated GUI (using Liquid template language).
 class MixerAPI < Sinatra::Base
 
   set :ip, '127.0.0.1'
@@ -83,8 +85,7 @@ class MixerAPI < Sinatra::Base
     end
   end
   
-  # Web App Methods
-  # Routes
+  # Redirects to /app
   get '/' do
     redirect '/app'
   end
@@ -132,11 +133,6 @@ class MixerAPI < Sinatra::Base
     content_type :html
     dashboardAVMixer('PiP')
   end
-
-
-  ###################
-  # GENERAL METHODS #
-  ###################
   
   post '/app/avmixer/addRTSPSession' do 
     content_type :html
@@ -144,15 +140,22 @@ class MixerAPI < Sinatra::Base
         settings.mixer.addRTSPSession(params[:vChannel].to_i, 
                                       params[:aChannel].to_i, 
                                       'mixer', 
-                                      params[:uri]
-                                     )
+                                      params[:uri])
     end
     redirect '/app/avmixer'
   end
 
-  #################
-  # AUDIO METHODS #
-  #################
+  # Adds an output RTP transmision. It executes {RMixer.Mixer#addOutputRTPtx} and redirects to {GET '/app/avmixer'} 
+  post '/app/avmixer/addOutputRTPtx' do 
+    content_type :html
+    error_html do
+        settings.mixer.addOutputRTPtx(params[:output], 
+                                      params[:txFormat],
+                                      params[:ip],
+                                      params[:port].to_i)
+    end
+    redirect '/app/avmixer'
+  end
 
   post '/app/avmixer/audio/:channel/mute' do
     content_type :html
@@ -194,10 +197,6 @@ class MixerAPI < Sinatra::Base
     redirect '/app/avmixer'
   end
 
-  #################
-  # VIDEO METHODS #
-  #################
-
   post '/app/avmixer/video/:grid/applyGrid' do
     content_type :html
     error_html do
@@ -226,8 +225,7 @@ class MixerAPI < Sinatra::Base
     redirect '/app/avmixer'
   end
   
-  #TODO
-  #gets channel index (not port) to be removed from sessions
+  # @todo Get channel index (not port) to be removed from sessions
   post '/app/avmixer/video/:channel/rmSession' do
     content_type :html
     error_html do
