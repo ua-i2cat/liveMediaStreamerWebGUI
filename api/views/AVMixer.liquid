@@ -293,14 +293,14 @@
                     </td>
                     {% for channel in stateVideoHash.channels %}
                     <td>
-                      <form class="btn-group" action="/app/avmixer/video/{{channel.channel}}/commute" method="post">
+                      <form class="btn-group" action="/app/avmixer/video/{{channel.channel}}/commute" method="get">
                         <button type="submit" class="btn btn-default">ch.{{channel.channel}}</button>
                       </form>
                     </td>
                     {% endfor %}
                     {% for channel in (1..stateVideoHash.maxChannels) offset:stateVideoHash.channels.size%}
                     <td>
-                      <form class="btn-group is-disabled" action="/app/avmixer/video/{{ channel }}/commute" method="post">
+                      <form class="btn-group is-disabled" action="/app/avmixer/video/{{ channel }}/commute" method="get">
                         <button type="submit" class="btn btn-default">ch.{{ channel }}</button>
                       </form>
                     </td>
@@ -312,14 +312,14 @@
                     </td>
                     {% for channel in stateVideoHash.channels %}
                     <td>
-                      <form class="btn-group" action="/app/avmixer/video/{{channel.channel}}/fade/500" method="post">
+                      <form class="btn-group" action="/app/avmixer/video/{{channel.channel}}/fade/500" method="get">
                         <button type="submit" class="btn btn-default">ch.{{channel.channel}}</button>
                       </form>
                     </td>
                     {% endfor %}
                     {% for channel in (1..stateVideoHash.maxChannels) offset:stateVideoHash.channels.size%}
                     <td>
-                      <form class="btn-group is-disabled" action="/app/avmixer/video/{{ channel }}/fade/500" method="post">
+                      <form class="btn-group is-disabled" action="/app/avmixer/video/{{ channel }}/fade/500" method="get">
                         <button type="submit" class="btn btn-default">ch.{{ channel }}</button>
                       </form>
                     </td>
@@ -331,14 +331,14 @@
                     </td>
                     {% for channel in stateVideoHash.channels %}
                     <td>
-                      <form class="btn-group" action="/app/avmixer/video/{{channel.channel}}/fade/1000" method="post">
+                      <form class="btn-group" action="/app/avmixer/video/{{channel.channel}}/fade/1000" method="get">
                         <button type="submit" class="btn btn-default">ch.{{channel.channel}}</button>
                       </form>
                     </td>
                     {% endfor %}
                     {% for channel in (1..stateVideoHash.maxChannels) offset:stateVideoHash.channels.size%}
                     <td>
-                      <form class="btn-group is-disabled" action="/app/avmixer/video/{{ channel }}/fade/1000" method="post">
+                      <form class="btn-group is-disabled" action="/app/avmixer/video/{{ channel }}/fade/1000" method="get">
                         <button type="submit" class="btn btn-default">ch.{{ channel }}</button>
                       </form>
                     </td>
@@ -350,14 +350,14 @@
                     </td>
                     {% for channel in stateVideoHash.channels %}
                     <td>
-                      <form class="btn-group" action="/app/avmixer/video/{{channel.channel}}/blend" method="post">
+                      <form class="btn-group" action="/app/avmixer/video/{{channel.channel}}/blend" method="get">
                         <button type="submit" class="btn btn-default">ch.{{channel.channel}}</button>
                       </form>
                     </td>
                     {% endfor %}
                     {% for channel in (1..stateVideoHash.maxChannels) offset:stateVideoHash.channels.size%}
                     <td>
-                      <form class="btn-group is-disabled" action="/app/avmixer/video/{{ channel }}/blend" method="post">
+                      <form class="btn-group is-disabled" action="/app/avmixer/video/{{ channel }}/blend" method="get">
                         <button type="submit" class="btn btn-default">ch.{{ channel }}</button>
                       </form>
                     </td>

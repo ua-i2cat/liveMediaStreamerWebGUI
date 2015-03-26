@@ -102,6 +102,16 @@ class MixerAPI < Sinatra::Base
     redirect '/app'
   end
   
+
+  get '/app/start/scenario/:scenario' do
+    content_type :html
+    error_html do
+      puts "UO"
+      settings.mixer.start(params[:scenario])
+    end
+    redirect '/app'
+  end
+  
   post '/app/stop' do
     content_type :html
     error_html do
@@ -240,7 +250,7 @@ class MixerAPI < Sinatra::Base
     redirect '/app/avmixer'
   end
 
-  post '/app/avmixer/video/:channel/commute' do
+  get '/app/avmixer/video/:channel/commute' do
     content_type :html
     error_html do
       settings.mixer.commute(params[:channel].to_i)
@@ -248,7 +258,7 @@ class MixerAPI < Sinatra::Base
     redirect '/app/avmixer'
   end
 
-  post '/app/avmixer/video/:channel/fade/:time' do
+  get '/app/avmixer/video/:channel/fade/:time' do
     content_type :html
     error_html do
       settings.mixer.fade(params[:channel].to_i, params[:time].to_i)
@@ -256,7 +266,7 @@ class MixerAPI < Sinatra::Base
     redirect '/app/avmixer'
   end
 
-  post '/app/avmixer/video/:channel/blend' do
+  get '/app/avmixer/video/:channel/blend' do
     content_type :html
     error_html do
       settings.mixer.blend(params[:channel].to_i)

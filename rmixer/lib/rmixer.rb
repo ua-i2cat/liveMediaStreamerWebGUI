@@ -147,7 +147,7 @@ module RMixer
       sendRequest(reset)
     end
 
-    def start
+    def start (scenario = 'default')
       if @lmsStarted
         raise MixerError, "Live Media Streamer is still running"
       end
@@ -228,7 +228,33 @@ module RMixer
       @started = true 
 
       updateDataBase
-      
+     
+      case scenario
+      	when "uo"
+          sleep(1.0/5.0) #sleep 200 ms
+	  puts "loading ULTRAORBISM scenario..."
+	  addRTPSession("video", returnPrms("1","5004"), 5000, 90000)
+	  puts "added rtp session 1"
+          sleep(1.0/5.0) #sleep 200 ms
+          addRTPSession("video", returnPrms("2","6004"), 5000, 90000)
+	  puts "added rtp session 2"
+          sleep(1.0/5.0) #sleep 200 ms
+	  commute(1)
+	  puts "commute to session 1"
+	  sleep(1.0/5.0) #sleep 200 ms
+      	else
+ 	  puts "loading default scenario..." 
+      end
+	
+      updateDataBase
+    end
+
+    def returnPrms(channel = '1', port = '5004')
+      prms = {}
+      prms[:port] = port
+      prms[:channel] = channel
+      prms[:codec] = "H264"
+      return prms
     end
 
     def updateDataBase
@@ -295,6 +321,9 @@ module RMixer
 
     def addRTPSession(medium, params, bandwidth, timeStampFrequency)
       #TODO CHECK IF PORT ALREADY OCCUPYED!!!
+      
+      puts params
+
       port = params[:port].to_i
       return if port == 0
 
