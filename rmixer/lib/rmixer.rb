@@ -57,7 +57,7 @@ module RMixer
         return false
       end
     end
-    
+
     def check_livemediastreamer_process
       if `ps aux | grep livemediastreamer | grep --invert grep` != ""
         found = `ps aux | grep livemediastreamer | grep --invert grep`
@@ -125,7 +125,7 @@ module RMixer
       @lmsStarted = false
       return true
     end
-    
+
     def loadGrids
       grids = []
 
@@ -134,6 +134,7 @@ module RMixer
       grids << calcRegularGrid(4, 4)
       grids << calcPictureInPicture
       grids << calcPreviewGrid
+      grids << calcSideBySide
 
       @db.loadGrids(grids)
     end
@@ -225,10 +226,10 @@ module RMixer
 
       sendRequest(@conn.addOutputSession(txId, [airPath["destinationReader"], audioPath["destinationReader"]], 'air'))
       sendRequest(@conn.addOutputSession(txId, [previewPath["destinationReader"]], 'preview'))
-      @started = true 
+      @started = true
 
       updateDataBase
-     
+
       case scenario
       	when "uo"
           sleep(1.0/5.0) #sleep 200 ms
@@ -243,9 +244,9 @@ module RMixer
 	  puts "commute to session 1"
 	  sleep(1.0/5.0) #sleep 200 ms
       	else
- 	  puts "loading default scenario..." 
+ 	  puts "loading default scenario..."
       end
-	
+
       updateDataBase
     end
 
@@ -321,7 +322,7 @@ module RMixer
 
     def addRTPSession(medium, params, bandwidth, timeStampFrequency)
       #TODO CHECK IF PORT ALREADY OCCUPYED!!!
-      
+
       puts params
 
       port = params[:port].to_i
@@ -333,8 +334,8 @@ module RMixer
       when "audio"
         mixerChannel = params[:channel].to_i
         channels = params[:channels].to_i
-        timeStampFrequency = params[:sampleRate].to_i 
-        
+        timeStampFrequency = params[:sampleRate].to_i
+
         receiver = @db.getFilterByType('receiver')
 
         #TODO manage response
@@ -345,7 +346,7 @@ module RMixer
         updateDataBase
       when "video"
         mixerChannel = params[:channel].to_i
-      
+
         receiver = @db.getFilterByType('receiver')
 
         #TODO manage response
@@ -402,7 +403,7 @@ module RMixer
     def rmRTPSession(mixerChannel, port, medium, codec, bandwidth, timeStampFrequency, channels = 0)
            # receiver = @db.getFilterByType('receiver')
            # @conn.addRTPSession(receiver["id"], port, medium, codec, bandwidth, timeStampFrequency, channels)
-      
+
            # if medium == 'audio'
            # elsif medium == 'video'
            #   @db.addVideoChannelPort(mixerChannel, port)
@@ -430,18 +431,18 @@ module RMixer
 
         if txFormat == "mpegts"
           response = sendRequest(
-                      @conn.addOutputRTPtx(txId, [videoPath["destinationReader"], 
-                                           audioPath["destinationReader"]], 
+                      @conn.addOutputRTPtx(txId, [videoPath["destinationReader"],
+                                           audioPath["destinationReader"]],
                                            videoId, ip, port, txFormat)
                       )
         else
           response = sendRequest(
-                      @conn.addOutputRTPtx(txId, [videoPath["destinationReader"]], 
+                      @conn.addOutputRTPtx(txId, [videoPath["destinationReader"]],
                                  videoId, ip, port, txFormat)
                       )
 
           response = sendRequest(
-                      @conn.addOutputRTPtx(txId, [audioPath["destinationReader"]], 
+                      @conn.addOutputRTPtx(txId, [audioPath["destinationReader"]],
                                  audioId, ip, port+2, txFormat)
                      )
         end
@@ -451,7 +452,7 @@ module RMixer
         videoId = Random.rand(@randomSize)
 
         response = sendRequest(
-                    @conn.addOutputRTPtx(txId, [videoPath["destinationReader"]], 
+                    @conn.addOutputRTPtx(txId, [videoPath["destinationReader"]],
                                  videoId, ip, port, txFormat)
                    )
 
@@ -474,14 +475,14 @@ module RMixer
       port = @db.getAudioChannelPort(channel)
       if port
         sendRequest(@conn.muteChannel(@audioMixer, port))
-      end 
+      end
     end
 
     def soloChannel(channel)
       port = @db.getAudioChannelPort(channel)
       if port
         sendRequest(@conn.soloChannel(@audioMixer, port))
-      end 
+      end
     end
 
     def changeMasterVolume(volume)
@@ -498,7 +499,7 @@ module RMixer
     #################
     # VIDEO METHODS #
     #################
-    
+
     def applyPreviewGrid
       grid = @db.getGrid('preview')
       mixer = getFilter(@previewMixerID)

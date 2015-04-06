@@ -1,5 +1,5 @@
 #
-#  RUBYMIXER - A management ruby interface for MIXER 
+#  RUBYMIXER - A management ruby interface for MIXER
 #  Copyright (C) 2013  Fundació i2CAT, Internet i Innovació digital a Catalunya
 #
 #  This file is part of thin RUBYMIXER.
@@ -20,7 +20,7 @@
 #  Authors:  Marc Palau <marc.palau@i2cat.net>,
 #            Ignacio Contreras <ignacio.contreras@i2cat.net>
 #            Gerard Castillo <gerard.castillo@i2cat.net>
-#   
+#
 
 require 'rubygems'
 require 'bundler/setup'
@@ -40,17 +40,17 @@ class MixerAPI < Sinatra::Base
   configure do
     set :show_exceptions, false
   end
-  
+
   not_found do
     msg = "no path to #{request.path}"
     halt liquid :error, :locals => { "message" => msg }
   end
-  
+
   error do
     msg = "Error is:  #{params[:captures].first.inspect}"
-    halt liquid :error, :locals => { "message" => msg }   
+    halt liquid :error, :locals => { "message" => msg }
   end
-  
+
   def error_html
     begin
       yield
@@ -84,12 +84,12 @@ class MixerAPI < Sinatra::Base
       liquid :before
     end
   end
-  
+
   # Redirects to /app
   get '/' do
     redirect '/app'
   end
-  
+
   get '/app' do
     redirect '/app/avmixer'
   end
@@ -101,7 +101,7 @@ class MixerAPI < Sinatra::Base
     end
     redirect '/app'
   end
-  
+
 
   get '/app/start/scenario/:scenario' do
     content_type :html
@@ -111,7 +111,7 @@ class MixerAPI < Sinatra::Base
     end
     redirect '/app'
   end
-  
+
   post '/app/stop' do
     content_type :html
     error_html do
@@ -143,23 +143,23 @@ class MixerAPI < Sinatra::Base
     content_type :html
     dashboardAVMixer('PiP')
   end
-  
-  post '/app/avmixer/addRTSPSession' do 
+
+  post '/app/avmixer/addRTSPSession' do
     content_type :html
     error_html do
-        settings.mixer.addRTSPSession(params[:vChannel].to_i, 
-                                      params[:aChannel].to_i, 
-                                      'mixer', 
+        settings.mixer.addRTSPSession(params[:vChannel].to_i,
+                                      params[:aChannel].to_i,
+                                      'mixer',
                                       params[:uri])
     end
     redirect '/app/avmixer'
   end
 
-  # Adds an output RTP transmision. It executes {RMixer.Mixer#addOutputRTPtx} and redirects to {GET '/app/avmixer'} 
-  post '/app/avmixer/addOutputRTPtx' do 
+  # Adds an output RTP transmision. It executes {RMixer.Mixer#addOutputRTPtx} and redirects to {GET '/app/avmixer'}
+  post '/app/avmixer/addOutputRTPtx' do
     content_type :html
     error_html do
-        settings.mixer.addOutputRTPtx(params[:output], 
+        settings.mixer.addOutputRTPtx(params[:output],
                                       params[:txFormat],
                                       params[:ip],
                                       params[:port].to_i)
@@ -198,7 +198,7 @@ class MixerAPI < Sinatra::Base
     end
     redirect '/app/avmixer'
   end
-  
+
   post '/app/avmixer/audio/addSession' do
     content_type :html
     error_html do
@@ -234,7 +234,7 @@ class MixerAPI < Sinatra::Base
     end
     redirect '/app/avmixer'
   end
-  
+
   # @todo Get channel index (not port) to be removed from sessions
   post '/app/avmixer/video/:channel/rmSession' do
     content_type :html
@@ -272,6 +272,27 @@ class MixerAPI < Sinatra::Base
       settings.mixer.blend(params[:channel].to_i)
     end
     redirect '/app/avmixer'
+  end
+
+  get '/app/avmixer/video/SbS/applyGrid' do
+    content_type :html
+    error_html do
+      positions = []
+      pos1 = {
+        :pos => 1,
+        :ch => 1
+      }
+      positions << pos1
+      pos2 = {
+        :pos => 2,
+        :ch => 2
+      }
+      positions << pos2
+
+      settings.mixer.applyGrid('SbS', positions)
+
+    end
+    redirect "/app/avmixer"
   end
 
 end

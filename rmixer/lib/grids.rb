@@ -1,5 +1,5 @@
 #
-#  RUBYMIXER - A management ruby interface for MIXER 
+#  RUBYMIXER - A management ruby interface for MIXER
 #  Copyright (C) 2013  Fundació i2CAT, Internet i Innovació digital a Catalunya
 #
 #  This file is part of thin RUBYMIXER.
@@ -19,7 +19,7 @@
 #
 #  Authors:  Marc Palau <marc.palau@i2cat.net>,
 #            Ignacio Contreras <ignacio.contreras@i2cat.net>
-#   
+#
 
 def calcRegularGrid(cellsX = 2, cellsY = 2)
   grid = {:id => "#{cellsX}x#{cellsY}"}
@@ -92,6 +92,39 @@ def calcPreviewGrid
   return grid
 end
 
+def calcSideBySide
+  grid = {:id => "SbS"}
+  positions = []
+  width = 0.5
+  height = 0.5
+  y = 0.5 - height/2
+
+  positions << {
+    :id => 1,
+    :channel => 0,
+    :width => 0.5,
+    :height => height,
+    :x => 0,
+    :y => y,
+    :layer => 0,
+    :opacity => 1.0
+  }
+
+  positions << {
+    :id => 2,
+    :channel => 0,
+    :width => 0.5,
+    :height => height,
+    :x => 0.5,
+    :y => y,
+    :layer => 0,
+    :opacity => 1.0
+  }
+
+  grid[:positions] = positions
+
+  return grid
+end
 
 def calc_regular_grid (cells_x = 2, cells_y = 2)
 
@@ -163,7 +196,7 @@ def calc_upper_left_grid_6 (up_left_width = 0.75, up_left_height = 0.75)
     :layer => 0,
     :opacity => 1.0
   }
-  
+
   return grid
 
 end
@@ -443,7 +476,7 @@ def calc_idt_6 #three-side-by-side-swaped
     :layer => 0,
     :opacity => 1.0
   }
-  
+
   grid << {
     :width => width,
     :height => height,
@@ -476,7 +509,7 @@ def calc_idt_7 #two-active-blending
     :layer => 10,
     :opacity => 0.5
   }
-  
+
   grid << {
     :width => 1.0,
     :height => 1.0,
@@ -491,7 +524,7 @@ end
 
 def calc_idt_8 #two-active-blending-swapped
   grid = []
-  
+
   grid << {
     :width => 1.0,
     :height => 1.0,
