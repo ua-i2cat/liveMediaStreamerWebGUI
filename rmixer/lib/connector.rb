@@ -167,11 +167,10 @@ module RMixer
       createEvent("removePath", params)
     end
 
-    def addWorker(id, type, fps = 24)
+    def addWorker(id, type)
       params = {
         :id => id,
         :type => type,
-        :fps => fps
       }
 
       createEvent("addWorker", params)
@@ -363,18 +362,30 @@ module RMixer
     #   mixer.get_response("start_mixer", { :width => 1280, :height => 720 })
     #
 
-    def createEvent(action, params = {}, filterID = 0)
+    def createEvent(action, params = {}, filterId = 0)
       event = {
         :action => action,
         :params => params,
-        :filterID => filterID
       }
+
+      event[:filterId] = filterId unless filterId == 0
+      return event
     end
 
-    def sendRequest(events = @eventArray)
-      request = {
-        :events => events
-      }
+    def sendRequest(events)
+
+      if events.is_a? Array 
+        request = {
+          :events => events
+        }
+      else 
+        eventArr = []
+        eventArr << events
+        request = {
+          :events => eventArr
+        }
+      end
+
       s = TCPSocket.open(@host, @port)
       s.print(request.to_json)
       puts
