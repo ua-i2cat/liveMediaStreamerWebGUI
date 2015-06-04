@@ -209,15 +209,15 @@ module RMixer
       assignWorker(previewEncoderID, 'videoEncoder', 'master', 'worker')
       assignWorker(airResamplerEncoderID, 'videoResampler', 'master', 'worker', {:processorLimit => 2})
       assignWorker(previewResamplerEncoderID, 'videoResampler', 'master', 'worker', {:processorLimit => 2})
-#      assignWorker(@audioMixer, 'audioMixer', 'master', 'worker')
-#      assignWorker(audioEncoder, 'audioEncoder', 'master', 'worker')
+      assignWorker(@audioMixer, 'audioMixer', 'master', 'worker')
+      assignWorker(audioEncoder, 'audioEncoder', 'master', 'worker')
 
       createPath(airOutputPathID, @airMixerID, transmitterID, [airResamplerEncoderID, airEncoderID])
       createPath(previewOutputPathID, @previewMixerID, transmitterID, [previewResamplerEncoderID, previewEncoderID])
-#      createPath(audioPathID, @audioMixer, transmitterID, [audioEncoder])
+      createPath(audioPathID, @audioMixer, transmitterID, [audioEncoder])
 
       #OUTPUT
-#      audioPath = @db.getPath(audioPathID)
+      audioPath = @db.getPath(audioPathID)
       airPath = @db.getPath(airOutputPathID)
       previewPath = @db.getPath(previewOutputPathID)
 
@@ -225,7 +225,7 @@ module RMixer
       previewTxSessionID = Random.rand(@randomSize)
 
       events = []
-      events << @conn.addRTSPOutputSession(transmitterID, airTxSessionID, [airPath["destinationReader"]], 'air', 'mpegts')
+      events << @conn.addRTSPOutputSession(transmitterID, airTxSessionID, [airPath["destinationReader"], audioPath["destinationReader"]], 'air', 'mpegts')
       events << @conn.addRTSPOutputSession(transmitterID, previewTxSessionID, [previewPath["destinationReader"]], 'preview', 'mpegts')
       sendRequest(events)
 
