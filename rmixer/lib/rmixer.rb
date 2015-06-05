@@ -697,13 +697,13 @@ module RMixer
     def createAudioInputPath(port)
       receiver = @db.getFilterByType('receiver')
 
-      decoderID = Random.rand(@randomSize)
-      decoderPathID = Random.rand(@randomSize)
+      decoderId = Random.rand(@randomSize)
+      decoderPathId = Random.rand(@randomSize)
 
-      sendRequest(@conn.createFilter(decoderID, 'audioDecoder', 'master'))
-      createPath(decoderPathID, receiver["id"], @audioMixer, [decoderID], {:orgWriterId => port, :dstReaderId => port})
+      sendRequest(@conn.createFilter(decoderId, 'audioDecoder', 'master'))
+      createPath(decoderPathId, receiver["id"], @audioMixer, [decoderId], {:orgWriterId => port, :dstReaderId => port})
 
-      assignWorker(decoderID, 'audioDecoder', 'master', 'worker')
+      assignWorker(decoderId, 'audioDecoder', 'master', 'worker')
     end
 
     private :doApplyGrid, :updateGrid
