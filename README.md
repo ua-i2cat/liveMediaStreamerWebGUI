@@ -1,4 +1,4 @@
-#liveMediaStreamerWebGUI - 0.0.1
+#liveMediaStreamerWebGUI - 0.2
 
 Live Media Streamer Web GUI (LMS WebGUI) includes a REST API and a web front-end for [Live Media Streamer](http://github.com/ua-i2cat/liveMediaStreamer). 
 
