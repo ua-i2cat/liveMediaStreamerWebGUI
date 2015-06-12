@@ -177,11 +177,11 @@ class MITSUdemoAPI < Sinatra::Base
     # MSG SOCKETS #
     ###############
     def createEvent(action, params, filterID)
-        event = {
+        event = [{
             :action => action,
             :params => params,
-            :filterID => filterID
-        }
+            :filterId => filterID
+        }]
     end
 
     def sendRequest(events)
@@ -191,7 +191,7 @@ class MITSUdemoAPI < Sinatra::Base
         puts "sending msg socket"
         s = TCPSocket.open(settings.ip, settings.port)
         s.print(request.to_json)
-        puts request
+        puts request.to_json
         response = s.recv(4096*4) # TODO: max_len ?
         puts
         puts response
@@ -213,9 +213,9 @@ class MITSUdemoAPI < Sinatra::Base
         if !params[:rtspURI].empty?
             case demo
             when "MPEGTS"
-                cmd = "testtranscoder -r #{params[:rtspURI]} -s #{shmID}"
+                cmd = "testtranscoder -r #{params[:rtspURI]}"
             when "DASH"
-                cmd = "testtranscoder -dash -r #{params[:rtspURI]} -s #{shmID}"
+                cmd = "testtranscoder -dash -r #{params[:rtspURI]}"
             else
                 puts "You gave me #{demo} -- I have no idea what to do with that."
                 return
@@ -223,9 +223,9 @@ class MITSUdemoAPI < Sinatra::Base
         else
             case demo
             when "MPEGTS"
-                cmd = "testtranscoder -v 5004 -s #{shmID}"
+                cmd = "testtranscoder -v 5004"
             when "DASH"
-                cmd = "testtranscoder -v 5004 -dash -s #{shmID}"
+                cmd = "testtranscoder -v 5004 -dash"
             else
                 puts "You gave me #{demo} -- I have no idea what to do with that."
                 return
